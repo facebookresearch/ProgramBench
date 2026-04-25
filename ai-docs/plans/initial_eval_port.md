@@ -116,7 +116,7 @@ Same structure as the source project, but keys are branch hashes instead of bran
 - Cheat detection / annotation tags — no `_get_annotation_tags()`, no `_get_suspicious_pct()`, no `FAIL_ANNOTATION_TAGS`. Remove from `InstanceEvalSummary` fields: `annotation_tags`, `cheat_detection_missing`, `suspicious_pct`, `formatted_tags`, `original_score`. Remove cheat-related summary table logic.
 - Internet control (`turn_off_internet` / `turn_on_internet`)
 - Trajectory file loading (`.traj.json`, `ijson`, `zstandard`)
-- Info cache sidecar (`.info_cache.json`)
+- Info cache sidecar (`.info_cache.json`) and all fast-loading cache machinery (`_build_cache_dict`, `_source_max_mtime`, `_delete_legacy_caches`, `load_instance_info`, `load_instance_infos`)
 - ECR push/pull
 - Cloud eval (AWS Batch)
 - `_migrate_old_format` validator on `EvaluationResult` (no legacy data in programbench)
@@ -354,10 +354,14 @@ src/programbench/
   exceptions.py          # EvalStepError, EmptyTestResultError, XmlParseError
   constants.py           # WORKSPACE_DIR, DOCKER_ORG, TASKS_DIR, paths
   container.py           # ContainerEnvironment class
-  eval.py                # TestResult, EvaluationResult, Evaluator, parse_test_results
-  eval_batch.py          # InstanceEvalSummary, BatchEvalSummary, run_eval_batch
-  load_data.py           # load_all_instances, get_active_branches, get_ignored_tests
-  instance_filters.py    # filter_instances (regex, slice, shuffle, has_test_branch)
+  eval/
+    __init__.py
+    eval.py              # TestResult, EvaluationResult, Evaluator, parse_test_results
+    eval_batch.py        # InstanceEvalSummary, BatchEvalSummary, run_eval_batch
+  utils/
+    __init__.py
+    load_data.py         # load_all_instances, get_active_branches, get_ignored_tests
+    instance_filters.py  # filter_instances (regex, slice, shuffle, has_test_branch)
 ```
 
 ---
@@ -392,22 +396,46 @@ No `minisweagent`, `ghapi`, `orjson`, `ijson`, `zstandard`, `litellm` — all dr
 - Test with a real Docker image
 
 ### Step 3: Data models
-- `eval.py` (models only) — `TestResult`, `TestBranchError`, `EvaluationResult`, `parse_test_results()`, `_process_branch_xml()`
-- `load_data.py` — `load_all_instances()`, `get_active_branches()`, `get_ignored_tests()`
+- `eval/eval.py` (models only) — `TestResult`, `TestBranchError`, `EvaluationResult`, `parse_test_results()`, `_process_branch_xml()`
+- `utils/load_data.py` — `load_all_instances()`, `get_active_branches()`, `get_ignored_tests()`, `save_tests()`. No caching layer — just direct reads of `task.yaml` and `tests.json`.
 
 ### Step 4: Core evaluator
-- `eval.py` (Evaluator class) — `_run_step()`, `_compile_executable()`, `_run_test_branch()`, `_restore_executable()`, `_remove_hashed_files()`, `_inject_not_run()`, `run()`
+- `eval/eval.py` (Evaluator class) — `_run_step()`, `_compile_executable()`, `_run_test_branch()`, `_restore_executable()`, `_remove_hashed_files()`, `_inject_not_run()`, `run()`
 - Including `from_existing` reprocessing
 
 ### Step 5: Batch evaluation
-- `eval_batch.py` — `_evaluate_instance()`, `get_branches_to_eval()`, `run_eval_batch()`, `InstanceEvalSummary`, `BatchEvalSummary`
+- `eval/eval_batch.py` — `_evaluate_instance()`, `get_branches_to_eval()`, `run_eval_batch()`, `InstanceEvalSummary`, `BatchEvalSummary`
 
 ### Step 6: CLI
 - `cli/eval.py` — typer command
 - Wire into `cli/main.py`
 
 ### Step 7: Test data
-- Populate `data/tasks/` with at least one instance for end-to-end testing
+
+Create a minimal test instance (`testorg__calculator.abc1234`) that runs on a plain `ubuntu:22.04` base image. Lives in `data/` alongside real data for now; move to `tests/` later.
+
+**The program**: a bash calculator — `./executable 2 + 3` outputs `5`. No compiler needed.
+
+**Task data** (`data/tasks/testorg__calculator.abc1234/`):
+- `task.yaml` — points to a dummy `testorg/calculator` repo
+- `tests.json` — one branch hash (SHA-256 of original branch name, truncated to 12 chars)
+- `build.sh` — copies source to `./executable` (for gold mode)
+- `tests/<branch_hash>/eval/run.sh` — installs pytest via apt, runs tests, writes JUnit XML to `eval/results.xml`
+- `tests/<branch_hash>/eval/tests/test_calculator.py` — pytest tests for addition, subtraction, multiplication
+
+**Test submissions** (`data/test_runs/`):
+- `correct/testorg__calculator.abc1234/submission.zip` — working calculator (`echo $(($1 $2 $3))`) + `compile.sh`
+- `incorrect/testorg__calculator.abc1234/submission.zip` — broken calculator (always outputs `42`) + `compile.sh`
+
+**Docker test image**:
+- Dockerfile based on `ubuntu:22.04` with python3 + pip + pytest pre-installed
+- Build as `programbench/testorg_1776_calculator.abc1234:task` (follows `image_name_from_instance_id` naming)
+- Include a build script or document the `docker build` + `docker tag` commands
+
+**What the tests validate**:
+- Correct submission: all tests pass → score 1.0
+- Incorrect submission: all tests fail → score 0.0
+- Gold mode cannot be tested without a real GitHub repo (skip for now, or use a real tiny public repo later)
 
 ---
 
@@ -419,4 +447,4 @@ All open questions have been resolved. Summary of decisions:
 - **Private/archived repos**: No instances have private or archived original repos; gold mode `git clone` is always fine
 - **Workspace wipe**: Full wipe is fine (`rm -rf /workspace/* /workspace/.[!.]*`). No test `run.sh` scripts rely on git commands being available in the workspace
 - **Image tag**: Just bare `"task"` for now. Versioned tag system deferred
-- **Instance filters**: Port as separate utility module (`src/programbench/instance_filters.py`)
+- **Instance filters**: Port as separate utility module (`src/programbench/utils/instance_filters.py`)
