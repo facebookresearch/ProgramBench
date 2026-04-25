@@ -1,0 +1,160 @@
+{
+  "test_results": [
+    {
+      "name": "eval.tests.test_calculator.test_addition",
+      "branch": "33128f6b8600",
+      "status": "failure",
+      "extra": {
+        "time": 0.001,
+        "message": "AssertionError: assert '42' == '5'\n  \n  - 5\n  + 42",
+        "text": "def test_addition():\n>       assert _run(2, \"+\", 3) == \"5\"\nE       AssertionError: assert '42' == '5'\nE         \nE         - 5\nE         + 42\n\neval/tests/test_calculator.py:13: AssertionError"
+      }
+    },
+    {
+      "name": "eval.tests.test_calculator.test_subtraction",
+      "branch": "33128f6b8600",
+      "status": "failure",
+      "extra": {
+        "time": 0.001,
+        "message": "AssertionError: assert '42' == '7'\n  \n  - 7\n  + 42",
+        "text": "def test_subtraction():\n>       assert _run(10, \"-\", 3) == \"7\"\nE       AssertionError: assert '42' == '7'\nE         \nE         - 7\nE         + 42\n\neval/tests/test_calculator.py:19: AssertionError"
+      }
+    },
+    {
+      "name": "eval.tests.test_calculator.test_multiplication",
+      "branch": "33128f6b8600",
+      "status": "failure",
+      "extra": {
+        "time": 0.001,
+        "message": "AssertionError: assert '42' == '12'\n  \n  - 12\n  + 42",
+        "text": "def test_multiplication():\n>       assert _run(4, \"*\", 3) == \"12\"\nE       AssertionError: assert '42' == '12'\nE         \nE         - 12\nE         + 42\n\neval/tests/test_calculator.py:24: AssertionError"
+      }
+    },
+    {
+      "name": "tests.test_calculator.test_addition",
+      "branch": "33128f6b8600",
+      "status": "not_run",
+      "extra": {
+        "error_code": "missing_from_junit_xml"
+      }
+    },
+    {
+      "name": "tests.test_calculator.test_subtraction",
+      "branch": "33128f6b8600",
+      "status": "not_run",
+      "extra": {
+        "error_code": "missing_from_junit_xml"
+      }
+    },
+    {
+      "name": "tests.test_calculator.test_multiplication",
+      "branch": "33128f6b8600",
+      "status": "not_run",
+      "extra": {
+        "error_code": "missing_from_junit_xml"
+      }
+    }
+  ],
+  "error_code": null,
+  "error_details": null,
+  "log": [
+    {
+      "step": "wipe_workspace",
+      "command": "rm -rf /workspace/* /workspace/.[!.]*",
+      "wall_time": 0.06378612492699176,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "compile",
+      "command": "chmod +x ./compile.sh && ./compile.sh",
+      "wall_time": 0.05393054103478789,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "copy_executable",
+      "command": "ls && cp ./executable /opt/programbench-gold-executable-do-not-modify",
+      "wall_time": 0.04978908400516957,
+      "output": "calculator.sh\ncompile.sh\nexecutable\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "hash_executable",
+      "command": "sha256sum /opt/programbench-gold-executable-do-not-modify",
+      "wall_time": 0.05839495896361768,
+      "output": "ea8d57b49eabb65c1f9bd728044274b87cbcd4c686a2b6567213368089f043a6  /opt/programbench-gold-executable-do-not-modify\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "reap_stray_processes",
+      "command": "pkill -9 -f 'pytest|execnet' 2>/dev/null; pkill -9 -x executable 2>/dev/null; pkill -9 -x git 2>/dev/null",
+      "wall_time": 0.0676041659899056,
+      "output": "",
+      "returncode": 137,
+      "exception_info": ""
+    },
+    {
+      "step": "wipe_workspace_for_tests",
+      "command": "rm -rf /workspace/* /workspace/.[!.]*",
+      "wall_time": 0.060628124978393316,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "restore_executable",
+      "command": "rm -f ./executable && cp /opt/programbench-gold-executable-do-not-modify ./executable && chmod +x ./executable",
+      "wall_time": 0.05895741702988744,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "verify_executable_hash",
+      "command": "sha256sum /opt/programbench-gold-executable-do-not-modify",
+      "wall_time": 0.04882962501142174,
+      "output": "ea8d57b49eabb65c1f9bd728044274b87cbcd4c686a2b6567213368089f043a6  /opt/programbench-gold-executable-do-not-modify\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "clean_stale_results",
+      "command": "rm -f eval/results.xml results.xml",
+      "wall_time": 0.054478749982081354,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "run_tests",
+      "command": "chmod +x ./eval/run.sh && ./eval/run.sh",
+      "wall_time": 0.2894931669579819,
+      "output": "============================= test session starts ==============================\nplatform linux -- Python 3.10.12, pytest-9.0.3, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /workspace\ncollecting ... collected 3 items\n\neval/tests/test_calculator.py::test_addition FAILED                      [ 33%]\neval/tests/test_calculator.py::test_subtraction FAILED                   [ 66%]\neval/tests/test_calculator.py::test_multiplication FAILED                [100%]\n\n=================================== FAILURES ===================================\n________________________________ test_addition _________________________________\n\n    def test_addition():\n>       assert _run(2, \"+\", 3) == \"5\"\nE       AssertionError: assert '42' == '5'\nE         \nE         - 5\nE         + 42\n\neval/tests/test_calculator.py:13: AssertionError\n_______________________________ test_subtraction _______________________________\n\n    def test_subtraction():\n>       assert _run(10, \"-\", 3) == \"7\"\nE       AssertionError: assert '42' == '7'\nE         \nE         - 7\nE         + 42\n\neval/tests/test_calculator.py:19: AssertionError\n_____________________________ test_multiplication ______________________________\n\n    def test_multiplication():\n>       assert _run(4, \"*\", 3) == \"12\"\nE       AssertionError: assert '42' == '12'\nE         \nE         - 12\nE         + 42\n\neval/tests/test_calculator.py:24: AssertionError\n--------------- generated xml file: /workspace/eval/results.xml ----------------\n=========================== short test summary info ============================\nFAILED eval/tests/test_calculator.py::test_addition - AssertionError: assert ...\nFAILED eval/tests/test_calculator.py::test_subtraction - AssertionError: asse...\nFAILED eval/tests/test_calculator.py::test_multiplication - AssertionError: a...\n============================== 3 failed in 0.01s ===============================\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "results_read",
+      "command": "cat eval/results.xml",
+      "wall_time": 0.06491933402139693,
+      "output": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"3\" skipped=\"0\" tests=\"3\" time=\"0.013\" timestamp=\"2026-04-25T21:15:49.801564+00:00\" hostname=\"ed9fc01939b0\"><testcase classname=\"eval.tests.test_calculator\" name=\"test_addition\" time=\"0.001\"><failure message=\"AssertionError: assert '42' == '5'&#10;  &#10;  - 5&#10;  + 42\">def test_addition():\n&gt;       assert _run(2, \"+\", 3) == \"5\"\nE       AssertionError: assert '42' == '5'\nE         \nE         - 5\nE         + 42\n\neval/tests/test_calculator.py:13: AssertionError</failure></testcase><testcase classname=\"eval.tests.test_calculator\" name=\"test_subtraction\" time=\"0.001\"><failure message=\"AssertionError: assert '42' == '7'&#10;  &#10;  - 7&#10;  + 42\">def test_subtraction():\n&gt;       assert _run(10, \"-\", 3) == \"7\"\nE       AssertionError: assert '42' == '7'\nE         \nE         - 7\nE         + 42\n\neval/tests/test_calculator.py:19: AssertionError</failure></testcase><testcase classname=\"eval.tests.test_calculator\" name=\"test_multiplication\" time=\"0.001\"><failure message=\"AssertionError: assert '42' == '12'&#10;  &#10;  - 12&#10;  + 42\">def test_multiplication():\n&gt;       assert _run(4, \"*\", 3) == \"12\"\nE       AssertionError: assert '42' == '12'\nE         \nE         - 12\nE         + 42\n\neval/tests/test_calculator.py:24: AssertionError</failure></testcase></testsuite></testsuites>",
+      "returncode": 0,
+      "exception_info": "",
+      "branch": "33128f6b8600"
+    }
+  ],
+  "solution_branch": "submission",
+  "test_branches": [
+    "33128f6b8600"
+  ],
+  "test_branch_errors": {},
+  "executable_hash": "ea8d57b49eabb65c1f9bd728044274b87cbcd4c686a2b6567213368089f043a6",
+  "warnings": [
+    "Branch 33128f6b8600: 3 test(s) in JUnit XML not in tests.json"
+  ]
+}

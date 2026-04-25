@@ -1,0 +1,14 @@
+{
+  "branches": {
+    "33128f6b8600": {
+      "ignored": false,
+      "ignore_reason": "",
+      "tests": [
+        "tests.test_calculator.test_addition",
+        "tests.test_calculator.test_subtraction",
+        "tests.test_calculator.test_multiplication"
+      ],
+      "ignored_tests": []
+    }
+  }
+}

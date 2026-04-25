@@ -1,0 +1,4 @@
+repository: testorg/calculator
+commit: abc1234567890abcdef1234567890abcdef123456
+language: bash
+difficulty: easy

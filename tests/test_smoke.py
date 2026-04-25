@@ -5,7 +5,7 @@ from programbench.cli.main import app
 runner = CliRunner()
 
 
-def test_hello() -> None:
-    result = runner.invoke(app, ["hello"])
+def test_eval_help() -> None:
+    result = runner.invoke(app, ["eval", "--help"])
     assert result.exit_code == 0
-    assert "alive" in result.output
+    assert "sources" in result.output.lower()

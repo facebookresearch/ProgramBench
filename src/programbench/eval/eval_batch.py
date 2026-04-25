@@ -1,0 +1,417 @@
+"""Batch evaluation of instances.
+
+IMPORTANT NOTE FOR AI AGENTS
+THIS IS A very delicate file.
+You need to be extremely conservative and careful about testing logic.
+The worst case to avoid here is that there are issues with testing but the result
+still indicates that the solution is correct. This might for example happen if you
+skip something because of some error condition and only show a warning, but it's not apparent
+from the output file that something went wrong.
+It's always better to clearly mark a failure in the output file than to silently skip something.
+Be extremely proactive with the user about clearing up details and intricacies with how to handle
+something here. Ask a lot of questions and don't be afraid to ask for clarification.
+Do not remove this notice.
+"""
+
+import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+from typing import Self
+
+from pydantic import BaseModel, ConfigDict, computed_field
+from rich.console import Console, Group
+from rich.table import Table
+from rich.text import Text
+from tqdm import tqdm
+from tqdm.contrib.logging import logging_redirect_tqdm
+
+from programbench.constants import DEFAULT_GOLD_EVAL_DIR, TASKS_DIR
+from programbench.eval.eval import EvaluationResult, Evaluator
+from programbench.utils.instance_filters import filter_instances
+
+log = logging.getLogger(__name__)
+
+
+class InstanceEvalSummary(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    instance_id: str
+    score: float
+    n_resolved: int
+    n_tests: int
+    error_code: str | None = None
+    test_branch_errors: dict[str, list[str]] = {}
+    n_system_errors: int = 0
+    n_warnings: int = 0
+    solution_branch: str | None = None
+    test_branches: list[str] = []
+
+    @classmethod
+    def from_eval_result(cls, instance_id: str, result: EvaluationResult) -> Self:
+        return cls(
+            instance_id=instance_id,
+            score=result.score,
+            n_resolved=result.n_resolved,
+            n_tests=len(result),
+            error_code=result.error_code,
+            test_branch_errors={b: [e.error_code for e in errors] for b, errors in result.test_branch_errors.items()},
+            n_system_errors=result.n_system_errors,
+            n_warnings=len(result.warnings),
+            solution_branch=result.solution_branch,
+            test_branches=result.test_branches,
+        )
+
+
+class BatchEvalSummary(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    summaries: list[InstanceEvalSummary]
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def total_instances(self) -> int:
+        return len(self.summaries)
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def resolve_ratio(self) -> float:
+        if not self.summaries:
+            return 0.0
+        return sum(s.score for s in self.summaries) / len(self.summaries)
+
+    def summary(self) -> Group:
+        table = Table(title="Evaluation Summary", show_lines=False, box=None)
+        table.add_column("Instance", style="bold")
+        table.add_column("Score", justify="right")
+        table.add_column("Comment")
+
+        for s in sorted(self.summaries, key=lambda s: s.instance_id):
+            score_style = "green" if s.score == 1.0 else "yellow" if s.score > 0 else "red"
+            if s.error_code:
+                comment = Text(f"ERROR: {s.error_code}", style="bold red")
+            elif s.test_branch_errors or s.n_system_errors or s.n_warnings:
+                parts = []
+                if s.test_branch_errors:
+                    parts.append("BRANCH: " + ", ".join(f"{b}: {','.join(e)}" for b, e in s.test_branch_errors.items()))
+                if s.n_system_errors:
+                    parts.append(f"SYSTEM: {s.n_system_errors}")
+                if s.n_warnings:
+                    parts.append(f"WARN: {s.n_warnings}")
+                comment = Text("ERRORS: " + "; ".join(parts), style="bold red")
+            else:
+                comment = Text(f"{s.n_tests} tests")
+            score_text = (
+                Text("✅", style=score_style) if s.score == 1.0 else Text(f"{s.score * 100:.0f}", style=score_style)
+            )
+            table.add_row(s.instance_id, score_text, comment)
+
+        table.add_section()
+        table.add_row(
+            "Average",
+            Text(f"{self.resolve_ratio * 100:.0f}", style="bold"),
+            f"{self.total_instances} instances",
+        )
+        return Group(table)
+
+
+def _can_reprocess(result: EvaluationResult) -> bool:
+    if result.error_code:
+        return True
+    tagged = {e["branch"] for e in result.log if e.get("step") == "results_read" and "branch" in e}
+    non_error_branches = {b for b in result.test_branches if b not in result.test_branch_errors}
+    return non_error_branches <= tagged
+
+
+def _summary_from_existing(
+    instance_id: str,
+    eval_json: Path,
+    ignored: set[str],
+    current_branches: list[str] | None = None,
+    tests_by_branch: dict[str, list[str]] | None = None,
+) -> InstanceEvalSummary:
+    """Build an InstanceEvalSummary from an existing eval JSON file."""
+    result = EvaluationResult.model_validate_json(eval_json.read_text())
+    if tests_by_branch is not None and _can_reprocess(result):
+        evaluator = Evaluator(
+            tests_branches=result.test_branches,
+            tests_by_branch=tests_by_branch,
+            from_existing=result,
+        )
+        result = evaluator.run()
+        eval_json.write_text(result.model_dump_json(indent=2))
+    if current_branches is not None:
+        result = result.for_branches(current_branches)
+    filtered = result.without_ignored(ignored)
+    return InstanceEvalSummary.from_eval_result(instance_id, filtered)
+
+
+def get_branches_to_eval(
+    *,
+    eval_json: Path,
+    all_test_branches: list[str],
+    tests_by_branch: dict[str, list[str]],
+    ignored_tests: set[str],
+) -> list[str]:
+    """Return the list of test branches that need (re-)evaluation."""
+    if not eval_json.exists():
+        return all_test_branches
+    existing = EvaluationResult.model_validate_json(eval_json.read_text())
+    if not existing.test_branches or existing.error_code:
+        return all_test_branches
+    existing_branch_set = set(existing.test_branches)
+    needs_eval: list[str] = []
+    for branch in all_test_branches:
+        if branch not in existing_branch_set or branch in existing.test_branch_errors:
+            needs_eval.append(branch)
+            continue
+        expected = tests_by_branch.get(branch, [])
+        active_expected = [t for t in expected if f"{branch}/{t}" not in ignored_tests]
+        present = {t.name for t in existing.test_results if t.branch == branch and t.status != "not_run"}
+        if any(t not in present for t in active_expected):
+            needs_eval.append(branch)
+    return needs_eval
+
+
+def _evaluate_instance(
+    *,
+    instance_id: str,
+    instance: dict,
+    is_gold_mode: bool,
+    output_dir: Path,
+    force: bool,
+    image_tag: str = "task",
+) -> InstanceEvalSummary | None:
+    """Evaluate a single instance."""
+    from programbench.utils.load_data import get_active_branches, get_ignored_tests
+
+    all_test_branches = get_active_branches(instance)
+    if not all_test_branches:
+        log.warning("Skipping %s (no test_branches configured)", instance_id)
+        return None
+
+    ignored = get_ignored_tests(instance)
+    eval_json = output_dir / instance_id / f"{instance_id}.eval.json"
+
+    branches_data = instance.get("branches", {})
+    all_tests_by_branch = {
+        branch: branches_data[branch]["tests"] for branch in all_test_branches if branch in branches_data
+    }
+
+    existing_result: EvaluationResult | None = None
+    branches_to_eval = all_test_branches
+
+    if not force:
+        branches_to_eval = get_branches_to_eval(
+            eval_json=eval_json,
+            all_test_branches=all_test_branches,
+            tests_by_branch=all_tests_by_branch,
+            ignored_tests=ignored,
+        )
+        if not branches_to_eval:
+            log.info("Skipping %s (fully evaluated, use --force to re-run)", instance_id)
+            return _summary_from_existing(
+                instance_id,
+                eval_json,
+                ignored,
+                current_branches=all_test_branches,
+                tests_by_branch=all_tests_by_branch,
+            )
+        if eval_json.exists():
+            existing_result = EvaluationResult.model_validate_json(eval_json.read_text())
+            if existing_result.test_branches and not existing_result.error_code:
+                log.info("Evaluating %d branch(es) for %s: %s", len(branches_to_eval), instance_id, branches_to_eval)
+            else:
+                log.info("Re-evaluating %s from scratch", instance_id)
+                existing_result = None
+
+    try:
+        if is_gold_mode:
+            solution_branch = "gold"
+            submission_zip = None
+        else:
+            submission_zip = output_dir / instance_id / "submission.zip"
+            if not submission_zip.exists():
+                log.warning("Skipping %s (no submission.zip)", instance_id)
+                return InstanceEvalSummary(
+                    instance_id=instance_id,
+                    score=0.0,
+                    n_resolved=0,
+                    n_tests=0,
+                    error_code="no_submission",
+                    test_branches=all_test_branches,
+                )
+            solution_branch = "submission"
+
+        tests_by_branch = {
+            branch: all_tests_by_branch[branch] for branch in branches_to_eval if branch in all_tests_by_branch
+        }
+
+        task_dir = TASKS_DIR / instance_id
+
+        evaluator = Evaluator(
+            image_name=instance["image_name"],
+            solution_branch=solution_branch,
+            submission_zip=submission_zip,
+            task_dir=task_dir,
+            repository=instance.get("repository", ""),
+            commit=instance.get("commit", ""),
+            tests_branches=branches_to_eval,
+            remove_hashes=instance.get("eval_clean_hashes", []),
+            image_tag=image_tag,
+            tests_by_branch=tests_by_branch,
+        )
+        result = evaluator.run()
+
+        if existing_result is not None and not result.error_code:
+            wanted = set(all_test_branches)
+            new_branch_set = set(result.test_branches)
+            merged_branch_errors = {
+                b: e for b, e in existing_result.test_branch_errors.items() if b in wanted and b not in new_branch_set
+            }
+            merged_branch_errors.update(result.test_branch_errors)
+            old_warnings = [
+                w
+                for w in existing_result.warnings
+                if not any(f"branch {b}" in w or f"Branch {b}" in w for b in new_branch_set)
+            ]
+            result = EvaluationResult(
+                test_results=[
+                    t for t in existing_result.test_results if t.branch in wanted and t.branch not in new_branch_set
+                ]
+                + list(result.test_results),
+                log=existing_result.log + result.log,
+                solution_branch=result.solution_branch or existing_result.solution_branch,
+                test_branches=all_test_branches,
+                test_branch_errors=merged_branch_errors,
+                executable_hash=result.executable_hash,
+                warnings=old_warnings + result.warnings,
+            )
+
+        (output_dir / instance_id).mkdir(parents=True, exist_ok=True)
+        eval_json.write_text(result.model_dump_json(indent=2))
+
+        filtered = result.without_ignored(ignored)
+        return InstanceEvalSummary.from_eval_result(instance_id, filtered)
+    except Exception as e:
+        log.error("Error evaluating %s: %s", instance_id, e, exc_info=True)
+        return InstanceEvalSummary(
+            instance_id=instance_id,
+            score=0.0,
+            n_resolved=0,
+            n_tests=0,
+            error_code=type(e).__name__,
+            solution_branch=None,
+            test_branches=all_test_branches,
+        )
+
+
+def run_eval_batch(
+    *,
+    sources: list[str | Path],
+    force: bool = False,
+    filter_spec: str = "",
+    slice_spec: str = "",
+    workers: int = 1,
+    summarize_only: bool = False,
+    image_tag: str = "task",
+) -> None:
+    from programbench.utils.load_data import get_active_branches, get_ignored_tests, load_all_instances
+
+    all_instances = load_all_instances()
+    log.info("Loaded %d instances", len(all_instances))
+
+    all_instances = filter_instances(
+        all_instances,
+        filter_spec=filter_spec,
+        slice_spec=slice_spec,
+    )
+    instance_lookup = {inst["instance_id"]: inst for inst in all_instances}
+
+    work_items: list[tuple[Path, str, bool]] = []
+    for source in sources:
+        is_gold_mode = str(source) == "gold"
+        if is_gold_mode:
+            output_dir = DEFAULT_GOLD_EVAL_DIR
+            output_dir.mkdir(parents=True, exist_ok=True)
+            log.info("Running in gold mode, output: %s", output_dir)
+            instance_ids = [inst["instance_id"] for inst in all_instances if get_active_branches(inst)]
+        else:
+            output_dir = Path(source)
+            log.info("Running in run directory mode: %s", output_dir)
+            instance_ids = [
+                d.name
+                for d in sorted(output_dir.iterdir())
+                if d.is_dir() and (d / "submission.zip").exists()
+            ]
+            instance_ids = [iid for iid in instance_ids if iid in instance_lookup]
+
+        for iid in instance_ids:
+            work_items.append((output_dir, iid, is_gold_mode))
+
+    if not work_items:
+        log.warning("No instances to evaluate.")
+        return
+
+    log.info("Evaluating %d instances across %d source(s) with %d worker(s)", len(work_items), len(sources), workers)
+
+    results_by_source: dict[Path, list[InstanceEvalSummary]] = {}
+    for output_dir, _, _ in work_items:
+        results_by_source.setdefault(output_dir, [])
+
+    if summarize_only:
+        for out_dir, iid, _is_gold in work_items:
+            eval_json = out_dir / iid / f"{iid}.eval.json"
+            if not eval_json.exists():
+                log.warning("Skipping %s (no eval.json)", iid)
+                continue
+            inst = instance_lookup[iid]
+            all_test_branches = get_active_branches(inst)
+            branches_data = inst.get("branches", {})
+            tests_by_branch = {b: branches_data[b]["tests"] for b in all_test_branches if b in branches_data}
+            try:
+                summary = _summary_from_existing(
+                    iid,
+                    eval_json,
+                    get_ignored_tests(inst),
+                    current_branches=all_test_branches,
+                    tests_by_branch=tests_by_branch,
+                )
+            except Exception as e:
+                log.error("Error summarizing %s: %s", iid, e, exc_info=True)
+                summary = InstanceEvalSummary(
+                    instance_id=iid,
+                    score=0.0,
+                    n_resolved=0,
+                    n_tests=0,
+                    error_code=type(e).__name__,
+                    test_branches=all_test_branches,
+                )
+            results_by_source[out_dir].append(summary)
+    else:
+        with logging_redirect_tqdm(), ThreadPoolExecutor(max_workers=workers) as executor:
+            futures = {
+                executor.submit(
+                    _evaluate_instance,
+                    instance_id=iid,
+                    instance=instance_lookup[iid],
+                    is_gold_mode=is_gold,
+                    output_dir=out_dir,
+                    force=force,
+                    image_tag=image_tag,
+                ): out_dir
+                for out_dir, iid, is_gold in work_items
+            }
+            for future in tqdm(as_completed(futures), total=len(futures), desc="Evaluating", ncols=100, leave=False):
+                summary = future.result()
+                if summary:
+                    results_by_source[futures[future]].append(summary)
+
+    console = Console()
+    for output_dir, summaries in results_by_source.items():
+        summaries.sort(key=lambda s: s.instance_id)
+        batch = BatchEvalSummary(summaries=summaries)
+
+        console.print()
+        if len(sources) > 1:
+            console.print(f"[bold]{output_dir}[/bold]")
+        console.print(batch.summary())

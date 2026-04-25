@@ -1,0 +1,154 @@
+{
+  "test_results": [
+    {
+      "name": "eval.tests.test_calculator.test_addition",
+      "branch": "33128f6b8600",
+      "status": "passed",
+      "extra": {
+        "time": 0.002
+      }
+    },
+    {
+      "name": "eval.tests.test_calculator.test_subtraction",
+      "branch": "33128f6b8600",
+      "status": "passed",
+      "extra": {
+        "time": 0.001
+      }
+    },
+    {
+      "name": "eval.tests.test_calculator.test_multiplication",
+      "branch": "33128f6b8600",
+      "status": "passed",
+      "extra": {
+        "time": 0.001
+      }
+    },
+    {
+      "name": "tests.test_calculator.test_addition",
+      "branch": "33128f6b8600",
+      "status": "not_run",
+      "extra": {
+        "error_code": "missing_from_junit_xml"
+      }
+    },
+    {
+      "name": "tests.test_calculator.test_subtraction",
+      "branch": "33128f6b8600",
+      "status": "not_run",
+      "extra": {
+        "error_code": "missing_from_junit_xml"
+      }
+    },
+    {
+      "name": "tests.test_calculator.test_multiplication",
+      "branch": "33128f6b8600",
+      "status": "not_run",
+      "extra": {
+        "error_code": "missing_from_junit_xml"
+      }
+    }
+  ],
+  "error_code": null,
+  "error_details": null,
+  "log": [
+    {
+      "step": "wipe_workspace",
+      "command": "rm -rf /workspace/* /workspace/.[!.]*",
+      "wall_time": 0.057382875005714595,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "compile",
+      "command": "chmod +x ./compile.sh && ./compile.sh",
+      "wall_time": 0.05150229099672288,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "copy_executable",
+      "command": "ls && cp ./executable /opt/programbench-gold-executable-do-not-modify",
+      "wall_time": 0.05763858393765986,
+      "output": "calculator.sh\ncompile.sh\nexecutable\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "hash_executable",
+      "command": "sha256sum /opt/programbench-gold-executable-do-not-modify",
+      "wall_time": 0.05359966598916799,
+      "output": "2ad9bd64ae06631b2d96c0d771171827892a43301be498446a68267c50b28ddc  /opt/programbench-gold-executable-do-not-modify\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "reap_stray_processes",
+      "command": "pkill -9 -f 'pytest|execnet' 2>/dev/null; pkill -9 -x executable 2>/dev/null; pkill -9 -x git 2>/dev/null",
+      "wall_time": 0.05400287499651313,
+      "output": "",
+      "returncode": 137,
+      "exception_info": ""
+    },
+    {
+      "step": "wipe_workspace_for_tests",
+      "command": "rm -rf /workspace/* /workspace/.[!.]*",
+      "wall_time": 0.057816917076706886,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "restore_executable",
+      "command": "rm -f ./executable && cp /opt/programbench-gold-executable-do-not-modify ./executable && chmod +x ./executable",
+      "wall_time": 0.06009199994150549,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "verify_executable_hash",
+      "command": "sha256sum /opt/programbench-gold-executable-do-not-modify",
+      "wall_time": 0.056108999997377396,
+      "output": "2ad9bd64ae06631b2d96c0d771171827892a43301be498446a68267c50b28ddc  /opt/programbench-gold-executable-do-not-modify\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "clean_stale_results",
+      "command": "rm -f eval/results.xml results.xml",
+      "wall_time": 0.05338416597805917,
+      "output": "",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "run_tests",
+      "command": "chmod +x ./eval/run.sh && ./eval/run.sh",
+      "wall_time": 0.30781400005798787,
+      "output": "============================= test session starts ==============================\nplatform linux -- Python 3.10.12, pytest-9.0.3, pluggy-1.6.0 -- /usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /workspace\ncollecting ... collected 3 items\n\neval/tests/test_calculator.py::test_addition PASSED                      [ 33%]\neval/tests/test_calculator.py::test_subtraction PASSED                   [ 66%]\neval/tests/test_calculator.py::test_multiplication PASSED                [100%]\n\n--------------- generated xml file: /workspace/eval/results.xml ----------------\n============================== 3 passed in 0.01s ===============================\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    {
+      "step": "results_read",
+      "command": "cat eval/results.xml",
+      "wall_time": 0.056473542004823685,
+      "output": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"0\" skipped=\"0\" tests=\"3\" time=\"0.012\" timestamp=\"2026-04-25T21:15:48.651802+00:00\" hostname=\"bbe1d034a043\"><testcase classname=\"eval.tests.test_calculator\" name=\"test_addition\" time=\"0.002\" /><testcase classname=\"eval.tests.test_calculator\" name=\"test_subtraction\" time=\"0.001\" /><testcase classname=\"eval.tests.test_calculator\" name=\"test_multiplication\" time=\"0.001\" /></testsuite></testsuites>",
+      "returncode": 0,
+      "exception_info": "",
+      "branch": "33128f6b8600"
+    }
+  ],
+  "solution_branch": "submission",
+  "test_branches": [
+    "33128f6b8600"
+  ],
+  "test_branch_errors": {},
+  "executable_hash": "2ad9bd64ae06631b2d96c0d771171827892a43301be498446a68267c50b28ddc",
+  "warnings": [
+    "Branch 33128f6b8600: 3 test(s) in JUnit XML not in tests.json"
+  ]
+}
