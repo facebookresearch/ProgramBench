@@ -1,0 +1,31 @@
+[project]
+name = "programbench"
+version = "0.1.0"
+description = "Evaluate whether LM-based SWE-agents can reverse-engineer black-box software systems"
+readme = "README.md"
+authors = [
+    { name = "Kilian Adriano Lieret", email = "klieret@meta.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "typer>=0.15",
+    "jinja2>=3.1",
+]
+
+[project.scripts]
+programbench = "programbench.cli.main:app"
+
+[build-system]
+requires = ["uv_build>=0.10.4,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "mkdocs>=1.6",
+    "mkdocstrings[python]>=0.27",
+    "mkdocs-material>=9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
