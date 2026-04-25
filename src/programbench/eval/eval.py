@@ -23,7 +23,12 @@ from typing import Literal
 from junitparser import Error, Failure, JUnitXml, Skipped
 from pydantic import BaseModel, ConfigDict
 
-from programbench.constants import BUILD_SH, DOCKER_EXECUTABLE, DOCKER_RUN_ARGS, WORKSPACE_DIR
+from programbench.constants import (
+    BUILD_SH,
+    DOCKER_EXECUTABLE,
+    DOCKER_RUN_ARGS,
+    WORKSPACE_DIR,
+)
 from programbench.container import ContainerEnvironment
 from programbench.exceptions import EmptyTestResultError, EvalStepError, XmlParseError
 
@@ -78,14 +83,28 @@ def _process_branch_xml(
     got = {t.name for t in parsed}
     missing = [name for name in expected if name not in got]
     if missing:
-        log.warning("Branch %s: %d/%d expected tests missing from JUnit XML", branch, len(missing), len(expected))
+        log.warning(
+            "Branch %s: %d/%d expected tests missing from JUnit XML",
+            branch,
+            len(missing),
+            len(expected),
+        )
         results.extend(
-            TestResult(name=name, branch=branch, status="not_run", extra={"error_code": "missing_from_junit_xml"})
+            TestResult(
+                name=name,
+                branch=branch,
+                status="not_run",
+                extra={"error_code": "missing_from_junit_xml"},
+            )
             for name in missing
         )
     unexpected = got - set(expected)
     if unexpected:
-        log.warning("Branch %s: %d test(s) in JUnit XML not in tests.json", branch, len(unexpected))
+        log.warning(
+            "Branch %s: %d test(s) in JUnit XML not in tests.json",
+            branch,
+            len(unexpected),
+        )
         warnings.append(f"Branch {branch}: {len(unexpected)} test(s) in JUnit XML not in tests.json")
 
     return results, warnings
@@ -246,10 +265,23 @@ class Evaluator:
                 self._add_branch_error(branch, "no_expected_test_list", msg)
             return
         self.result.test_results.extend(
-            TestResult(name=name, branch=branch, status="not_run", extra={"error_code": error_code}) for name in tests
+            TestResult(
+                name=name,
+                branch=branch,
+                status="not_run",
+                extra={"error_code": error_code},
+            )
+            for name in tests
         )
 
-    def _run_step(self, command: str, *, step_name: str, accept_failure: bool = False, timeout: int = 20) -> dict:
+    def _run_step(
+        self,
+        command: str,
+        *,
+        step_name: str,
+        accept_failure: bool = False,
+        timeout: int = 20,
+    ) -> dict:
         log.debug("Running step: %s", command)
         t0 = time.monotonic()
         r = self.env.execute(command, timeout=timeout)
@@ -258,7 +290,12 @@ class Evaluator:
         if r["returncode"] != 0:
             error_code = f"{step_name}_failed"
             if accept_failure:
-                log.debug("%s (exit %d, accepted): %s", error_code, r["returncode"], r["output"])
+                log.debug(
+                    "%s (exit %d, accepted): %s",
+                    error_code,
+                    r["returncode"],
+                    r["output"],
+                )
             else:
                 log.debug("%s (exit %d): %s", error_code, r["returncode"], r["output"])
                 raise EvalStepError(error_code, r["output"].strip())
@@ -323,7 +360,10 @@ class Evaluator:
                 timeout=900,
             )
 
-        self._run_step(f"ls && cp ./executable {self._stashed_executable}", step_name="copy_executable")
+        self._run_step(
+            f"ls && cp ./executable {self._stashed_executable}",
+            step_name="copy_executable",
+        )
         r = self._run_step(f"sha256sum {self._stashed_executable}", step_name="hash_executable")
         self.result.executable_hash = r["output"].split()[0]
 
@@ -359,9 +399,7 @@ class Evaluator:
             return self._get_xml_from_log(branch)
 
         self._run_step(
-            "pkill -9 -f 'pytest|execnet' 2>/dev/null; "
-            "pkill -9 -x executable 2>/dev/null; "
-            "pkill -9 -x git 2>/dev/null",
+            "pkill -9 -f 'pytest|execnet' 2>/dev/null; pkill -9 -x executable 2>/dev/null; pkill -9 -x git 2>/dev/null",
             step_name="reap_stray_processes",
             accept_failure=True,
         )
@@ -375,7 +413,10 @@ class Evaluator:
         self._restore_executable()
         self._run_step("rm -f eval/results.xml results.xml", step_name="clean_stale_results")
         self._run_step(
-            "chmod +x ./eval/run.sh && ./eval/run.sh", step_name="run_tests", accept_failure=True, timeout=2400
+            "chmod +x ./eval/run.sh && ./eval/run.sh",
+            step_name="run_tests",
+            accept_failure=True,
+            timeout=2400,
         )
         r = self._run_step("cat eval/results.xml", step_name="results_read", timeout=60)
         self.result.log[-1]["branch"] = branch
@@ -413,7 +454,11 @@ class Evaluator:
             try:
                 raw_xml = self._run_test_branch(branch)
             except EvalStepError as e:
-                log.warning("Branch %s failed (%s), continuing with remaining branches", branch, e.error_code)
+                log.warning(
+                    "Branch %s failed (%s), continuing with remaining branches",
+                    branch,
+                    e.error_code,
+                )
                 if branch not in self.result.test_branch_errors:
                     self._add_branch_error(branch, e.error_code, e.error_details)
                 self._inject_not_run(branch, e.error_code)
@@ -444,7 +489,10 @@ def parse_test_results(results_xml: str, branch: str = "") -> EvaluationResult:
         for case in suite:
             raw_name = f"{case.classname}.{case.name}" if case.classname else case.name
             if not raw_name:
-                log.warning("Skipping testcase with null name in JUnit XML (classname=%r)", case.classname)
+                log.warning(
+                    "Skipping testcase with null name in JUnit XML (classname=%r)",
+                    case.classname,
+                )
                 continue
             name = raw_name
             extra: dict = {}

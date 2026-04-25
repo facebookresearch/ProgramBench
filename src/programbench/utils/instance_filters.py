@@ -29,7 +29,11 @@ def filter_instances(
         random.seed(42)
         random.shuffle(instances)
     if filter_spec:
-        instances = _apply_filter(instances, lambda i: re.match(filter_spec, i["instance_id"]), "Instance filter")
+        instances = _apply_filter(
+            instances,
+            lambda i: re.match(filter_spec, i["instance_id"]),
+            "Instance filter",
+        )
     if slice_spec:
         before = len(instances)
         values = [int(x) if x else None for x in slice_spec.split(":")]

@@ -25,12 +25,18 @@ class ContainerEnvironment:
         self._name = f"programbench-{uuid.uuid4().hex[:12]}"
         run_args = run_args or ["--cpus", "10"]
         cmd = [
-            executable, "run", "-d", "--init",
-            "--name", self._name,
-            "-w", cwd,
+            executable,
+            "run",
+            "-d",
+            "--init",
+            "--name",
+            self._name,
+            "-w",
+            cwd,
             *run_args,
             image,
-            "sleep", "2h",
+            "sleep",
+            "2h",
         ]
         log.debug("Starting container: %s", " ".join(cmd))
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
@@ -42,15 +48,28 @@ class ContainerEnvironment:
         """Run a shell command inside the container."""
         timeout = timeout or self.default_timeout
         cmd = [
-            self.executable, "exec", "-w", self.cwd,
-            self.container_id, "bash", "-lc", command,
+            self.executable,
+            "exec",
+            "-w",
+            self.cwd,
+            self.container_id,
+            "bash",
+            "-lc",
+            command,
         ]
         try:
             result = subprocess.run(
-                cmd, capture_output=True, text=True, timeout=timeout,
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
             )
             output = result.stdout + result.stderr
-            return {"output": output, "returncode": result.returncode, "exception_info": ""}
+            return {
+                "output": output,
+                "returncode": result.returncode,
+                "exception_info": "",
+            }
         except subprocess.TimeoutExpired:
             return {
                 "output": "",
@@ -75,7 +94,8 @@ class ContainerEnvironment:
             try:
                 subprocess.run(
                     [self.executable, *action.split(), self.container_id],
-                    capture_output=True, timeout=30,
+                    capture_output=True,
+                    timeout=30,
                 )
             except Exception:
                 pass

@@ -4,7 +4,9 @@ import subprocess
 def _run(a, op, b):
     result = subprocess.run(
         ["./executable", str(a), op, str(b)],
-        capture_output=True, text=True, timeout=10,
+        capture_output=True,
+        text=True,
+        timeout=10,
     )
     return result.stdout.strip()
 

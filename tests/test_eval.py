@@ -1,8 +1,5 @@
 """Tests for the evaluation pipeline (data models, XML parsing, batch logic)."""
 
-import json
-from pathlib import Path
-
 import pytest
 
 from programbench.constants import TASKS_DIR
@@ -19,7 +16,11 @@ from programbench.eval.eval_batch import (
     get_branches_to_eval,
 )
 from programbench.exceptions import EmptyTestResultError, XmlParseError
-from programbench.utils.load_data import get_active_branches, get_ignored_tests, load_all_instances
+from programbench.utils.load_data import (
+    get_active_branches,
+    get_ignored_tests,
+    load_all_instances,
+)
 
 JUNIT_XML_ALL_PASS = """\
 <?xml version="1.0" encoding="utf-8"?>
@@ -160,12 +161,15 @@ class TestGetBranchesToEval:
             test_branches=["b1"],
         )
         eval_json.write_text(result.model_dump_json())
-        assert get_branches_to_eval(
-            eval_json=eval_json,
-            all_test_branches=["b1"],
-            tests_by_branch={"b1": ["t1"]},
-            ignored_tests=set(),
-        ) == []
+        assert (
+            get_branches_to_eval(
+                eval_json=eval_json,
+                all_test_branches=["b1"],
+                tests_by_branch={"b1": ["t1"]},
+                ignored_tests=set(),
+            )
+            == []
+        )
 
     def test_branch_with_error_needs_reeval(self, tmp_path):
         eval_json = tmp_path / "eval.json"

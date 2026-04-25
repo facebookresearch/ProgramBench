@@ -219,7 +219,12 @@ def _evaluate_instance(
         if eval_json.exists():
             existing_result = EvaluationResult.model_validate_json(eval_json.read_text())
             if existing_result.test_branches and not existing_result.error_code:
-                log.info("Evaluating %d branch(es) for %s: %s", len(branches_to_eval), instance_id, branches_to_eval)
+                log.info(
+                    "Evaluating %d branch(es) for %s: %s",
+                    len(branches_to_eval),
+                    instance_id,
+                    branches_to_eval,
+                )
             else:
                 log.info("Re-evaluating %s from scratch", instance_id)
                 existing_result = None
@@ -315,7 +320,11 @@ def run_eval_batch(
     summarize_only: bool = False,
     image_tag: str = "task",
 ) -> None:
-    from programbench.utils.load_data import get_active_branches, get_ignored_tests, load_all_instances
+    from programbench.utils.load_data import (
+        get_active_branches,
+        get_ignored_tests,
+        load_all_instances,
+    )
 
     all_instances = load_all_instances()
     log.info("Loaded %d instances", len(all_instances))
@@ -339,9 +348,7 @@ def run_eval_batch(
             output_dir = Path(source)
             log.info("Running in run directory mode: %s", output_dir)
             instance_ids = [
-                d.name
-                for d in sorted(output_dir.iterdir())
-                if d.is_dir() and (d / "submission.zip").exists()
+                d.name for d in sorted(output_dir.iterdir()) if d.is_dir() and (d / "submission.zip").exists()
             ]
             instance_ids = [iid for iid in instance_ids if iid in instance_lookup]
 
@@ -352,7 +359,12 @@ def run_eval_batch(
         log.warning("No instances to evaluate.")
         return
 
-    log.info("Evaluating %d instances across %d source(s) with %d worker(s)", len(work_items), len(sources), workers)
+    log.info(
+        "Evaluating %d instances across %d source(s) with %d worker(s)",
+        len(work_items),
+        len(sources),
+        workers,
+    )
 
     results_by_source: dict[Path, list[InstanceEvalSummary]] = {}
     for output_dir, _, _ in work_items:
@@ -388,7 +400,10 @@ def run_eval_batch(
                 )
             results_by_source[out_dir].append(summary)
     else:
-        with logging_redirect_tqdm(), ThreadPoolExecutor(max_workers=workers) as executor:
+        with (
+            logging_redirect_tqdm(),
+            ThreadPoolExecutor(max_workers=workers) as executor,
+        ):
             futures = {
                 executor.submit(
                     _evaluate_instance,
@@ -401,7 +416,13 @@ def run_eval_batch(
                 ): out_dir
                 for out_dir, iid, is_gold in work_items
             }
-            for future in tqdm(as_completed(futures), total=len(futures), desc="Evaluating", ncols=100, leave=False):
+            for future in tqdm(
+                as_completed(futures),
+                total=len(futures),
+                desc="Evaluating",
+                ncols=100,
+                leave=False,
+            ):
                 summary = future.result()
                 if summary:
                     results_by_source[futures[future]].append(summary)
