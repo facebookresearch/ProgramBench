@@ -1,5 +1,16 @@
 # Porting Evaluation to programbench
 
+> **Update (post-port):** Gold mode (`programbench eval gold`) has been removed.
+> Gold validation now runs through the regular submission path: build "false"
+> gold submissions from `RevEngBench/output/github-dump/<iid>/build.zip` (with
+> `build.sh` renamed to `compile.sh`) via
+> `RevEngBench/scripts/make_gold_submissions.py` and feed them to
+> `programbench eval <gold_run_dir>` like any other submission. As a result,
+> `BUILD_SH`, `DEFAULT_GOLD_EVAL_DIR`, the `is_gold_mode` plumbing, the
+> `Evaluator.task_dir`/`repository`/`commit` parameters, and the gold branch of
+> `_compile_executable()` are all gone. Sections below describing gold mode are
+> kept for historical reference only.
+
 ## Goal
 
 Port the core evaluation pipeline to programbench, replacing all GitHub branch/mirror-based I/O with local files and direct repo checkout. The two codebases will be maintained independently — kept similar by convention, but this is a rewrite, not a shared library.
@@ -8,7 +19,6 @@ Entry point:
 
 ```bash
 programbench eval <run_directory>       # evaluate submissions
-programbench eval gold                  # evaluate gold solutions
 ```
 
 ---

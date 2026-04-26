@@ -25,7 +25,6 @@ from rich.text import Text
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
-from programbench.constants import DEFAULT_GOLD_EVAL_DIR, TASKS_DIR
 from programbench.eval.eval import EvaluationResult, Evaluator
 from programbench.utils.instance_filters import filter_instances
 
@@ -176,7 +175,6 @@ def _evaluate_instance(
     *,
     instance_id: str,
     instance: dict,
-    is_gold_mode: bool,
     output_dir: Path,
     force: bool,
     image_tag: str = "task",
@@ -230,39 +228,29 @@ def _evaluate_instance(
                 existing_result = None
 
     try:
-        if is_gold_mode:
-            solution_branch = "gold"
-            submission_zip = None
-        else:
-            submission_zip = output_dir / instance_id / "submission.zip"
-            if not submission_zip.exists():
-                log.warning("Skipping %s (no submission.zip)", instance_id)
-                return InstanceEvalSummary(
-                    instance_id=instance_id,
-                    score=0.0,
-                    n_resolved=0,
-                    n_tests=0,
-                    error_code="no_submission",
-                    test_branches=all_test_branches,
-                )
-            solution_branch = "submission"
+        submission_zip = output_dir / instance_id / "submission.zip"
+        if not submission_zip.exists():
+            log.warning("Skipping %s (no submission.zip)", instance_id)
+            return InstanceEvalSummary(
+                instance_id=instance_id,
+                score=0.0,
+                n_resolved=0,
+                n_tests=0,
+                error_code="no_submission",
+                test_branches=all_test_branches,
+            )
 
         tests_by_branch = {
             branch: all_tests_by_branch[branch] for branch in branches_to_eval if branch in all_tests_by_branch
         }
 
-        task_dir = TASKS_DIR / instance_id
-
         from programbench.utils.blob_store import get_blob_dir
 
         evaluator = Evaluator(
             image_name=instance["image_name"],
-            solution_branch=solution_branch,
+            solution_branch="submission",
             submission_zip=submission_zip,
-            task_dir=task_dir,
             blob_dir=get_blob_dir(instance_id),
-            repository=instance.get("repository", ""),
-            commit=instance.get("commit", ""),
             tests_branches=branches_to_eval,
             remove_hashes=instance.get("eval_clean_hashes", []),
             image_tag=image_tag,
@@ -339,24 +327,16 @@ def run_eval_batch(
     )
     instance_lookup = {inst["instance_id"]: inst for inst in all_instances}
 
-    work_items: list[tuple[Path, str, bool]] = []
+    work_items: list[tuple[Path, str]] = []
     for source in sources:
-        is_gold_mode = str(source) == "gold"
-        if is_gold_mode:
-            output_dir = DEFAULT_GOLD_EVAL_DIR
-            output_dir.mkdir(parents=True, exist_ok=True)
-            log.info("Running in gold mode, output: %s", output_dir)
-            instance_ids = [inst["instance_id"] for inst in all_instances if get_active_branches(inst)]
-        else:
-            output_dir = Path(source)
-            log.info("Running in run directory mode: %s", output_dir)
-            instance_ids = [
-                d.name for d in sorted(output_dir.iterdir()) if d.is_dir() and (d / "submission.zip").exists()
-            ]
-            instance_ids = [iid for iid in instance_ids if iid in instance_lookup]
-
+        output_dir = Path(source)
+        log.info("Running in run directory mode: %s", output_dir)
+        instance_ids = [
+            d.name for d in sorted(output_dir.iterdir()) if d.is_dir() and (d / "submission.zip").exists()
+        ]
+        instance_ids = [iid for iid in instance_ids if iid in instance_lookup]
         for iid in instance_ids:
-            work_items.append((output_dir, iid, is_gold_mode))
+            work_items.append((output_dir, iid))
 
     if not work_items:
         log.warning("No instances to evaluate.")
@@ -370,11 +350,11 @@ def run_eval_batch(
     )
 
     results_by_source: dict[Path, list[InstanceEvalSummary]] = {}
-    for output_dir, _, _ in work_items:
+    for output_dir, _ in work_items:
         results_by_source.setdefault(output_dir, [])
 
     if summarize_only:
-        for out_dir, iid, _is_gold in work_items:
+        for out_dir, iid in work_items:
             eval_json = out_dir / iid / f"{iid}.eval.json"
             if not eval_json.exists():
                 log.warning("Skipping %s (no eval.json)", iid)
@@ -412,12 +392,11 @@ def run_eval_batch(
                     _evaluate_instance,
                     instance_id=iid,
                     instance=instance_lookup[iid],
-                    is_gold_mode=is_gold,
                     output_dir=out_dir,
                     force=force,
                     image_tag=image_tag,
                 ): out_dir
-                for out_dir, iid, is_gold in work_items
+                for out_dir, iid in work_items
             }
             for future in tqdm(
                 as_completed(futures),

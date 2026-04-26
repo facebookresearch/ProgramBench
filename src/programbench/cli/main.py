@@ -14,7 +14,7 @@ def _callback() -> None:
 
 @app.command()
 def eval(
-    sources: list[str] = typer.Argument(..., help="'gold' and/or path(s) to run directories"),
+    sources: list[str] = typer.Argument(..., help="Path(s) to run directories"),
     workers: int = typer.Option(1, "-w", "--workers", help="Number of parallel workers"),
     force: bool = typer.Option(False, "-f", "--force", help="Re-evaluate even if results exist"),
     filter_spec: str = typer.Option("", "--filter", help="Filter instance IDs by regex"),
@@ -24,14 +24,13 @@ def eval(
 ) -> None:
     """Evaluate submissions against test suites.
 
-    Accepts one or more sources: paths to run directories containing
-    <instance_id>/submission.zip, or 'gold' for gold-solution evaluation.
+    Accepts one or more paths to run directories containing
+    <instance_id>/submission.zip.
 
     \b
     Examples:
         programbench eval output/run_name
-        programbench eval gold
-        programbench eval output/run_a output/run_b gold
+        programbench eval output/run_a output/run_b
         programbench eval output/run_name --workers 4 --force
         programbench eval output/run_name --filter 'eradman__entr.*'
         programbench eval output/run_name --slice 0:5

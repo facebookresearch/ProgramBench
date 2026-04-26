@@ -24,7 +24,6 @@ from junitparser import Error, Failure, JUnitXml, Skipped
 from pydantic import BaseModel, ConfigDict
 
 from programbench.constants import (
-    BUILD_SH,
     DOCKER_EXECUTABLE,
     DOCKER_RUN_ARGS,
     WORKSPACE_DIR,
@@ -198,14 +197,11 @@ class EvaluationResult(BaseModel):
 class Evaluator:
     """Evaluate a solution by compiling it and running tests in a Docker container.
 
-    For submission mode: unzips submission.zip into the container workspace,
-    runs compile.sh, then runs each test branch's suite.
-
-    For gold mode: clones the original repo at the specified commit,
-    runs build.sh, then runs each test branch's suite.
+    Unzips submission.zip into the container workspace, runs compile.sh, then
+    runs each test branch's suite.
     """
 
-    _stashed_executable = "/opt/programbench-gold-executable-do-not-modify"
+    _stashed_executable = "/opt/programbench-stashed-executable-do-not-modify"
 
     def __init__(
         self,
@@ -215,10 +211,7 @@ class Evaluator:
         image_name: str = "",
         solution_branch: str = "",
         submission_zip: Path | None = None,
-        task_dir: Path | None = None,
         blob_dir: Path | None = None,
-        repository: str = "",
-        commit: str = "",
         remove_hashes: list[str] | None = None,
         image_tag: str = "task",
         from_existing: EvaluationResult | None = None,
@@ -226,10 +219,7 @@ class Evaluator:
         self.image_name = image_name
         self.solution_branch = solution_branch
         self.submission_zip = submission_zip
-        self.task_dir = task_dir
         self.blob_dir = blob_dir
-        self.repository = repository
-        self.commit = commit
         self.tests_branches = tests_branches
         self.remove_hashes = remove_hashes or []
         self.image_tag = image_tag
@@ -317,51 +307,26 @@ class Evaluator:
         )
 
     def _compile_executable(self) -> None:
-        """Inject the solution and compile it.
+        """Wipe workspace, copy in unzipped submission, run compile.sh."""
+        import tempfile
+        import zipfile
 
-        Submission mode: wipe workspace, copy in unzipped submission, run compile.sh.
-        Gold mode: clone original repo at commit, copy in build.sh, run build.sh.
-        """
-        if self.solution_branch == "gold":
-            self._run_step(
-                f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
-                step_name="wipe_workspace",
-            )
-            self._run_step(
-                f"git clone https://github.com/{self.repository} {WORKSPACE_DIR}",
-                step_name="git_clone",
-                timeout=300,
-            )
-            self._run_step(f"git checkout {self.commit}", step_name="git_checkout", timeout=60)
-            assert self.task_dir is not None
-            build_sh = self.task_dir / BUILD_SH
-            self.env.copy_in(build_sh, f"{WORKSPACE_DIR}/build.sh")
-            self._run_step(
-                "chmod +x ./build.sh && ./build.sh",
-                step_name="compile",
-                timeout=900,
-            )
-        else:
-            import tempfile
-            import zipfile
-
-            self._run_step(
-                f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
-                step_name="wipe_workspace",
-            )
-            assert self.submission_zip is not None
-            with tempfile.TemporaryDirectory() as tmp:
-                tmp_path = Path(tmp)
-                with zipfile.ZipFile(self.submission_zip) as zf:
-                    zf.extractall(tmp_path)
-                self.env.copy_in(tmp_path, f"{WORKSPACE_DIR}/")
-            self._remove_hashed_files()
-            self._run_step(
-                "chmod +x ./compile.sh && ./compile.sh",
-                step_name="compile",
-                timeout=900,
-            )
-
+        self._run_step(
+            f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
+            step_name="wipe_workspace",
+        )
+        assert self.submission_zip is not None
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            with zipfile.ZipFile(self.submission_zip) as zf:
+                zf.extractall(tmp_path)
+            self.env.copy_in(tmp_path, f"{WORKSPACE_DIR}/")
+        self._remove_hashed_files()
+        self._run_step(
+            "chmod +x ./compile.sh && ./compile.sh",
+            step_name="compile",
+            timeout=900,
+        )
         self._run_step(
             f"ls && cp ./executable {self._stashed_executable}",
             step_name="copy_executable",
