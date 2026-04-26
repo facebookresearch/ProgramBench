@@ -6,14 +6,14 @@ from pathlib import Path
 
 import yaml
 
-from programbench.constants import TASK_YAML, TASKS_DIR, TESTS_JSON
+from programbench.constants import TASK_YAML, TASKS_DIR, TESTS_JSON, image_name_from_instance_id
 
 
 def _load_single_instance(task_dir: Path, include_tests: bool) -> dict:
     config = yaml.safe_load((task_dir / TASK_YAML).read_text())
     entry: dict = {**config}
     entry["instance_id"] = task_dir.name
-    entry["image_name"] = f"programbench/{task_dir.name.replace('__', '_1776_')}"
+    entry["image_name"] = image_name_from_instance_id(task_dir.name)
     if include_tests:
         tests_file = task_dir / TESTS_JSON
         if tests_file.exists():
