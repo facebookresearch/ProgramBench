@@ -409,13 +409,9 @@ class Evaluator:
             f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
             step_name="wipe_workspace_for_tests",
         )
-        assert self.task_dir is not None
-        test_dir = self.task_dir / "tests" / branch
+        assert self.blob_dir is not None
+        test_dir = self.blob_dir / "tests" / branch
         self.env.copy_in(test_dir, f"{WORKSPACE_DIR}/")
-        if self.blob_dir is not None:
-            blob_branch_dir = self.blob_dir / "tests" / branch
-            if blob_branch_dir.exists():
-                self.env.copy_in(blob_branch_dir, f"{WORKSPACE_DIR}/")
         self._restore_executable()
         self._run_step("rm -f eval/results.xml results.xml", step_name="clean_stale_results")
         self._run_step(
