@@ -15,6 +15,7 @@ dependencies = [
     "pyyaml>=6",
     "tqdm>=4",
     "rich>=13",
+    "huggingface_hub>=0.20",
 ]
 
 [project.scripts]

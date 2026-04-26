@@ -253,11 +253,14 @@ def _evaluate_instance(
 
         task_dir = TASKS_DIR / instance_id
 
+        from programbench.utils.blob_store import get_blob_dir
+
         evaluator = Evaluator(
             image_name=instance["image_name"],
             solution_branch=solution_branch,
             submission_zip=submission_zip,
             task_dir=task_dir,
+            blob_dir=get_blob_dir(instance_id),
             repository=instance.get("repository", ""),
             commit=instance.get("commit", ""),
             tests_branches=branches_to_eval,

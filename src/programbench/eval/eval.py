@@ -216,6 +216,7 @@ class Evaluator:
         solution_branch: str = "",
         submission_zip: Path | None = None,
         task_dir: Path | None = None,
+        blob_dir: Path | None = None,
         repository: str = "",
         commit: str = "",
         remove_hashes: list[str] | None = None,
@@ -226,6 +227,7 @@ class Evaluator:
         self.solution_branch = solution_branch
         self.submission_zip = submission_zip
         self.task_dir = task_dir
+        self.blob_dir = blob_dir
         self.repository = repository
         self.commit = commit
         self.tests_branches = tests_branches
@@ -410,6 +412,10 @@ class Evaluator:
         assert self.task_dir is not None
         test_dir = self.task_dir / "tests" / branch
         self.env.copy_in(test_dir, f"{WORKSPACE_DIR}/")
+        if self.blob_dir is not None:
+            blob_branch_dir = self.blob_dir / "tests" / branch
+            if blob_branch_dir.exists():
+                self.env.copy_in(blob_branch_dir, f"{WORKSPACE_DIR}/")
         self._restore_executable()
         self._run_step("rm -f eval/results.xml results.xml", step_name="clean_stale_results")
         self._run_step(
