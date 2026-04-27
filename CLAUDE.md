@@ -62,10 +62,10 @@ Class(func())
 Rule 14 — don't guard what would fail anyway:
 ```python
 # bad
-inpt = input()
-if not "=" in inpt:
+input = input()
+if not "=" in input:
     raise ValueError("Input must be of form a=b")
-x, y = inpt.split("=")
+x, y = input.split("=")
 
 # good
 x, y = input().split("=")
