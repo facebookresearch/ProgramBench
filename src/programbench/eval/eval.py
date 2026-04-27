@@ -308,6 +308,7 @@ class Evaluator:
 
     def _compile_executable(self) -> None:
         """Wipe workspace, copy in unzipped submission, run compile.sh."""
+        import os
         import tempfile
         import zipfile
 
@@ -319,7 +320,11 @@ class Evaluator:
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
             with zipfile.ZipFile(self.submission_zip) as zf:
-                zf.extractall(tmp_path)
+                for info in zf.infolist():
+                    extracted = zf.extract(info, tmp_path)
+                    mode = (info.external_attr >> 16) & 0o7777
+                    if mode and not info.is_dir():
+                        os.chmod(extracted, mode)
             self.env.copy_in(tmp_path, f"{WORKSPACE_DIR}/")
         self._remove_hashed_files()
         self._run_step(
