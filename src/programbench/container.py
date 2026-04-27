@@ -4,6 +4,8 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+from programbench.constants import DOCKER_CP_TIMEOUT, DOCKER_RUN_TIMEOUT
+
 log = logging.getLogger(__name__)
 
 
@@ -39,7 +41,7 @@ class ContainerEnvironment:
             "2h",
         ]
         log.debug("Starting container: %s", " ".join(cmd))
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=DOCKER_RUN_TIMEOUT)
         if result.returncode != 0:
             raise RuntimeError(f"Failed to start container: {result.stderr.strip()}")
         self.container_id = result.stdout.strip()
@@ -84,7 +86,7 @@ class ContainerEnvironment:
         else:
             src = str(local_path)
         cmd = [self.executable, "cp", src, f"{self.container_id}:{container_path}"]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=DOCKER_CP_TIMEOUT)
         if result.returncode != 0:
             raise RuntimeError(f"docker cp failed: {result.stderr.strip()}")
 
