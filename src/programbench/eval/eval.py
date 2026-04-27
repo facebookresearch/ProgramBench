@@ -327,6 +327,21 @@ class Evaluator:
                         os.chmod(extracted, mode)
             self.env.copy_in(tmp_path, f"{WORKSPACE_DIR}/")
         self._remove_hashed_files()
+        # Seed a synthetic git repo if the submission didn't ship one. Build
+        # scripts that depend on a working tree (jq submodules, calcurse's
+        # autopoint, cargo+vergen, ...) succeed against this synthetic repo.
+        # The legacy RevEngBench gold pipeline got this for free via
+        # `git clone <upstream>`; here we approximate it locally.
+        self._run_step(
+            "if [ ! -d .git ]; then "
+            "git -c init.defaultBranch=gold init -q && "
+            "git -c user.email=gold@local -c user.name=gold "
+            "-c commit.gpgsign=false add -A && "
+            "git -c user.email=gold@local -c user.name=gold "
+            "-c commit.gpgsign=false commit -q --allow-empty -m gold; "
+            "fi",
+            step_name="seed_git",
+        )
         self._run_step(
             "chmod +x ./compile.sh && ./compile.sh",
             step_name="compile",
