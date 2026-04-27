@@ -67,24 +67,26 @@ def _process_branch_xml(
     raw_xml: str,
     branch: str,
     tests_by_branch: dict[str, list[str]],
+    instance_id: str = "",
 ) -> tuple[list[TestResult], list[str]]:
     """Parse JUnit XML for a branch and validate against expected test list."""
     parsed = parse_test_results(raw_xml, branch=branch).test_results
     results: list[TestResult] = list(parsed)
     warnings: list[str] = []
+    tag = f"[{instance_id}] branch {branch}" if instance_id else f"Branch {branch}"
 
     expected = tests_by_branch.get(branch)
     if expected is None:
-        log.warning("Branch %s: no expected test list, cannot verify completeness", branch)
-        warnings.append(f"No expected test list for branch {branch}, cannot verify completeness")
+        log.warning("%s: no expected test list, cannot verify completeness", tag)
+        warnings.append(f"{tag}: no expected test list, cannot verify completeness")
         return results, warnings
 
     got = {t.name for t in parsed}
     missing = [name for name in expected if name not in got]
     if missing:
         log.warning(
-            "Branch %s: %d/%d expected tests missing from JUnit XML",
-            branch,
+            "%s: %d/%d expected tests missing from JUnit XML",
+            tag,
             len(missing),
             len(expected),
         )
@@ -100,11 +102,11 @@ def _process_branch_xml(
     unexpected = got - set(expected)
     if unexpected:
         log.warning(
-            "Branch %s: %d test(s) in JUnit XML not in tests.json",
-            branch,
+            "%s: %d test(s) in JUnit XML not in tests.json",
+            tag,
             len(unexpected),
         )
-        warnings.append(f"Branch {branch}: {len(unexpected)} test(s) in JUnit XML not in tests.json")
+        warnings.append(f"{tag}: {len(unexpected)} test(s) in JUnit XML not in tests.json")
 
     return results, warnings
 
@@ -215,6 +217,7 @@ class Evaluator:
         remove_hashes: list[str] | None = None,
         image_tag: str = "task",
         from_existing: EvaluationResult | None = None,
+        instance_id: str = "",
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -224,6 +227,7 @@ class Evaluator:
         self.remove_hashes = remove_hashes or []
         self.image_tag = image_tag
         self.tests_by_branch = tests_by_branch or {}
+        self.instance_id = instance_id
         self._from_existing = from_existing
         if from_existing is not None:
             self._xml_by_branch: dict[str, str] = {
@@ -441,16 +445,17 @@ class Evaluator:
             try:
                 raw_xml = self._run_test_branch(branch)
             except EvalStepError as e:
+                tag = f"[{self.instance_id}] branch {branch}" if self.instance_id else f"Branch {branch}"
                 log.warning(
-                    "Branch %s failed (%s), continuing with remaining branches",
-                    branch,
+                    "%s failed (%s), continuing with remaining branches",
+                    tag,
                     e.error_code,
                 )
                 if branch not in self.result.test_branch_errors:
                     self._add_branch_error(branch, e.error_code, e.error_details)
                 self._inject_not_run(branch, e.error_code)
                 continue
-            results, warnings = _process_branch_xml(raw_xml, branch, self.tests_by_branch)
+            results, warnings = _process_branch_xml(raw_xml, branch, self.tests_by_branch, self.instance_id)
             self.result.test_results.extend(results)
             self.result.warnings.extend(warnings)
 

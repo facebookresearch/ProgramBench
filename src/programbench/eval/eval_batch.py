@@ -255,6 +255,7 @@ def _evaluate_instance(
             remove_hashes=instance.get("eval_clean_hashes", []),
             image_tag=image_tag,
             tests_by_branch=tests_by_branch,
+            instance_id=instance_id,
         )
         result = evaluator.run()
 
