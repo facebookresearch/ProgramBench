@@ -1,6 +1,8 @@
 import typer
 
-app = typer.Typer(name="blob", no_args_is_help=True, add_completion=False)
+app = typer.Typer(
+    name="blob", no_args_is_help=True, add_completion=False, context_settings={"help_option_names": ["-h", "--help"]}
+)
 
 
 @app.command()
