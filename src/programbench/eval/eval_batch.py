@@ -331,9 +331,7 @@ def run_eval_batch(
     for source in sources:
         output_dir = Path(source)
         log.info("Running in run directory mode: %s", output_dir)
-        instance_ids = [
-            d.name for d in sorted(output_dir.iterdir()) if d.is_dir() and (d / "submission.zip").exists()
-        ]
+        instance_ids = [d.name for d in sorted(output_dir.iterdir()) if d.is_dir() and (d / "submission.zip").exists()]
         instance_ids = [iid for iid in instance_ids if iid in instance_lookup]
         for iid in instance_ids:
             work_items.append((output_dir, iid))
