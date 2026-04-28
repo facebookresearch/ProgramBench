@@ -175,7 +175,8 @@ def _evaluate_instance(
     *,
     instance_id: str,
     instance: dict,
-    output_dir: Path,
+    source_dir: Path,
+    target_dir: Path,
     force: bool,
     image_tag: str = "task",
 ) -> InstanceEvalSummary | None:
@@ -188,7 +189,7 @@ def _evaluate_instance(
         return None
 
     ignored = get_ignored_tests(instance)
-    eval_json = output_dir / instance_id / f"{instance_id}.eval.json"
+    eval_json = target_dir / instance_id / f"{instance_id}.eval.json"
 
     branches_data = instance.get("branches", {})
     all_tests_by_branch = {
@@ -228,7 +229,7 @@ def _evaluate_instance(
                 existing_result = None
 
     try:
-        submission_zip = output_dir / instance_id / "submission.zip"
+        submission_zip = source_dir / instance_id / "submission.zip"
         if not submission_zip.exists():
             log.warning("Skipping %s (no submission.zip)", instance_id)
             return InstanceEvalSummary(
@@ -284,7 +285,7 @@ def _evaluate_instance(
                 warnings=old_warnings + result.warnings,
             )
 
-        (output_dir / instance_id).mkdir(parents=True, exist_ok=True)
+        (target_dir / instance_id).mkdir(parents=True, exist_ok=True)
         eval_json.write_text(result.model_dump_json(indent=2))
 
         filtered = result.without_ignored(ignored)
@@ -311,6 +312,7 @@ def run_eval_batch(
     workers: int = 1,
     summarize_only: bool = False,
     image_tag: str = "task",
+    output: str | Path = "",
 ) -> None:
     from programbench.utils.load_data import (
         get_active_branches,
@@ -328,14 +330,17 @@ def run_eval_batch(
     )
     instance_lookup = {inst["instance_id"]: inst for inst in all_instances}
 
-    work_items: list[tuple[Path, str]] = []
+    output_root = Path(output) if output else None
+
+    work_items: list[tuple[Path, Path, str]] = []
     for source in sources:
-        output_dir = Path(source)
-        log.info("Running in run directory mode: %s", output_dir)
-        instance_ids = [d.name for d in sorted(output_dir.iterdir()) if d.is_dir() and (d / "submission.zip").exists()]
+        source_dir = Path(source)
+        target_dir = output_root / source_dir.name if output_root else source_dir
+        log.info("Running in run directory mode: %s -> %s", source_dir, target_dir)
+        instance_ids = [d.name for d in sorted(source_dir.iterdir()) if d.is_dir() and (d / "submission.zip").exists()]
         instance_ids = [iid for iid in instance_ids if iid in instance_lookup]
         for iid in instance_ids:
-            work_items.append((output_dir, iid))
+            work_items.append((source_dir, target_dir, iid))
 
     if not work_items:
         log.warning("No instances to evaluate.")
@@ -349,12 +354,12 @@ def run_eval_batch(
     )
 
     results_by_source: dict[Path, list[InstanceEvalSummary]] = {}
-    for output_dir, _ in work_items:
-        results_by_source.setdefault(output_dir, [])
+    for source_dir, _, _ in work_items:
+        results_by_source.setdefault(source_dir, [])
 
     if summarize_only:
-        for out_dir, iid in work_items:
-            eval_json = out_dir / iid / f"{iid}.eval.json"
+        for source_dir, target_dir, iid in work_items:
+            eval_json = target_dir / iid / f"{iid}.eval.json"
             if not eval_json.exists():
                 log.warning("Skipping %s (no eval.json)", iid)
                 continue
@@ -380,7 +385,7 @@ def run_eval_batch(
                     error_code=type(e).__name__,
                     test_branches=all_test_branches,
                 )
-            results_by_source[out_dir].append(summary)
+            results_by_source[source_dir].append(summary)
     else:
         with (
             logging_redirect_tqdm(),
@@ -391,11 +396,12 @@ def run_eval_batch(
                     _evaluate_instance,
                     instance_id=iid,
                     instance=instance_lookup[iid],
-                    output_dir=out_dir,
+                    source_dir=source_dir,
+                    target_dir=target_dir,
                     force=force,
                     image_tag=image_tag,
-                ): out_dir
-                for out_dir, iid in work_items
+                ): source_dir
+                for source_dir, target_dir, iid in work_items
             }
             for future in tqdm(
                 as_completed(futures),
@@ -409,11 +415,11 @@ def run_eval_batch(
                     results_by_source[futures[future]].append(summary)
 
     console = Console()
-    for output_dir, summaries in results_by_source.items():
+    for source_dir, summaries in results_by_source.items():
         summaries.sort(key=lambda s: s.instance_id)
         batch = BatchEvalSummary(summaries=summaries)
 
         console.print()
         if len(sources) > 1:
-            console.print(f"[bold]{output_dir}[/bold]")
+            console.print(f"[bold]{source_dir}[/bold]")
         console.print(batch.summary())

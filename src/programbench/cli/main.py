@@ -26,6 +26,13 @@ def eval(
     slice_spec: str = typer.Option("", "--slice", help="Slice specification (e.g. '0:5')"),
     summarize_only: bool = typer.Option(False, "--summarize-only", help="Skip evaluation; just read existing results"),
     image_tag: str = typer.Option("task", "--image-tag", help="Docker image tag to evaluate"),
+    output: str = typer.Option(
+        "",
+        "-o",
+        "--output",
+        help="Write results under this directory instead of in-place. "
+        "For each source S, eval.json files land at <output>/<S.name>/<instance_id>/.",
+    ),
 ) -> None:
     """Evaluate submissions against test suites.
 
@@ -40,6 +47,7 @@ def eval(
         programbench eval output/run_name --filter 'eradman__entr.*'
         programbench eval output/run_name --slice 0:5
         programbench eval output/run_name --summarize-only
+        programbench eval ~/gold -o ~/gold-eval-out
     """
     from programbench.eval.eval_batch import run_eval_batch
 
@@ -51,4 +59,5 @@ def eval(
         slice_spec=slice_spec,
         summarize_only=summarize_only,
         image_tag=image_tag,
+        output=output,
     )
