@@ -128,6 +128,7 @@ def _summary_from_existing(
     ignored: set[str],
     current_branches: list[str] | None = None,
     tests_by_branch: dict[str, list[str]] | None = None,
+    ignored_branches: set[str] | None = None,
 ) -> InstanceEvalSummary:
     """Build an InstanceEvalSummary from an existing eval JSON file."""
     result = EvaluationResult.model_validate_json(eval_json.read_text())
@@ -135,6 +136,8 @@ def _summary_from_existing(
         evaluator = Evaluator(
             tests_branches=result.test_branches,
             tests_by_branch=tests_by_branch,
+            ignored_tests=ignored,
+            ignored_branches=ignored_branches,
             from_existing=result,
         )
         result = evaluator.run()
@@ -184,7 +187,7 @@ def _evaluate_instance(
     branch_workers: int = 1,
 ) -> InstanceEvalSummary | None:
     """Evaluate a single instance."""
-    from programbench.utils.load_data import get_active_branches, get_ignored_tests
+    from programbench.utils.load_data import get_active_branches, get_ignored_branches, get_ignored_tests
 
     all_test_branches = get_active_branches(instance)
     if not all_test_branches:
@@ -192,6 +195,7 @@ def _evaluate_instance(
         return None
 
     ignored = get_ignored_tests(instance)
+    ignored_branches = get_ignored_branches(instance)
     eval_json = target_dir / instance_id / f"{instance_id}.eval.json"
 
     branches_data = instance.get("branches", {})
@@ -217,6 +221,7 @@ def _evaluate_instance(
                 ignored,
                 current_branches=all_test_branches,
                 tests_by_branch=all_tests_by_branch,
+                ignored_branches=ignored_branches,
             )
         if eval_json.exists():
             existing_result = EvaluationResult.model_validate_json(eval_json.read_text())
@@ -259,6 +264,8 @@ def _evaluate_instance(
             remove_hashes=instance.get("eval_clean_hashes", []),
             image_tag=image_tag,
             tests_by_branch=tests_by_branch,
+            ignored_tests=ignored,
+            ignored_branches=ignored_branches,
             instance_id=instance_id,
             docker_cpus=docker_cpus,
             branch_workers=branch_workers,
@@ -323,6 +330,7 @@ def run_eval_batch(
 ) -> None:
     from programbench.utils.load_data import (
         get_active_branches,
+        get_ignored_branches,
         get_ignored_tests,
         load_all_instances,
     )
@@ -384,6 +392,7 @@ def run_eval_batch(
                     get_ignored_tests(inst),
                     current_branches=all_test_branches,
                     tests_by_branch=tests_by_branch,
+                    ignored_branches=get_ignored_branches(inst),
                 )
             except Exception as e:
                 log.error("Error summarizing %s: %s", iid, e, exc_info=True)

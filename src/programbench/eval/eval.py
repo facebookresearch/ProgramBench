@@ -72,12 +72,24 @@ def _process_branch_xml(
     branch: str,
     tests_by_branch: dict[str, list[str]],
     instance_id: str = "",
+    ignored_tests: set[str] | None = None,
+    branch_ignored: bool = False,
 ) -> tuple[list[TestResult], list[str]]:
-    """Parse JUnit XML for a branch and validate against expected test list."""
+    """Parse JUnit XML for a branch and validate against expected test list.
+
+    Tests whose ``branch/name`` is in *ignored_tests* are excluded from both
+    the missing-from-JUnit and not-in-tests.json completeness checks. When
+    *branch_ignored* is true, the entire branch is treated as out-of-scope:
+    completeness checks are skipped and no warnings are emitted, but parsed
+    results are still returned (the caller filters them out later).
+    """
     parsed = parse_test_results(raw_xml, branch=branch).test_results
     results: list[TestResult] = list(parsed)
     warnings: list[str] = []
     tag = f"[{instance_id}] branch {branch}" if instance_id else f"Branch {branch}"
+
+    if branch_ignored:
+        return results, warnings
 
     expected = tests_by_branch.get(branch)
     if expected is None:
@@ -85,14 +97,16 @@ def _process_branch_xml(
         warnings.append(f"{tag}: no expected test list, cannot verify completeness")
         return results, warnings
 
+    ignored_names = {n.split("/", 1)[1] for n in (ignored_tests or set()) if n.startswith(f"{branch}/")}
+    expected_active = [n for n in expected if n not in ignored_names]
     got = {t.name for t in parsed}
-    missing = [name for name in expected if name not in got]
+    missing = [name for name in expected_active if name not in got]
     if missing:
         log.warning(
             "%s: %d/%d expected tests missing from JUnit XML",
             tag,
             len(missing),
-            len(expected),
+            len(expected_active),
         )
         results.extend(
             TestResult(
@@ -103,7 +117,7 @@ def _process_branch_xml(
             )
             for name in missing
         )
-    unexpected = got - set(expected)
+    unexpected = got - set(expected) - ignored_names
     if unexpected:
         log.warning(
             "%s: %d test(s) in JUnit XML not in tests.json",
@@ -214,6 +228,8 @@ class Evaluator:
         *,
         tests_branches: list[str],
         tests_by_branch: dict[str, list[str]] | None = None,
+        ignored_tests: set[str] | None = None,
+        ignored_branches: set[str] | None = None,
         image_name: str = "",
         solution_branch: str = "",
         submission_zip: Path | None = None,
@@ -233,6 +249,8 @@ class Evaluator:
         self.remove_hashes = remove_hashes or []
         self.image_tag = image_tag
         self.tests_by_branch = tests_by_branch or {}
+        self.ignored_tests = ignored_tests or set()
+        self.ignored_branches = ignored_branches or set()
         self.instance_id = instance_id
         self.docker_cpus = docker_cpus
         self.branch_workers = max(1, branch_workers)
@@ -487,7 +505,14 @@ class Evaluator:
                     self._add_branch_error(branch, e.error_code, e.error_details)
                 self._inject_not_run(branch, e.error_code)
             return
-        results, warnings = _process_branch_xml(raw_xml, branch, self.tests_by_branch, self.instance_id)
+        results, warnings = _process_branch_xml(
+            raw_xml,
+            branch,
+            self.tests_by_branch,
+            self.instance_id,
+            ignored_tests=self.ignored_tests,
+            branch_ignored=branch in self.ignored_branches,
+        )
         with self._log_lock:
             if local_log:
                 self.result.log.extend(local_log)

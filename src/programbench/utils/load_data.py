@@ -27,6 +27,11 @@ def get_active_branches(inst: dict) -> list[str]:
     return [name for name, info in (inst.get("branches") or {}).items() if not info.get("ignored")]
 
 
+def get_ignored_branches(inst: dict) -> set[str]:
+    """Return branch names with ``ignored: true``."""
+    return {name for name, info in (inst.get("branches") or {}).items() if info.get("ignored")}
+
+
 def get_ignored_tests(inst: dict) -> set[str]:
     """Return ``{branch/test_name}`` set for all ignored tests across all branches."""
     result: set[str] = set()
