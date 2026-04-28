@@ -492,6 +492,11 @@ def parse_test_results(results_xml: str, branch: str = "") -> EvaluationResult:
                 extra["time"] = case.time
 
             results = case.result
+            if len(results) > 1 and len({type(r) for r in results}) == 1:
+                # Multiple result children of the same kind (e.g. pytest emitting
+                # the "pytest.internal" pseudo-test with two identical <error>s):
+                # collapse to a single result.
+                results = [results[0]]
             if not results:
                 status = "passed"
             elif len(results) != 1:

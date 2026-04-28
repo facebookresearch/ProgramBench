@@ -47,6 +47,30 @@ JUNIT_XML_MIXED = """\
 </testsuites>
 """
 
+JUNIT_XML_DUP_SAME_KIND = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" tests="1">
+    <testcase name="pytest.internal" time="0.0">
+      <error message="internal error">trace 1</error>
+      <error message="internal error">trace 2</error>
+    </testcase>
+  </testsuite>
+</testsuites>
+"""
+
+JUNIT_XML_DUP_MIXED_KIND = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" tests="1">
+    <testcase name="test_mixed" time="0.0">
+      <failure message="timeout">subprocess timed out</failure>
+      <error message="worker crashed">xdist worker died</error>
+    </testcase>
+  </testsuite>
+</testsuites>
+"""
+
 
 class TestParseTestResults:
     def test_all_pass(self):
@@ -73,6 +97,19 @@ class TestParseTestResults:
     def test_malformed_xml_raises(self):
         with pytest.raises(XmlParseError):
             parse_test_results("<not>valid xml", branch="b1")
+
+    def test_duplicate_same_kind_collapses(self):
+        result = parse_test_results(JUNIT_XML_DUP_SAME_KIND, branch="b1")
+        assert len(result) == 1
+        t = result.test_results[0]
+        assert t.status == "error"
+        assert t.extra["message"] == "internal error"
+
+    def test_duplicate_mixed_kind_is_system_error(self):
+        result = parse_test_results(JUNIT_XML_DUP_MIXED_KIND, branch="b1")
+        assert len(result) == 1
+        assert result.test_results[0].status == "system_error"
+        assert "got 2" in result.test_results[0].extra["error_details"]
 
 
 class TestProcessBranchXml:
