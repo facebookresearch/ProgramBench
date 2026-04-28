@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 
 DOCKER_EXECUTABLE = os.environ.get("PROGRAMBENCH_DOCKER_EXECUTABLE", "docker")
-DOCKER_RUN_ARGS = ["--cpus", os.environ.get("PROGRAMBENCH_DOCKER_CPUS", "10")]
+DOCKER_CPUS = int(os.environ.get("PROGRAMBENCH_DOCKER_CPUS", "10"))
+DOCKER_RUN_ARGS: list[str] = []
 # Timeouts (seconds) for blocking docker subcommands. Pulls + container start
 # can be slow under parallelism, so defaults are generous.
 DOCKER_RUN_TIMEOUT = int(os.environ.get("PROGRAMBENCH_DOCKER_RUN_TIMEOUT", "300"))

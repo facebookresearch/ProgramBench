@@ -19,13 +19,20 @@ class ContainerEnvironment:
         cwd: str = "/",
         executable: str = "docker",
         timeout: int = 30,
+        cpus: int = 10,
+        env: dict[str, str] | None = None,
         run_args: list[str] | None = None,
     ):
         self.cwd = cwd
         self.executable = executable
         self.default_timeout = timeout
+        self.cpus = cpus
         self._name = f"programbench-{uuid.uuid4().hex[:12]}"
-        run_args = run_args or ["--cpus", "10"]
+        run_args = list(run_args or [])
+        env_dict = {"PYTEST_XDIST_AUTO_NUM_WORKERS": str(cpus), **(env or {})}
+        env_args: list[str] = []
+        for key, value in env_dict.items():
+            env_args.extend(["-e", f"{key}={value}"])
         cmd = [
             executable,
             "run",
@@ -35,6 +42,9 @@ class ContainerEnvironment:
             self._name,
             "-w",
             cwd,
+            "--cpus",
+            str(cpus),
+            *env_args,
             *run_args,
             image,
             "sleep",
@@ -90,6 +100,15 @@ class ContainerEnvironment:
         if result.returncode != 0:
             raise RuntimeError(f"docker cp failed: {result.stderr.strip()}")
 
+    def commit(self, image_ref: str) -> str:
+        """Commit the current container state to a new image and return its ref."""
+        cmd = [self.executable, "commit", self.container_id, image_ref]
+        log.debug("Committing container: %s", " ".join(cmd))
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=DOCKER_RUN_TIMEOUT)
+        if result.returncode != 0:
+            raise RuntimeError(f"docker commit failed: {result.stderr.strip()}")
+        return image_ref
+
     def cleanup(self) -> None:
         """Stop and remove the container."""
         for action in ("stop", "rm -f"):
@@ -104,3 +123,15 @@ class ContainerEnvironment:
 
     def __del__(self) -> None:
         self.cleanup()
+
+
+def remove_image(image_ref: str, *, executable: str = "docker") -> None:
+    """Best-effort image removal."""
+    try:
+        subprocess.run(
+            [executable, "rmi", "-f", image_ref],
+            capture_output=True,
+            timeout=60,
+        )
+    except Exception:
+        pass

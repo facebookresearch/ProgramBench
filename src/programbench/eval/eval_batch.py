@@ -25,6 +25,7 @@ from rich.text import Text
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
+from programbench.constants import DOCKER_CPUS
 from programbench.eval.eval import EvaluationResult, Evaluator
 from programbench.utils.instance_filters import filter_instances
 
@@ -179,6 +180,8 @@ def _evaluate_instance(
     target_dir: Path,
     force: bool,
     image_tag: str = "task",
+    docker_cpus: int = DOCKER_CPUS,
+    branch_workers: int = 1,
 ) -> InstanceEvalSummary | None:
     """Evaluate a single instance."""
     from programbench.utils.load_data import get_active_branches, get_ignored_tests
@@ -257,6 +260,8 @@ def _evaluate_instance(
             image_tag=image_tag,
             tests_by_branch=tests_by_branch,
             instance_id=instance_id,
+            docker_cpus=docker_cpus,
+            branch_workers=branch_workers,
         )
         result = evaluator.run()
 
@@ -310,6 +315,8 @@ def run_eval_batch(
     filter_spec: str = "",
     slice_spec: str = "",
     workers: int = 1,
+    branch_workers: int = 1,
+    docker_cpus: int = DOCKER_CPUS,
     summarize_only: bool = False,
     image_tag: str = "task",
     output: str | Path = "",
@@ -347,10 +354,13 @@ def run_eval_batch(
         return
 
     log.info(
-        "Evaluating %d instances across %d source(s) with %d worker(s)",
+        "Evaluating %d instances across %d source(s) with %d instance worker(s), "
+        "%d branch worker(s), %d docker cpu(s) per container",
         len(work_items),
         len(sources),
         workers,
+        branch_workers,
+        docker_cpus,
     )
 
     results_by_source: dict[Path, list[InstanceEvalSummary]] = {}
@@ -400,6 +410,8 @@ def run_eval_batch(
                     target_dir=target_dir,
                     force=force,
                     image_tag=image_tag,
+                    docker_cpus=docker_cpus,
+                    branch_workers=branch_workers,
                 ): source_dir
                 for source_dir, target_dir, iid in work_items
             }

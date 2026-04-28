@@ -14,9 +14,12 @@ Do not remove this notice.
 """
 
 import logging
+import threading
 import time
+import uuid
 import xml.etree.ElementTree as ET
 from collections.abc import Iterator
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Literal
 
@@ -24,11 +27,12 @@ from junitparser import Error, Failure, JUnitXml, Skipped
 from pydantic import BaseModel, ConfigDict
 
 from programbench.constants import (
+    DOCKER_CPUS,
     DOCKER_EXECUTABLE,
     DOCKER_RUN_ARGS,
     WORKSPACE_DIR,
 )
-from programbench.container import ContainerEnvironment
+from programbench.container import ContainerEnvironment, remove_image
 from programbench.exceptions import EmptyTestResultError, EvalStepError, XmlParseError
 
 log = logging.getLogger(__name__)
@@ -218,6 +222,8 @@ class Evaluator:
         image_tag: str = "task",
         from_existing: EvaluationResult | None = None,
         instance_id: str = "",
+        docker_cpus: int = DOCKER_CPUS,
+        branch_workers: int = 1,
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -228,6 +234,9 @@ class Evaluator:
         self.image_tag = image_tag
         self.tests_by_branch = tests_by_branch or {}
         self.instance_id = instance_id
+        self.docker_cpus = docker_cpus
+        self.branch_workers = max(1, branch_workers)
+        self._log_lock = threading.Lock()
         self._from_existing = from_existing
         if from_existing is not None:
             self._xml_by_branch: dict[str, str] = {
@@ -274,15 +283,17 @@ class Evaluator:
         self,
         command: str,
         *,
+        env: ContainerEnvironment,
+        log_buf: list[dict],
         step_name: str,
         accept_failure: bool = False,
         timeout: int = 20,
     ) -> dict:
         log.debug("Running step: %s", command)
         t0 = time.monotonic()
-        r = self.env.execute(command, timeout=timeout)
+        r = env.execute(command, timeout=timeout)
         wall_time = time.monotonic() - t0
-        self.result.log.append({"step": step_name, "command": command, "wall_time": wall_time, **r})
+        log_buf.append({"step": step_name, "command": command, "wall_time": wall_time, **r})
         if r["returncode"] != 0:
             error_code = f"{step_name}_failed"
             if accept_failure:
@@ -299,18 +310,30 @@ class Evaluator:
             log.debug("Output: %s", r["output"])
         return r
 
-    def _remove_hashed_files(self) -> None:
+    def _new_env(self, image: str) -> ContainerEnvironment:
+        return ContainerEnvironment(
+            image=image,
+            cwd=WORKSPACE_DIR,
+            executable=DOCKER_EXECUTABLE,
+            timeout=600,
+            cpus=self.docker_cpus,
+            run_args=[*DOCKER_RUN_ARGS, "--init"],
+        )
+
+    def _remove_hashed_files(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
         if not self.remove_hashes:
             return
         hashes_pattern = "|".join(self.remove_hashes)
         self._run_step(
             f"find {WORKSPACE_DIR} -type f -exec sha256sum {{}} + 2>/dev/null"
             f' | grep -E "^({hashes_pattern})  " | cut -c67- | xargs -I% rm -fv %',
+            env=env,
+            log_buf=log_buf,
             step_name="remove_hashed_files",
             accept_failure=True,
         )
 
-    def _compile_executable(self) -> None:
+    def _compile_executable(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
         """Wipe workspace, copy in unzipped submission, run compile.sh."""
         import os
         import tempfile
@@ -318,6 +341,8 @@ class Evaluator:
 
         self._run_step(
             f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
+            env=env,
+            log_buf=log_buf,
             step_name="wipe_workspace",
         )
         assert self.submission_zip is not None
@@ -329,8 +354,8 @@ class Evaluator:
                     mode = (info.external_attr >> 16) & 0o7777
                     if mode and not info.is_dir():
                         os.chmod(extracted, mode)
-            self.env.copy_in(tmp_path, f"{WORKSPACE_DIR}/")
-        self._remove_hashed_files()
+            env.copy_in(tmp_path, f"{WORKSPACE_DIR}/")
+        self._remove_hashed_files(env, log_buf)
         # Seed a synthetic git repo if the submission didn't ship one. Build
         # scripts that depend on a working tree (jq submodules, calcurse's
         # autopoint, cargo+vergen, ...) succeed against this synthetic repo.
@@ -344,28 +369,46 @@ class Evaluator:
             "git -c user.email=gold@local -c user.name=gold "
             "-c commit.gpgsign=false commit -q --allow-empty -m gold; "
             "fi",
+            env=env,
+            log_buf=log_buf,
             step_name="seed_git",
         )
         self._run_step(
             "chmod +x ./compile.sh && ./compile.sh",
+            env=env,
+            log_buf=log_buf,
             step_name="compile",
             timeout=900,
         )
         self._run_step(
             f"ls && cp ./executable {self._stashed_executable}",
+            env=env,
+            log_buf=log_buf,
             step_name="copy_executable",
         )
-        r = self._run_step(f"sha256sum {self._stashed_executable}", step_name="hash_executable")
+        r = self._run_step(
+            f"sha256sum {self._stashed_executable}",
+            env=env,
+            log_buf=log_buf,
+            step_name="hash_executable",
+        )
         self.result.executable_hash = r["output"].split()[0]
 
-    def _restore_executable(self) -> None:
+    def _restore_executable(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
         if self.result.executable_hash is None:
             raise EvalStepError("no_executable_hash", "Executable hash not found")
         self._run_step(
             f"rm -f ./executable && cp {self._stashed_executable} ./executable && chmod +x ./executable",
+            env=env,
+            log_buf=log_buf,
             step_name="restore_executable",
         )
-        r = self._run_step(f"sha256sum {self._stashed_executable}", step_name="verify_executable_hash")
+        r = self._run_step(
+            f"sha256sum {self._stashed_executable}",
+            env=env,
+            log_buf=log_buf,
+            step_name="verify_executable_hash",
+        )
         current_hash = r["output"].split()[0]
         if current_hash != self.result.executable_hash:
             raise EvalStepError(
@@ -384,83 +427,126 @@ class Evaluator:
             errors[0].error_details if errors else "",
         )
 
-    def _run_test_branch(self, branch: str) -> str:
-        """Wipe workspace, inject test files, restore executable, run tests, return XML."""
-        if self._from_existing is not None:
-            return self._get_xml_from_log(branch)
-
-        self._run_step(
-            "pkill -9 -f 'pytest|execnet' 2>/dev/null; pkill -9 -x executable 2>/dev/null; pkill -9 -x git 2>/dev/null",
-            step_name="reap_stray_processes",
-            accept_failure=True,
-        )
-        self._run_step(
-            f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
-            step_name="wipe_workspace_for_tests",
-        )
-        assert self.blob_dir is not None
-        test_dir = self.blob_dir / "tests" / branch
-        self.env.copy_in(test_dir, f"{WORKSPACE_DIR}/")
-        self._restore_executable()
-        self._run_step("rm -f eval/results.xml results.xml", step_name="clean_stale_results")
-        self._run_step(
-            "chmod +x ./eval/run.sh && ./eval/run.sh",
-            step_name="run_tests",
-            accept_failure=True,
-            timeout=2400,
-        )
-        r = self._run_step("cat eval/results.xml", step_name="results_read", timeout=60)
-        self.result.log[-1]["branch"] = branch
-        return r["output"]
-
-    def run(self) -> EvaluationResult:
-        """Run the full evaluation pipeline."""
-        if self._from_existing is None:
-            self.env = ContainerEnvironment(
-                image=f"{self.image_name}:{self.image_tag}",
-                cwd=WORKSPACE_DIR,
-                executable=DOCKER_EXECUTABLE,
-                timeout=600,
-                run_args=[*DOCKER_RUN_ARGS, "--init"],
+    def _run_test_branch(self, branch: str, image: str) -> tuple[str, list[dict]]:
+        """Spin up a fresh container from `image`, run one branch's tests, return XML + log entries."""
+        log_buf: list[dict] = []
+        env = self._new_env(image)
+        try:
+            self._run_step(
+                f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
+                env=env,
+                log_buf=log_buf,
+                step_name="wipe_workspace_for_tests",
             )
+            assert self.blob_dir is not None
+            test_dir = self.blob_dir / "tests" / branch
+            env.copy_in(test_dir, f"{WORKSPACE_DIR}/")
+            self._restore_executable(env, log_buf)
+            self._run_step(
+                "rm -f eval/results.xml results.xml",
+                env=env,
+                log_buf=log_buf,
+                step_name="clean_stale_results",
+            )
+            self._run_step(
+                "chmod +x ./eval/run.sh && ./eval/run.sh",
+                env=env,
+                log_buf=log_buf,
+                step_name="run_tests",
+                accept_failure=True,
+                timeout=2400,
+            )
+            r = self._run_step(
+                "cat eval/results.xml",
+                env=env,
+                log_buf=log_buf,
+                step_name="results_read",
+                timeout=60,
+            )
+            log_buf[-1]["branch"] = branch
+            return r["output"], log_buf
+        finally:
+            env.cleanup()
 
-            try:
-                self._compile_executable()
-            except EvalStepError as e:
-                self.result.error_code = e.error_code
-                self.result.error_details = e.error_details
-                for branch in self.tests_branches:
-                    self._inject_not_run(branch, e.error_code)
-                log.debug(self.result.summarize())
-                return self.result
-        elif self._from_existing.error_code:
-            self.result.error_code = self._from_existing.error_code
-            self.result.error_details = self._from_existing.error_details
-            for branch in self.tests_branches:
-                self._inject_not_run(branch, self._from_existing.error_code)
-            log.debug(self.result.summarize())
-            return self.result
-
-        for branch in self.tests_branches:
-            try:
-                raw_xml = self._run_test_branch(branch)
-            except EvalStepError as e:
-                tag = f"[{self.instance_id}] branch {branch}" if self.instance_id else f"Branch {branch}"
-                log.warning(
-                    "%s failed (%s), continuing with remaining branches",
-                    tag,
-                    e.error_code,
-                )
+    def _evaluate_branch(self, branch: str, image: str) -> None:
+        """Run one branch and merge results/log/errors into self.result under the lock."""
+        tag = f"[{self.instance_id}] branch {branch}" if self.instance_id else f"Branch {branch}"
+        try:
+            if self._from_existing is not None:
+                raw_xml = self._get_xml_from_log(branch)
+                local_log: list[dict] = []
+            else:
+                raw_xml, local_log = self._run_test_branch(branch, image)
+        except EvalStepError as e:
+            log.warning("%s failed (%s), continuing with remaining branches", tag, e.error_code)
+            with self._log_lock:
+                if self._from_existing is None:
+                    # Locals are merged; the from_existing path already mutated state inside the lock.
+                    pass
                 if branch not in self.result.test_branch_errors:
                     self._add_branch_error(branch, e.error_code, e.error_details)
                 self._inject_not_run(branch, e.error_code)
-                continue
-            results, warnings = _process_branch_xml(raw_xml, branch, self.tests_by_branch, self.instance_id)
+            return
+        results, warnings = _process_branch_xml(raw_xml, branch, self.tests_by_branch, self.instance_id)
+        with self._log_lock:
+            if local_log:
+                self.result.log.extend(local_log)
             self.result.test_results.extend(results)
             self.result.warnings.extend(warnings)
 
-        log.debug(self.result.summarize())
-        return self.result
+    def run(self) -> EvaluationResult:
+        """Run the full evaluation pipeline."""
+        committed_image: str | None = None
+        compile_env: ContainerEnvironment | None = None
+        try:
+            if self._from_existing is None:
+                compile_env = self._new_env(f"{self.image_name}:{self.image_tag}")
+                try:
+                    self._compile_executable(compile_env, self.result.log)
+                except EvalStepError as e:
+                    self.result.error_code = e.error_code
+                    self.result.error_details = e.error_details
+                    for branch in self.tests_branches:
+                        self._inject_not_run(branch, e.error_code)
+                    log.debug(self.result.summarize())
+                    return self.result
+                committed_image = (
+                    f"programbench-compiled/{self.instance_id or 'instance'}:{uuid.uuid4().hex[:12]}"
+                )
+                compile_env.commit(committed_image)
+                # Tear down compile container; per-branch containers come from the committed image.
+                compile_env.cleanup()
+                compile_env = None
+            elif self._from_existing.error_code:
+                self.result.error_code = self._from_existing.error_code
+                self.result.error_details = self._from_existing.error_details
+                for branch in self.tests_branches:
+                    self._inject_not_run(branch, self._from_existing.error_code)
+                log.debug(self.result.summarize())
+                return self.result
+
+            assert committed_image is not None or self._from_existing is not None
+            image_for_branches = committed_image or ""
+
+            if self.branch_workers > 1 and self._from_existing is None:
+                with ThreadPoolExecutor(max_workers=self.branch_workers) as pool:
+                    futures = {
+                        pool.submit(self._evaluate_branch, branch, image_for_branches): branch
+                        for branch in self.tests_branches
+                    }
+                    for future in as_completed(futures):
+                        future.result()
+            else:
+                for branch in self.tests_branches:
+                    self._evaluate_branch(branch, image_for_branches)
+
+            log.debug(self.result.summarize())
+            return self.result
+        finally:
+            if compile_env is not None:
+                compile_env.cleanup()
+            if committed_image is not None:
+                remove_image(committed_image, executable=DOCKER_EXECUTABLE)
 
 
 def parse_test_results(results_xml: str, branch: str = "") -> EvaluationResult:
