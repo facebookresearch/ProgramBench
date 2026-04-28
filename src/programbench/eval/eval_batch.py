@@ -175,6 +175,43 @@ def get_branches_to_eval(
     return needs_eval
 
 
+def _summarize_instance(
+    *,
+    instance_id: str,
+    instance: dict,
+    target_dir: Path,
+) -> InstanceEvalSummary | None:
+    """Rebuild an InstanceEvalSummary from existing eval results without re-running tests."""
+    from programbench.utils.load_data import get_active_branches, get_ignored_branches, get_ignored_tests
+
+    eval_json = target_dir / instance_id / f"{instance_id}.eval.json"
+    if not eval_json.exists():
+        log.warning("Skipping %s (no eval.json)", instance_id)
+        return None
+    all_test_branches = get_active_branches(instance)
+    branches_data = instance.get("branches", {})
+    tests_by_branch = {b: branches_data[b]["tests"] for b in all_test_branches if b in branches_data}
+    try:
+        return _summary_from_existing(
+            instance_id,
+            eval_json,
+            get_ignored_tests(instance),
+            current_branches=all_test_branches,
+            tests_by_branch=tests_by_branch,
+            ignored_branches=get_ignored_branches(instance),
+        )
+    except Exception as e:
+        log.error("Error summarizing %s: %s", instance_id, e, exc_info=True)
+        return InstanceEvalSummary(
+            instance_id=instance_id,
+            score=0.0,
+            n_resolved=0,
+            n_tests=0,
+            error_code=type(e).__name__,
+            test_branches=all_test_branches,
+        )
+
+
 def _evaluate_instance(
     *,
     instance_id: str,
@@ -328,12 +365,7 @@ def run_eval_batch(
     image_tag: str = "task",
     output: str | Path = "",
 ) -> None:
-    from programbench.utils.load_data import (
-        get_active_branches,
-        get_ignored_branches,
-        get_ignored_tests,
-        load_all_instances,
-    )
+    from programbench.utils.load_data import load_all_instances
 
     all_instances = load_all_instances()
     log.info("Loaded %d instances", len(all_instances))
@@ -375,41 +407,22 @@ def run_eval_batch(
     for source_dir, _, _ in work_items:
         results_by_source.setdefault(source_dir, [])
 
-    if summarize_only:
-        for source_dir, target_dir, iid in work_items:
-            eval_json = target_dir / iid / f"{iid}.eval.json"
-            if not eval_json.exists():
-                log.warning("Skipping %s (no eval.json)", iid)
-                continue
-            inst = instance_lookup[iid]
-            all_test_branches = get_active_branches(inst)
-            branches_data = inst.get("branches", {})
-            tests_by_branch = {b: branches_data[b]["tests"] for b in all_test_branches if b in branches_data}
-            try:
-                summary = _summary_from_existing(
-                    iid,
-                    eval_json,
-                    get_ignored_tests(inst),
-                    current_branches=all_test_branches,
-                    tests_by_branch=tests_by_branch,
-                    ignored_branches=get_ignored_branches(inst),
-                )
-            except Exception as e:
-                log.error("Error summarizing %s: %s", iid, e, exc_info=True)
-                summary = InstanceEvalSummary(
+    with (
+        logging_redirect_tqdm(),
+        ThreadPoolExecutor(max_workers=workers) as executor,
+    ):
+        if summarize_only:
+            futures = {
+                executor.submit(
+                    _summarize_instance,
                     instance_id=iid,
-                    score=0.0,
-                    n_resolved=0,
-                    n_tests=0,
-                    error_code=type(e).__name__,
-                    test_branches=all_test_branches,
-                )
-            results_by_source[source_dir].append(summary)
-    else:
-        with (
-            logging_redirect_tqdm(),
-            ThreadPoolExecutor(max_workers=workers) as executor,
-        ):
+                    instance=instance_lookup[iid],
+                    target_dir=target_dir,
+                ): source_dir
+                for source_dir, target_dir, iid in work_items
+            }
+            desc = "Summarizing"
+        else:
             futures = {
                 executor.submit(
                     _evaluate_instance,
@@ -424,16 +437,17 @@ def run_eval_batch(
                 ): source_dir
                 for source_dir, target_dir, iid in work_items
             }
-            for future in tqdm(
-                as_completed(futures),
-                total=len(futures),
-                desc="Evaluating",
-                ncols=100,
-                leave=False,
-            ):
-                summary = future.result()
-                if summary:
-                    results_by_source[futures[future]].append(summary)
+            desc = "Evaluating"
+        for future in tqdm(
+            as_completed(futures),
+            total=len(futures),
+            desc=desc,
+            ncols=100,
+            leave=False,
+        ):
+            summary = future.result()
+            if summary:
+                results_by_source[futures[future]].append(summary)
 
     console = Console()
     for source_dir, summaries in results_by_source.items():
