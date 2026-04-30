@@ -445,9 +445,12 @@ class Evaluator:
             errors[0].error_details if errors else "",
         )
 
-    def _run_test_branch(self, branch: str, image: str) -> tuple[str, list[dict]]:
-        """Spin up a fresh container from `image`, run one branch's tests, return XML + log entries."""
-        log_buf: list[dict] = []
+    def _run_test_branch(self, branch: str, image: str, log_buf: list[dict]) -> str:
+        """Spin up a fresh container from `image`, run one branch's tests, return XML.
+
+        Steps are appended to ``log_buf`` as they run, so a partial log survives
+        an EvalStepError raised mid-way (caller still sees what executed).
+        """
         env = self._new_env(image)
         try:
             # No wipe: each container boots fresh from the post-compile image, so
@@ -470,7 +473,7 @@ class Evaluator:
                 log_buf=log_buf,
                 step_name="run_tests",
                 accept_failure=True,
-                timeout=2400,
+                timeout=3600,
             )
             r = self._run_step(
                 "cat eval/results.xml",
@@ -480,25 +483,24 @@ class Evaluator:
                 timeout=60,
             )
             log_buf[-1]["branch"] = branch
-            return r["output"], log_buf
+            return r["output"]
         finally:
             env.cleanup()
 
     def _evaluate_branch(self, branch: str, image: str) -> None:
         """Run one branch and merge results/log/errors into self.result under the lock."""
         tag = f"[{self.instance_id}] branch {branch}" if self.instance_id else f"Branch {branch}"
+        local_log: list[dict] = []
         try:
             if self._from_existing is not None:
                 raw_xml = self._get_xml_from_log(branch)
-                local_log: list[dict] = []
             else:
-                raw_xml, local_log = self._run_test_branch(branch, image)
+                raw_xml = self._run_test_branch(branch, image, local_log)
         except EvalStepError as e:
             log.warning("%s failed (%s), continuing with remaining branches", tag, e.error_code)
             with self._log_lock:
-                if self._from_existing is None:
-                    # Locals are merged; the from_existing path already mutated state inside the lock.
-                    pass
+                if local_log:
+                    self.result.log.extend(local_log)
                 if branch not in self.result.test_branch_errors:
                     self._add_branch_error(branch, e.error_code, e.error_details)
                 self._inject_not_run(branch, e.error_code)
