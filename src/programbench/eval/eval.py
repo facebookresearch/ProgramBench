@@ -399,10 +399,11 @@ class Evaluator:
             timeout=900,
         )
         self._run_step(
-            f"ls && cp ./executable {self._stashed_executable}",
+            f"cp ./executable {self._stashed_executable}",
             env=env,
             log_buf=log_buf,
             step_name="copy_executable",
+            timeout=120,
         )
         r = self._run_step(
             f"sha256sum {self._stashed_executable}",
