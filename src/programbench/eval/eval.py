@@ -399,11 +399,10 @@ class Evaluator:
             timeout=900,
         )
         self._run_step(
-            f"cp ./executable {self._stashed_executable}",
+            f"mv ./executable {self._stashed_executable}",
             env=env,
             log_buf=log_buf,
             step_name="copy_executable",
-            timeout=120,
         )
         r = self._run_step(
             f"sha256sum {self._stashed_executable}",
@@ -417,13 +416,13 @@ class Evaluator:
         if self.result.executable_hash is None:
             raise EvalStepError("no_executable_hash", "Executable hash not found")
         self._run_step(
-            f"rm -f ./executable && cp {self._stashed_executable} ./executable && chmod +x ./executable",
+            f"rm -f ./executable && mv {self._stashed_executable} ./executable && chmod +x ./executable",
             env=env,
             log_buf=log_buf,
             step_name="restore_executable",
         )
         r = self._run_step(
-            f"sha256sum {self._stashed_executable}",
+            "sha256sum ./executable",
             env=env,
             log_buf=log_buf,
             step_name="verify_executable_hash",
