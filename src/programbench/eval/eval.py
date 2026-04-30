@@ -451,12 +451,10 @@ class Evaluator:
         log_buf: list[dict] = []
         env = self._new_env(image)
         try:
-            self._run_step(
-                f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
-                env=env,
-                log_buf=log_buf,
-                step_name="wipe_workspace_for_tests",
-            )
+            # No wipe: each container boots fresh from the post-compile image, so
+            # build artefacts (e.g. /workspace/build/xz) need to survive into the
+            # test phase. The branch tree is layered on top via copy_in, then
+            # _restore_executable replaces ./executable with the canonical hash.
             assert self.blob_dir is not None
             test_dir = self.blob_dir / "tests" / branch
             env.copy_in(test_dir, f"{WORKSPACE_DIR}/")
