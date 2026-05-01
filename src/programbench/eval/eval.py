@@ -379,11 +379,22 @@ class Evaluator:
         # autopoint, cargo+vergen, ...) succeed against this synthetic repo.
         # The legacy RevEngBench gold pipeline got this for free via
         # `git clone <upstream>`; here we approximate it locally.
+        #
+        # Fixed author/committer identity AND dates make the synthetic commit
+        # deterministic: same submission tree → same commit SHA across runs.
+        # Without this, build scripts that embed the SHA into the binary
+        # (vergen for cargo, gitversion-via-make, ...) produce a different
+        # executable_hash each run, so otherwise-byte-identical builds fail
+        # to match across pipelines.
         self._run_step(
             "if [ ! -d .git ]; then "
+            "GIT_AUTHOR_DATE='2000-01-01T00:00:00Z' "
+            "GIT_COMMITTER_DATE='2000-01-01T00:00:00Z' "
             "git -c init.defaultBranch=gold init -q && "
             "git -c user.email=gold@local -c user.name=gold "
             "-c commit.gpgsign=false add -A && "
+            "GIT_AUTHOR_DATE='2000-01-01T00:00:00Z' "
+            "GIT_COMMITTER_DATE='2000-01-01T00:00:00Z' "
             "git -c user.email=gold@local -c user.name=gold "
             "-c commit.gpgsign=false commit -q --allow-empty -m gold; "
             "fi",
