@@ -403,12 +403,14 @@ class Evaluator:
             env=env,
             log_buf=log_buf,
             step_name="copy_executable",
+            timeout=300,
         )
         r = self._run_step(
             f"sha256sum {self._stashed_executable}",
             env=env,
             log_buf=log_buf,
             step_name="hash_executable",
+            timeout=300,
         )
         self.result.executable_hash = r["output"].split()[0]
 
@@ -420,12 +422,14 @@ class Evaluator:
             env=env,
             log_buf=log_buf,
             step_name="restore_executable",
+            timeout=300,
         )
         r = self._run_step(
             "sha256sum ./executable",
             env=env,
             log_buf=log_buf,
             step_name="verify_executable_hash",
+            timeout=300,
         )
         current_hash = r["output"].split()[0]
         if current_hash != self.result.executable_hash:
@@ -466,6 +470,7 @@ class Evaluator:
                 env=env,
                 log_buf=log_buf,
                 step_name="clean_stale_results",
+                timeout=120,
             )
             self._run_step(
                 "chmod +x ./eval/run.sh && ./eval/run.sh",
