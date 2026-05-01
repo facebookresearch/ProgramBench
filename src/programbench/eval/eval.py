@@ -667,7 +667,12 @@ class Evaluator:
                 best_xml = raw_xml
                 best_crashes = crashes
                 best_n_tests = n_tests
-            if crashes == 0 or attempts_left <= 0:
+            # Early exit when retries stop producing new information: two
+            # consecutive attempts with identical (crashes, n_tests) means
+            # the failure is deterministic, not contention-driven, and
+            # further retries will just burn time.
+            deterministic = len(attempt_history) >= 2 and attempt_history[-1] == attempt_history[-2]
+            if crashes == 0 or attempts_left <= 0 or deterministic:
                 raw_xml = best_xml
                 if len(attempt_history) > 1:
                     seq = ", ".join(f"{c}/{n}" for c, n in attempt_history)
@@ -683,13 +688,19 @@ class Evaluator:
                         crash_counts = [c for c, _ in attempt_history]
                         n_counts = [n for _, n in attempt_history]
                         useful_counts = [n - c for c, n in attempt_history]
+                        early = (
+                            " (stopped early — last 2 attempts identical)"
+                            if deterministic and attempts_left > 0
+                            else ""
+                        )
                         log.warning(
-                            "%s: did not fully recover after %d retr%s — kept best-of-%d "
+                            "%s: did not fully recover after %d retr%s%s — kept best-of-%d "
                             "with %d crashes / %d useful tests (crashes by attempt: %s; "
                             "tests by attempt: %s, useful: %s, min=%d max=%d spread=%d)",
                             tag,
                             len(attempt_history) - 1,
                             "y" if len(attempt_history) == 2 else "ies",
+                            early,
                             len(attempt_history),
                             best_crashes,
                             best_n_tests - best_crashes,
