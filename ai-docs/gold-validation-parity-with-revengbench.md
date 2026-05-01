@@ -164,6 +164,84 @@ all; the install check was dropped.
   user/linter, see file at HEAD) — refreshes `task.yaml`/`tests.json`
   only, leaves the extracted blob tree untouched.
 
+## Second-pass findings (post-2026-04-30 re-run)
+
+After the doc above stabilised, a fresh PB-vs-RB sweep on all 200 common
+instances surfaced four more issues. All have fixes.
+
+### 7. 20s timeout on `mv ./executable /opt/...` for big binaries
+**Symptom:** 8 instances regressed to `error_code: copy_executable_failed`
+in PB while RB succeeded — `cppcheck`, `doxygen`, `duckdb`,
+`epistates/treemd`, `ip7z/7zip`, `ivanceras/svgbob`, `lazygit`,
+`rust-embedded/svd2rust`. Logs all show
+`wall_time: 20.022s, exception_info: 'Command timed out after 20s'` on the
+copy step. `mv ./executable /opt/programbench-stashed-executable-do-not-modify`
+crosses overlayfs layers (a copy, not a rename), and 20s isn't enough for
+multi-hundred-MB binaries. Same root cause for 6 branch-level errors
+seen on `hashcards`, `dropbear`, `rumdl`, `xplr`, `hck`, `wrapcheck`
+(`restore_executable_failed`, `clean_stale_results_failed`, etc.).
+
+A 120s timeout had been added in commit `94ed71d29`, but the later
+`mv`-vs-`cp` refactor (`da0794a8d`) dropped the explicit `timeout=`,
+silently reverting back to the 20s default.
+
+**Fix:** programbench commit (this branch) — set `timeout=300` on
+`copy_executable`, `hash_executable`, `restore_executable`,
+`verify_executable_hash`; `timeout=120` on `clean_stale_results`.
+
+### 8. `google__brotli` silently absent from PB
+**Symptom:** `google__brotli.b3dc9cc` had no `eval.json` on the PB side at
+all. Populate dropped both branches with "zip has no eval/ dir" and skipped
+writing `task.yaml`/`tests.json`, so `programbench eval` never ran the
+instance.
+
+**Cause:** brotli's `.gitattributes` ships an aggressive
+`**/** export-ignore` allowlist:
+```
+**/** export-ignore
+.bazelignore !export-ignore
+BUILD.bazel !export-ignore
+... (~20 explicit allowlist rules) ...
+```
+`eval/` isn't in the allowlist, so `git archive --format=zip <branch>`
+strips it from the resulting zip — even though the files are committed
+and the legacy `git checkout`-based gold pipeline saw them fine.
+
+**Fix:** RevEngBench commit `7fa85da1` —
+`reveng/cli/run/download_all.py::_archive_branch` checks the resulting
+zip for `eval/run.sh` on test branches; if missing, retries via a
+detached `git worktree` checkout zipped directly from disk. `git checkout`
+ignores `export-ignore`, so the eval tree comes through. Fast path
+(`git archive`) unchanged for every other repo.
+
+### 9. Synthetic `.git` made `executable_hash` non-reproducible
+The original "Cause 3" fix seeded a `git init && git commit` so build
+scripts that need a working tree (cargo+vergen, autopoint, jq submodules)
+would succeed. But the synthetic commit's SHA was a fresh one every run
+because git defaults `committer.date` and `author.date` to "now". Build
+scripts that embed the SHA (vergen → cargo, gitversion-via-make, ...)
+then produce a different binary on every run, breaking `executable_hash`
+reproducibility for those projects.
+
+**Fix:** programbench commit (this branch) — pin
+`GIT_AUTHOR_DATE='2000-01-01T00:00:00Z'` and `GIT_COMMITTER_DATE` on both
+the `init` and the `commit`, so the same submission tree → same commit
+SHA → same binary. Verified locally: two independent seedings of the
+same content yield identical SHAs.
+
+### 10. `pytest -n auto` worker crashes on large suites
+On chamber/stgit/lazygit-class instances we observed PB collecting
+hundreds fewer tests than RB on the same branch (chamber 558 vs 983,
+stgit 192 vs 435), with logs full of `worker 'gwN' crashed`. Tests
+assigned to a crashed xdist worker are silently lost. Tokei showed the
+opposite — RB suffered a `StopIteration` collection error on
+`test_externalized.py`, dropping its result count to 1.
+
+This is host-side concurrency contention (PB ran with `--workers 8`
+while each container also runs `pytest -n auto`), not a parity bug —
+re-runs would shuffle which side suffers the loss. Treated as run-time
+flakiness; no code fix.
+
 ## Known residual issues
 
 ### `tests.json` declares `tests: []` for 85 of 2,900 active branches
@@ -176,19 +254,6 @@ results, so it's correct. Eval pipeline produces noisy
 A suppression patch was prototyped (programbench commit `d0cf9efc1`,
 **reverted**) on the user's request — they preferred the loud signal
 over the quieter behaviour.
-
-### Synthetic `.git` produces different binaries than legacy
-The legacy gold pipeline did `git clone <upstream>` so the binary embedded
-the real upstream commit SHA. Our synthetic seed produces a different SHA
-each time, so binaries that embed git metadata won't byte-match A. This
-explains a chunk of the remaining executable_hash mismatches and any
-test that asserts on embedded version strings. Not addressable without
-re-introducing real upstream cloning.
-
-### `gromacs/gromacs` `copy_executable_failed`
-Single-instance failure. `compile.sh` runs but doesn't produce
-`./executable`. Likely a build-system interaction with the synthetic
-`.git`; not investigated in depth.
 
 ### Branch coverage in `output/github-dump/`
 Even after the pagination fix, populate may still warn "missing zip" for
@@ -203,20 +268,24 @@ of real upstream gaps rather than a tooling bug.
 ## Commit timeline
 
 ### programbench
-- `f596325` Fix: preserve Unix file modes when extracting submission.zip
-- `c501fee` Fix: seed a synthetic .git in the workspace before compile.sh
+- `f596325`  Fix: preserve Unix file modes when extracting submission.zip
+- `c501fee`  Fix: seed a synthetic .git in the workspace before compile.sh
 - `0d77dca40` eval: include instance_id in branch-level warnings
+- `94ed71d29` Fix(eval): raise copy_executable timeout from 20s to 120s
+- `2f66f6a75` Fix(eval): bump timeouts on executable stash/restore/hash steps (300s)
+- `54bf3f61f` Fix(eval): deterministic synthetic .git seed for reproducible builds
 
 ### RevEngBench
-- `c5bdbebd` Fix: keep .golden / subdir-.md test fixtures in populate_programbench_tasks
-- `db4198a3` Fix(populate tasks): ship workspace-root pytest rootdir markers alongside eval/
-- `81637b8c` Fix(populate tasks): synthesise a workspace-root pyproject.toml when none ships
-- `f5ab9b23` Revert(populate tasks): drop synthetic pyproject.toml fallback
-- `9da40562` Fix(populate tasks): ship full branch tree instead of eval/ only
-- `b6f32927` Feat(populate tasks): add --no-clean to copy branches verbatim
-- `d4b20485` Fix(download branches): hard-fail at startup when git-lfs is missing
-- `7917f3fb` Fix(download branches): bypass the LFS smudge filter on git archive
-- `40f41ddb` Fix(download branches): paginate list_branches, was capped at 100
+- `c5bdbebd`  Fix: keep .golden / subdir-.md test fixtures in populate_programbench_tasks
+- `db4198a3`  Fix(populate tasks): ship workspace-root pytest rootdir markers alongside eval/
+- `81637b8c`  Fix(populate tasks): synthesise a workspace-root pyproject.toml when none ships
+- `f5ab9b23`  Revert(populate tasks): drop synthetic pyproject.toml fallback
+- `9da40562`  Fix(populate tasks): ship full branch tree instead of eval/ only
+- `b6f32927`  Feat(populate tasks): add --no-clean to copy branches verbatim
+- `d4b20485`  Fix(download branches): hard-fail at startup when git-lfs is missing
+- `7917f3fb`  Fix(download branches): bypass the LFS smudge filter on git archive
+- `40f41ddb`  Fix(download branches): paginate list_branches, was capped at 100
+- `7fa85da1`  Fix(download branches): retry via worktree when export-ignore strips eval/
 
 ## How to reproduce / restart from scratch
 
