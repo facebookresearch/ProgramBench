@@ -566,6 +566,22 @@ class Evaluator:
                 step_name="clean_stale_results",
                 timeout=120,
             )
+            # Rewrite pytest-timeout's `--timeout-method=thread` (default in every
+            # generated run.sh we've seen) to `signal`. With `thread`, when a
+            # test exceeds its timeout pytest-timeout calls os._exit(1) on the
+            # whole worker, which xdist reports as "worker 'gwN' crashed" and
+            # silently drops the worker's pre-queued tests. With `signal` it
+            # delivers SIGALRM, pytest catches it cleanly, and the test gets a
+            # proper `subprocess.TimeoutExpired` failure entry — no worker
+            # crash, no queue loss, identical results in parallel and serial.
+            self._run_step(
+                "test -f eval/run.sh && sed -i 's/--timeout-method=thread/--timeout-method=signal/g' eval/run.sh || true",
+                env=env,
+                log_buf=log_buf,
+                step_name="patch_timeout_method",
+                accept_failure=True,
+                timeout=10,
+            )
             run_cmd = "chmod +x ./eval/run.sh && ./eval/run.sh"
             if self._has_rerunfailures:
                 # Tighten flake recovery inside one run: pytest-rerunfailures
