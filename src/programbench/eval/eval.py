@@ -588,10 +588,7 @@ class Evaluator:
                 # retries individual failed tests up to 2x with a 1s delay.
                 # Augmenting at exec time (not container creation) lets us
                 # re-use the committed image for every branch.
-                run_cmd = (
-                    'export PYTEST_ADDOPTS="$PYTEST_ADDOPTS --reruns=2 --reruns-delay=1" && '
-                    + run_cmd
-                )
+                run_cmd = 'export PYTEST_ADDOPTS="$PYTEST_ADDOPTS --reruns=2 --reruns-delay=1" && ' + run_cmd
             self._run_step(
                 run_cmd,
                 env=env,
@@ -677,7 +674,8 @@ class Evaluator:
                     if best_crashes == 0:
                         log.info(
                             "%s: recovered after %d retr%s — crashes/tests by attempt: %s",
-                            tag, len(attempt_history) - 1,
+                            tag,
+                            len(attempt_history) - 1,
                             "y" if len(attempt_history) == 2 else "ies",
                             seq,
                         )
@@ -689,16 +687,26 @@ class Evaluator:
                             "%s: did not fully recover after %d retr%s — kept best-of-%d "
                             "with %d crashes / %d useful tests (crashes by attempt: %s; "
                             "tests by attempt: %s, useful: %s, min=%d max=%d spread=%d)",
-                            tag, len(attempt_history) - 1,
+                            tag,
+                            len(attempt_history) - 1,
                             "y" if len(attempt_history) == 2 else "ies",
-                            len(attempt_history), best_crashes, best_n_tests - best_crashes,
-                            crash_counts, n_counts, useful_counts,
-                            min(n_counts), max(n_counts), max(n_counts) - min(n_counts),
+                            len(attempt_history),
+                            best_crashes,
+                            best_n_tests - best_crashes,
+                            crash_counts,
+                            n_counts,
+                            useful_counts,
+                            min(n_counts),
+                            max(n_counts),
+                            max(n_counts) - min(n_counts),
                         )
                 break
             log.warning(
                 "%s: %d xdist worker crash(es) detected (testcases=%d); retrying serially (%d left)",
-                tag, crashes, n_tests, attempts_left,
+                tag,
+                crashes,
+                n_tests,
+                attempts_left,
             )
             serial_retry = True
             attempts_left -= 1
@@ -732,9 +740,7 @@ class Evaluator:
                         self._inject_not_run(branch, e.error_code)
                     log.debug(self.result.summarize())
                     return self.result
-                committed_image = (
-                    f"programbench-compiled/{self.instance_id or 'instance'}:{uuid.uuid4().hex[:12]}"
-                )
+                committed_image = f"programbench-compiled/{self.instance_id or 'instance'}:{uuid.uuid4().hex[:12]}"
                 compile_env.commit(committed_image)
                 # Tear down compile container; per-branch containers come from the committed image.
                 compile_env.cleanup()
