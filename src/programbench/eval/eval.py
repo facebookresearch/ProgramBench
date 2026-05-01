@@ -271,6 +271,7 @@ class Evaluator:
         docker_cpus: int = DOCKER_CPUS,
         branch_workers: int = 1,
         branch_retries: int = 3,
+        pytest_addopts: str = "",
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -286,6 +287,7 @@ class Evaluator:
         self.docker_cpus = docker_cpus
         self.branch_workers = max(1, branch_workers)
         self.branch_retries = max(0, branch_retries)
+        self.pytest_addopts = pytest_addopts
         self._log_lock = threading.Lock()
         self._from_existing = from_existing
         if from_existing is not None:
@@ -361,12 +363,16 @@ class Evaluator:
         return r
 
     def _new_env(self, image: str) -> ContainerEnvironment:
+        env: dict[str, str] = {}
+        if self.pytest_addopts:
+            env["PYTEST_ADDOPTS"] = self.pytest_addopts
         return ContainerEnvironment(
             image=image,
             cwd=WORKSPACE_DIR,
             executable=DOCKER_EXECUTABLE,
             timeout=600,
             cpus=self.docker_cpus,
+            env=env or None,
             run_args=[*DOCKER_RUN_ARGS, "--init"],
         )
 
