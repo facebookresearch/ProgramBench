@@ -35,6 +35,13 @@ def eval(
         help="CPU cores allotted per docker container. Also exported as "
         "PYTEST_XDIST_AUTO_NUM_WORKERS inside the container.",
     ),
+    branch_retries: int = typer.Option(
+        0,
+        "--branch-retries",
+        help="On a test branch whose JUnit XML reports a pytest-xdist worker "
+        "crash, re-run the branch up to this many times in a fresh container. "
+        "The attempt with the fewest crashes wins.",
+    ),
     force: bool = typer.Option(False, "-f", "--force", help="Re-evaluate even if results exist"),
     filter_spec: str = typer.Option("", "--filter", help="Filter instance IDs by regex"),
     slice_spec: str = typer.Option("", "--slice", help="Slice specification (e.g. '0:5')"),
@@ -77,4 +84,5 @@ def eval(
         summarize_only=summarize_only,
         image_tag=image_tag,
         output=output,
+        branch_retries=branch_retries,
     )

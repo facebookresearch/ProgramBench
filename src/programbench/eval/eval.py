@@ -67,6 +67,36 @@ class TestBranchError(BaseModel):
     error_details: str
 
 
+_WORKER_CRASH_PHRASE = "worker '"  # part of pytest-xdist's "worker 'gwN' crashed while running ..."
+
+
+def count_worker_crashes(raw_xml: str) -> int:
+    """Count testcases whose JUnit error/failure marker matches a pytest-xdist worker crash.
+
+    A crashed-worker testcase has an ``<error>`` (or ``<failure>``) child whose
+    message starts with ``failed on setup with "worker 'gwN' crashed ...``,
+    or whose body text contains ``worker 'gwN' crashed while running``. We
+    parse the XML rather than grep stdout because xdist mixes stdout across
+    workers and the structured payload is the only authoritative signal.
+    """
+    if not raw_xml.strip() or _WORKER_CRASH_PHRASE not in raw_xml:
+        return 0
+    try:
+        root = ET.fromstring(raw_xml)
+    except ET.ParseError:
+        return 0
+    n = 0
+    for case in root.iter("testcase"):
+        for child in case:
+            if child.tag not in ("error", "failure"):
+                continue
+            message = (child.get("message") or "") + " " + (child.text or "")
+            if "worker '" in message and "crashed" in message:
+                n += 1
+                break
+    return n
+
+
 def _process_branch_xml(
     raw_xml: str,
     branch: str,
@@ -240,6 +270,7 @@ class Evaluator:
         instance_id: str = "",
         docker_cpus: int = DOCKER_CPUS,
         branch_workers: int = 1,
+        branch_retries: int = 0,
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -254,6 +285,7 @@ class Evaluator:
         self.instance_id = instance_id
         self.docker_cpus = docker_cpus
         self.branch_workers = max(1, branch_workers)
+        self.branch_retries = max(0, branch_retries)
         self._log_lock = threading.Lock()
         self._from_existing = from_existing
         if from_existing is not None:
@@ -504,23 +536,59 @@ class Evaluator:
             env.cleanup()
 
     def _evaluate_branch(self, branch: str, image: str) -> None:
-        """Run one branch and merge results/log/errors into self.result under the lock."""
+        """Run one branch and merge results/log/errors into self.result under the lock.
+
+        On the live path (no ``from_existing``), retries the branch up to
+        ``branch_retries`` times when the JUnit XML reports pytest-xdist worker
+        crashes. Each retry runs in a fresh container off the same post-compile
+        image, isolating it from concurrent branches' contention. The best
+        attempt (fewest crashes; if tied, the last) is kept.
+        """
         tag = f"[{self.instance_id}] branch {branch}" if self.instance_id else f"Branch {branch}"
         local_log: list[dict] = []
-        try:
-            if self._from_existing is not None:
-                raw_xml = self._get_xml_from_log(branch)
-            else:
-                raw_xml = self._run_test_branch(branch, image, local_log)
-        except EvalStepError as e:
-            log.warning("%s failed (%s), continuing with remaining branches", tag, e.error_code)
-            with self._log_lock:
-                if local_log:
-                    self.result.log.extend(local_log)
-                if branch not in self.result.test_branch_errors:
-                    self._add_branch_error(branch, e.error_code, e.error_details)
-                self._inject_not_run(branch, e.error_code)
-            return
+        attempts_left = self.branch_retries if self._from_existing is None else 0
+        best_xml: str | None = None
+        best_crashes: int | None = None
+        while True:
+            attempt_log: list[dict] = []
+            try:
+                if self._from_existing is not None:
+                    raw_xml = self._get_xml_from_log(branch)
+                else:
+                    raw_xml = self._run_test_branch(branch, image, attempt_log)
+            except EvalStepError as e:
+                local_log.extend(attempt_log)
+                if best_xml is not None:
+                    # We already have a usable attempt — keep it and stop retrying.
+                    raw_xml = best_xml
+                    break
+                if attempts_left <= 0:
+                    log.warning("%s failed (%s), continuing with remaining branches", tag, e.error_code)
+                    with self._log_lock:
+                        if local_log:
+                            self.result.log.extend(local_log)
+                        if branch not in self.result.test_branch_errors:
+                            self._add_branch_error(branch, e.error_code, e.error_details)
+                        self._inject_not_run(branch, e.error_code)
+                    return
+                log.warning("%s: attempt failed (%s); retrying (%d left)", tag, e.error_code, attempts_left)
+                attempts_left -= 1
+                continue
+
+            local_log.extend(attempt_log)
+            crashes = count_worker_crashes(raw_xml)
+            if best_xml is None or crashes < best_crashes:
+                best_xml, best_crashes = raw_xml, crashes
+            if crashes == 0 or attempts_left <= 0:
+                raw_xml = best_xml
+                if best_crashes:
+                    log.warning(
+                        "%s: keeping best attempt with %d worker crashes (no retries left)",
+                        tag, best_crashes,
+                    )
+                break
+            log.warning("%s: %d xdist worker crash(es) detected; retrying (%d left)", tag, crashes, attempts_left)
+            attempts_left -= 1
         results, warnings = _process_branch_xml(
             raw_xml,
             branch,

@@ -8,6 +8,7 @@ from programbench.eval.eval import (
     TestBranchError,
     TestResult,
     _process_branch_xml,
+    count_worker_crashes,
     parse_test_results,
 )
 from programbench.eval.eval_batch import (
@@ -130,6 +131,45 @@ class TestProcessBranchXml:
         tests_by_branch = {"b1": ["tests.test_calculator.test_addition"]}
         results, warnings = _process_branch_xml(JUNIT_XML_ALL_PASS, "b1", tests_by_branch)
         assert any("not in tests.json" in w for w in warnings)
+
+
+class TestCountWorkerCrashes:
+    XDIST_CRASH_XML = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="2" failures="0" skipped="0" tests="3">
+    <testcase classname="t.t1" name="ok" time="0.01"/>
+    <testcase classname="t.t1" name="bust" time="0.000">
+      <error message="failed on setup with &quot;worker 'gw7' crashed while running 't.t1::bust'&quot;">worker 'gw7' crashed while running 't.t1::bust'</error>
+    </testcase>
+    <testcase classname="t.t2" name="bust2" time="0.000">
+      <error message="failed on setup with &quot;worker 'gw3' crashed while running 't.t2::bust2'&quot;">worker 'gw3' crashed while running 't.t2::bust2'</error>
+    </testcase>
+  </testsuite>
+</testsuites>
+"""
+
+    REGULAR_FAILURE_XML = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1">
+    <testcase classname="t" name="bad"><failure message="AssertionError">expected 1 got 2</failure></testcase>
+  </testsuite>
+</testsuites>
+"""
+
+    @pytest.mark.parametrize(
+        ("xml", "expected"),
+        [
+            ("", 0),
+            ("<not xml>", 0),
+            (REGULAR_FAILURE_XML, 0),
+            (JUNIT_XML_ALL_PASS, 0),
+            (XDIST_CRASH_XML, 2),
+        ],
+    )
+    def test_counts(self, xml, expected):
+        assert count_worker_crashes(xml) == expected
 
 
 class TestEvaluationResult:
