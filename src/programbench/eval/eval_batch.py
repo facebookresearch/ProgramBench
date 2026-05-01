@@ -223,7 +223,6 @@ def _evaluate_instance(
     docker_cpus: int = DOCKER_CPUS,
     branch_workers: int = 1,
     branch_retries: int = 3,
-    pytest_addopts: str = "",
 ) -> InstanceEvalSummary | None:
     """Evaluate a single instance."""
     from programbench.utils.load_data import get_active_branches, get_ignored_branches, get_ignored_tests
@@ -309,7 +308,6 @@ def _evaluate_instance(
             docker_cpus=docker_cpus,
             branch_workers=branch_workers,
             branch_retries=branch_retries,
-            pytest_addopts=pytest_addopts,
         )
         result = evaluator.run()
 
@@ -369,7 +367,6 @@ def run_eval_batch(
     image_tag: str = "task",
     output: str | Path = "",
     branch_retries: int = 3,
-    pytest_addopts: str = "",
 ) -> None:
     from programbench.utils.load_data import load_all_instances
 
@@ -441,7 +438,6 @@ def run_eval_batch(
                     docker_cpus=docker_cpus,
                     branch_workers=branch_workers,
                     branch_retries=branch_retries,
-                    pytest_addopts=pytest_addopts,
                 ): source_dir
                 for source_dir, target_dir, iid in work_items
             }

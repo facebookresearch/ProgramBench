@@ -42,16 +42,6 @@ def eval(
         "crash, re-run the branch up to this many times in a fresh container. "
         "The attempt with the fewest crashes wins. Pass 0 to disable.",
     ),
-    pytest_addopts: str = typer.Option(
-        "",
-        "--pytest-addopts",
-        envvar="PROGRAMBENCH_PYTEST_ADDOPTS",
-        help="Extra pytest options to pass to every test branch via the "
-        "PYTEST_ADDOPTS env var inside the container. Useful for "
-        "'--max-worker-restart=N' (xdist replaces crashed workers) or "
-        "'--reruns=N' (if pytest-rerunfailures is installed in the image). "
-        "Defaults to empty; set via flag or PROGRAMBENCH_PYTEST_ADDOPTS.",
-    ),
     force: bool = typer.Option(False, "-f", "--force", help="Re-evaluate even if results exist"),
     filter_spec: str = typer.Option("", "--filter", help="Filter instance IDs by regex"),
     slice_spec: str = typer.Option("", "--slice", help="Slice specification (e.g. '0:5')"),
@@ -95,5 +85,4 @@ def eval(
         image_tag=image_tag,
         output=output,
         branch_retries=branch_retries,
-        pytest_addopts=pytest_addopts,
     )

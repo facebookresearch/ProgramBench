@@ -271,7 +271,6 @@ class Evaluator:
         docker_cpus: int = DOCKER_CPUS,
         branch_workers: int = 1,
         branch_retries: int = 3,
-        pytest_addopts: str = "",
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -287,7 +286,7 @@ class Evaluator:
         self.docker_cpus = docker_cpus
         self.branch_workers = max(1, branch_workers)
         self.branch_retries = max(0, branch_retries)
-        self.pytest_addopts = pytest_addopts
+        self._has_rerunfailures = False
         self._log_lock = threading.Lock()
         self._from_existing = from_existing
         if from_existing is not None:
@@ -363,16 +362,19 @@ class Evaluator:
         return r
 
     def _new_env(self, image: str) -> ContainerEnvironment:
-        env: dict[str, str] = {}
-        if self.pytest_addopts:
-            env["PYTEST_ADDOPTS"] = self.pytest_addopts
+        # Baseline xdist hardening that always works (xdist ships with
+        # every test image): replace up to N crashed workers per branch so
+        # a single OOM doesn't drop the rest of that worker's queue.
+        # --reruns is added on top in _run_test_branch when
+        # pytest-rerunfailures was successfully installed during compile.
+        addopts = "--max-worker-restart=4"
         return ContainerEnvironment(
             image=image,
             cwd=WORKSPACE_DIR,
             executable=DOCKER_EXECUTABLE,
             timeout=600,
             cpus=self.docker_cpus,
-            env=env or None,
+            env={"PYTEST_ADDOPTS": addopts},
             run_args=[*DOCKER_RUN_ARGS, "--init"],
         )
 
@@ -462,6 +464,21 @@ class Evaluator:
             timeout=300,
         )
         self.result.executable_hash = r["output"].split()[0]
+        # Best-effort: install pytest-rerunfailures so per-test reruns can
+        # absorb flakes inside a single branch run. Installing during compile
+        # bakes it into the committed image so per-branch containers inherit
+        # it without re-installing. Failures are accepted (no pip3, no
+        # network, ...): we just don't get --reruns and rely on
+        # --max-worker-restart + branch_retries.
+        rerun_install = self._run_step(
+            "pip3 install -q --disable-pip-version-check pytest-rerunfailures",
+            env=env,
+            log_buf=log_buf,
+            step_name="install_rerunfailures",
+            accept_failure=True,
+            timeout=120,
+        )
+        self._has_rerunfailures = rerun_install["returncode"] == 0
 
     def _restore_executable(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
         if self.result.executable_hash is None:
@@ -521,8 +538,18 @@ class Evaluator:
                 step_name="clean_stale_results",
                 timeout=120,
             )
+            run_cmd = "chmod +x ./eval/run.sh && ./eval/run.sh"
+            if self._has_rerunfailures:
+                # Tighten flake recovery inside one run: pytest-rerunfailures
+                # retries individual failed tests up to 2x with a 1s delay.
+                # Augmenting at exec time (not container creation) lets us
+                # re-use the committed image for every branch.
+                run_cmd = (
+                    'export PYTEST_ADDOPTS="$PYTEST_ADDOPTS --reruns=2 --reruns-delay=1" && '
+                    + run_cmd
+                )
             self._run_step(
-                "chmod +x ./eval/run.sh && ./eval/run.sh",
+                run_cmd,
                 env=env,
                 log_buf=log_buf,
                 step_name="run_tests",
