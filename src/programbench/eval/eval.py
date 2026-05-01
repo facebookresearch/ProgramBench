@@ -361,20 +361,28 @@ class Evaluator:
             log.debug("Output: %s", r["output"])
         return r
 
-    def _new_env(self, image: str) -> ContainerEnvironment:
+    def _new_env(self, image: str, *, serial_pytest: bool = False) -> ContainerEnvironment:
         # Baseline xdist hardening that always works (xdist ships with
         # every test image): replace up to N crashed workers per branch so
         # a single OOM doesn't drop the rest of that worker's queue.
         # --reruns is added on top in _run_test_branch when
         # pytest-rerunfailures was successfully installed during compile.
+        #
+        # When serial_pytest=True (used on retry after a crash), force
+        # PYTEST_XDIST_AUTO_NUM_WORKERS=1 so any `pytest -n auto` in the
+        # branch's run.sh resolves to one worker — eliminating xdist
+        # contention as a recurring crash cause.
         addopts = "--max-worker-restart=4"
+        env = {"PYTEST_ADDOPTS": addopts}
+        if serial_pytest:
+            env["PYTEST_XDIST_AUTO_NUM_WORKERS"] = "1"
         return ContainerEnvironment(
             image=image,
             cwd=WORKSPACE_DIR,
             executable=DOCKER_EXECUTABLE,
             timeout=600,
             cpus=self.docker_cpus,
-            env={"PYTEST_ADDOPTS": addopts},
+            env=env,
             run_args=[*DOCKER_RUN_ARGS, "--init"],
         )
 
@@ -515,13 +523,17 @@ class Evaluator:
             errors[0].error_details if errors else "",
         )
 
-    def _run_test_branch(self, branch: str, image: str, log_buf: list[dict]) -> str:
+    def _run_test_branch(self, branch: str, image: str, log_buf: list[dict], *, serial_pytest: bool = False) -> str:
         """Spin up a fresh container from `image`, run one branch's tests, return XML.
 
         Steps are appended to ``log_buf`` as they run, so a partial log survives
         an EvalStepError raised mid-way (caller still sees what executed).
+
+        When ``serial_pytest`` is True, the container forces xdist to one
+        worker via PYTEST_XDIST_AUTO_NUM_WORKERS=1. Used on retry after a
+        worker crash so the same OOM/contention pattern doesn't repeat.
         """
-        env = self._new_env(image)
+        env = self._new_env(image, serial_pytest=serial_pytest)
         try:
             # No wipe: each container boots fresh from the post-compile image, so
             # build artefacts (e.g. /workspace/build/xz) need to survive into the
@@ -582,13 +594,14 @@ class Evaluator:
         attempts_left = self.branch_retries if self._from_existing is None else 0
         best_xml: str | None = None
         best_crashes: int | None = None
+        serial_retry = False  # flips on after the first attempt that saw a crash
         while True:
             attempt_log: list[dict] = []
             try:
                 if self._from_existing is not None:
                     raw_xml = self._get_xml_from_log(branch)
                 else:
-                    raw_xml = self._run_test_branch(branch, image, attempt_log)
+                    raw_xml = self._run_test_branch(branch, image, attempt_log, serial_pytest=serial_retry)
             except EvalStepError as e:
                 local_log.extend(attempt_log)
                 if best_xml is not None:
@@ -620,7 +633,11 @@ class Evaluator:
                         tag, best_crashes,
                     )
                 break
-            log.warning("%s: %d xdist worker crash(es) detected; retrying (%d left)", tag, crashes, attempts_left)
+            log.warning(
+                "%s: %d xdist worker crash(es) detected; retrying serially (%d left)",
+                tag, crashes, attempts_left,
+            )
+            serial_retry = True
             attempts_left -= 1
         results, warnings = _process_branch_xml(
             raw_xml,
