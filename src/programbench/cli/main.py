@@ -36,7 +36,7 @@ def eval(
         "PYTEST_XDIST_AUTO_NUM_WORKERS inside the container.",
     ),
     branch_retries: int = typer.Option(
-        3,
+        1,
         "--branch-retries",
         help="On a test branch whose JUnit XML reports a pytest-xdist worker "
         "crash, re-run the branch up to this many times in a fresh container. "

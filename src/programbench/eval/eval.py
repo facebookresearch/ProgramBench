@@ -286,7 +286,7 @@ class Evaluator:
         instance_id: str = "",
         docker_cpus: int = DOCKER_CPUS,
         branch_workers: int = 1,
-        branch_retries: int = 3,
+        branch_retries: int = 1,
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch

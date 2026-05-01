@@ -222,7 +222,7 @@ def _evaluate_instance(
     image_tag: str = "task",
     docker_cpus: int = DOCKER_CPUS,
     branch_workers: int = 1,
-    branch_retries: int = 3,
+    branch_retries: int = 1,
 ) -> InstanceEvalSummary | None:
     """Evaluate a single instance."""
     from programbench.utils.load_data import get_active_branches, get_ignored_branches, get_ignored_tests
@@ -366,7 +366,7 @@ def run_eval_batch(
     summarize_only: bool = False,
     image_tag: str = "task",
     output: str | Path = "",
-    branch_retries: int = 3,
+    branch_retries: int = 1,
 ) -> None:
     from programbench.utils.load_data import load_all_instances
 
