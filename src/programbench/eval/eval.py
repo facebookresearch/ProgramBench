@@ -97,6 +97,22 @@ def count_worker_crashes(raw_xml: str) -> int:
     return n
 
 
+def count_testcases(raw_xml: str) -> int:
+    """Total <testcase> count in the JUnit XML (0 on parse error / empty input).
+
+    Used to surface variance across retry attempts: even if crashes stay
+    non-zero, the testcase count tells us how many tests xdist actually
+    managed to dispatch on each attempt.
+    """
+    if not raw_xml.strip():
+        return 0
+    try:
+        root = ET.fromstring(raw_xml)
+    except ET.ParseError:
+        return 0
+    return sum(1 for _ in root.iter("testcase"))
+
+
 def _process_branch_xml(
     raw_xml: str,
     branch: str,
@@ -595,6 +611,7 @@ class Evaluator:
         best_xml: str | None = None
         best_crashes: int | None = None
         serial_retry = False  # flips on after the first attempt that saw a crash
+        attempt_history: list[tuple[int, int]] = []  # (crashes, total testcases) per attempt
         while True:
             attempt_log: list[dict] = []
             try:
@@ -623,19 +640,38 @@ class Evaluator:
 
             local_log.extend(attempt_log)
             crashes = count_worker_crashes(raw_xml)
+            n_tests = count_testcases(raw_xml)
+            attempt_history.append((crashes, n_tests))
             if best_xml is None or crashes < best_crashes:
                 best_xml, best_crashes = raw_xml, crashes
             if crashes == 0 or attempts_left <= 0:
                 raw_xml = best_xml
-                if best_crashes:
-                    log.warning(
-                        "%s: keeping best attempt with %d worker crashes (no retries left)",
-                        tag, best_crashes,
-                    )
+                if len(attempt_history) > 1:
+                    seq = ", ".join(f"{c}/{n}" for c, n in attempt_history)
+                    if best_crashes == 0:
+                        log.info(
+                            "%s: recovered after %d retr%s — crashes/tests by attempt: %s",
+                            tag, len(attempt_history) - 1,
+                            "y" if len(attempt_history) == 2 else "ies",
+                            seq,
+                        )
+                    else:
+                        crash_counts = [c for c, _ in attempt_history]
+                        n_counts = [n for _, n in attempt_history]
+                        log.warning(
+                            "%s: did not fully recover after %d retr%s — kept best-of-%d "
+                            "with %d crashes (crashes by attempt: %s; tests by attempt: %s, "
+                            "min=%d max=%d spread=%d)",
+                            tag, len(attempt_history) - 1,
+                            "y" if len(attempt_history) == 2 else "ies",
+                            len(attempt_history), best_crashes,
+                            crash_counts, n_counts,
+                            min(n_counts), max(n_counts), max(n_counts) - min(n_counts),
+                        )
                 break
             log.warning(
-                "%s: %d xdist worker crash(es) detected; retrying serially (%d left)",
-                tag, crashes, attempts_left,
+                "%s: %d xdist worker crash(es) detected (testcases=%d); retrying serially (%d left)",
+                tag, crashes, n_tests, attempts_left,
             )
             serial_retry = True
             attempts_left -= 1
