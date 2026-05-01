@@ -36,11 +36,11 @@ def eval(
         "PYTEST_XDIST_AUTO_NUM_WORKERS inside the container.",
     ),
     branch_retries: int = typer.Option(
-        0,
+        3,
         "--branch-retries",
         help="On a test branch whose JUnit XML reports a pytest-xdist worker "
         "crash, re-run the branch up to this many times in a fresh container. "
-        "The attempt with the fewest crashes wins.",
+        "The attempt with the fewest crashes wins. Pass 0 to disable.",
     ),
     force: bool = typer.Option(False, "-f", "--force", help="Re-evaluate even if results exist"),
     filter_spec: str = typer.Option("", "--filter", help="Filter instance IDs by regex"),
