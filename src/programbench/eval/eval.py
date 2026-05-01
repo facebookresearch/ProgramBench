@@ -609,7 +609,8 @@ class Evaluator:
         local_log: list[dict] = []
         attempts_left = self.branch_retries if self._from_existing is None else 0
         best_xml: str | None = None
-        best_crashes: int | None = None
+        best_crashes = 0
+        best_n_tests = 0
         serial_retry = False  # flips on after the first attempt that saw a crash
         attempt_history: list[tuple[int, int]] = []  # (crashes, total testcases) per attempt
         while True:
@@ -642,8 +643,17 @@ class Evaluator:
             crashes = count_worker_crashes(raw_xml)
             n_tests = count_testcases(raw_xml)
             attempt_history.append((crashes, n_tests))
-            if best_xml is None or crashes < best_crashes:
-                best_xml, best_crashes = raw_xml, crashes
+            # "Best" = most non-crashed testcases. This balances both failure
+            # modes: parallel mode that keeps a few crashes but reports the
+            # full test list (1/131 → 130 useful) usually beats serial mode
+            # that has zero crashes but loses tests entirely (0/83 → 83
+            # useful). When serial mode does deliver more usable tests
+            # (contention cases), it wins on its own merit.
+            useful = n_tests - crashes
+            if best_xml is None or useful > best_n_tests - best_crashes:
+                best_xml = raw_xml
+                best_crashes = crashes
+                best_n_tests = n_tests
             if crashes == 0 or attempts_left <= 0:
                 raw_xml = best_xml
                 if len(attempt_history) > 1:
@@ -658,14 +668,15 @@ class Evaluator:
                     else:
                         crash_counts = [c for c, _ in attempt_history]
                         n_counts = [n for _, n in attempt_history]
+                        useful_counts = [n - c for c, n in attempt_history]
                         log.warning(
                             "%s: did not fully recover after %d retr%s — kept best-of-%d "
-                            "with %d crashes (crashes by attempt: %s; tests by attempt: %s, "
-                            "min=%d max=%d spread=%d)",
+                            "with %d crashes / %d useful tests (crashes by attempt: %s; "
+                            "tests by attempt: %s, useful: %s, min=%d max=%d spread=%d)",
                             tag, len(attempt_history) - 1,
                             "y" if len(attempt_history) == 2 else "ies",
-                            len(attempt_history), best_crashes,
-                            crash_counts, n_counts,
+                            len(attempt_history), best_crashes, best_n_tests - best_crashes,
+                            crash_counts, n_counts, useful_counts,
                             min(n_counts), max(n_counts), max(n_counts) - min(n_counts),
                         )
                 break
