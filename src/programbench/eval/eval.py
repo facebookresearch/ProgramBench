@@ -598,7 +598,7 @@ class Evaluator:
                 env=env,
                 log_buf=log_buf,
                 step_name="results_read",
-                timeout=60,
+                timeout=300,
             )
             log_buf[-1]["branch"] = branch
             return r["output"]
