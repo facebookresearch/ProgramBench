@@ -58,7 +58,7 @@ def eval(
     """Evaluate submissions against test suites.
 
     Accepts one or more paths to run directories containing
-    <instance_id>/submission.zip.
+    <instance_id>/submission.tar.gz.
 
     \b
     Examples:

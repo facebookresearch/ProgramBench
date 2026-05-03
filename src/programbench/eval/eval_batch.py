@@ -275,9 +275,9 @@ def _evaluate_instance(
                 existing_result = None
 
     try:
-        submission_zip = source_dir / instance_id / "submission.zip"
-        if not submission_zip.exists():
-            log.warning("Skipping %s (no submission.zip)", instance_id)
+        submission_archive = source_dir / instance_id / "submission.tar.gz"
+        if not submission_archive.exists():
+            log.warning("Skipping %s (no submission.tar.gz)", instance_id)
             return InstanceEvalSummary(
                 instance_id=instance_id,
                 score=0.0,
@@ -296,7 +296,7 @@ def _evaluate_instance(
         evaluator = Evaluator(
             image_name=instance["image_name"],
             solution_branch="submission",
-            submission_zip=submission_zip,
+            submission_archive=submission_archive,
             blob_dir=get_blob_dir(instance_id),
             tests_branches=branches_to_eval,
             remove_hashes=instance.get("eval_clean_hashes", []),
@@ -387,7 +387,9 @@ def run_eval_batch(
         source_dir = Path(source)
         target_dir = output_root / source_dir.name if output_root else source_dir
         log.info("Running in run directory mode: %s -> %s", source_dir, target_dir)
-        instance_ids = [d.name for d in sorted(source_dir.iterdir()) if d.is_dir() and (d / "submission.zip").exists()]
+        instance_ids = [
+            d.name for d in sorted(source_dir.iterdir()) if d.is_dir() and (d / "submission.tar.gz").exists()
+        ]
         instance_ids = [iid for iid in instance_ids if iid in instance_lookup]
         for iid in instance_ids:
             work_items.append((source_dir, target_dir, iid))

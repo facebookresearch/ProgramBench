@@ -263,8 +263,8 @@ class EvaluationResult(BaseModel):
 class Evaluator:
     """Evaluate a solution by compiling it and running tests in a Docker container.
 
-    Unzips submission.zip into the container workspace, runs compile.sh, then
-    runs each test branch's suite.
+    Extracts submission.tar.gz into the container workspace, runs compile.sh,
+    then runs each test branch's suite.
     """
 
     _stashed_executable = "/opt/programbench-stashed-executable-do-not-modify"
@@ -278,7 +278,7 @@ class Evaluator:
         ignored_branches: set[str] | None = None,
         image_name: str = "",
         solution_branch: str = "",
-        submission_zip: Path | None = None,
+        submission_archive: Path | None = None,
         blob_dir: Path | None = None,
         remove_hashes: list[str] | None = None,
         image_tag: str = "task",
@@ -290,7 +290,7 @@ class Evaluator:
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
-        self.submission_zip = submission_zip
+        self.submission_archive = submission_archive
         self.blob_dir = blob_dir
         self.tests_branches = tests_branches
         self.remove_hashes = remove_hashes or []
@@ -416,10 +416,9 @@ class Evaluator:
         )
 
     def _compile_executable(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
-        """Wipe workspace, copy in unzipped submission, run compile.sh."""
-        import os
+        """Wipe workspace, copy in extracted submission, run compile.sh."""
+        import tarfile
         import tempfile
-        import zipfile
 
         self._run_step(
             f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
@@ -428,15 +427,11 @@ class Evaluator:
             step_name="wipe_workspace",
             timeout=300,
         )
-        assert self.submission_zip is not None
+        assert self.submission_archive is not None
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
-            with zipfile.ZipFile(self.submission_zip) as zf:
-                for info in zf.infolist():
-                    extracted = zf.extract(info, tmp_path)
-                    mode = (info.external_attr >> 16) & 0o7777
-                    if mode and not info.is_dir():
-                        os.chmod(extracted, mode)
+            with tarfile.open(self.submission_archive, "r:*") as tf:
+                tf.extractall(tmp_path)
             env.copy_in(tmp_path, f"{WORKSPACE_DIR}/")
         self._remove_hashed_files(env, log_buf)
         # Seed a synthetic git repo if the submission didn't ship one. Build
