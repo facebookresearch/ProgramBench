@@ -416,10 +416,7 @@ class Evaluator:
         )
 
     def _compile_executable(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
-        """Wipe workspace, copy in extracted submission, run compile.sh."""
-        import tarfile
-        import tempfile
-
+        """Wipe workspace, stream submission archive in, run compile.sh."""
         self._run_step(
             f"rm -rf {WORKSPACE_DIR}/* {WORKSPACE_DIR}/.[!.]*",
             env=env,
@@ -428,11 +425,7 @@ class Evaluator:
             timeout=300,
         )
         assert self.submission_archive is not None
-        with tempfile.TemporaryDirectory() as tmp:
-            tmp_path = Path(tmp)
-            with tarfile.open(self.submission_archive, "r:*") as tf:
-                tf.extractall(tmp_path)
-            env.copy_in(tmp_path, f"{WORKSPACE_DIR}/")
+        env.copy_in_tar(self.submission_archive, f"{WORKSPACE_DIR}/")
         self._remove_hashed_files(env, log_buf)
         # Seed a synthetic git repo if the submission didn't ship one. Build
         # scripts that depend on a working tree (jq submodules, calcurse's

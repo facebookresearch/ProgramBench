@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import typer
 
 from programbench.cli.blob import app as blob_app
@@ -86,3 +88,32 @@ def eval(
         output=output,
         branch_retries=branch_retries,
     )
+
+
+@app.command()
+def info(
+    run_dir: Path = typer.Argument(..., help="Run directory containing <instance_id>/<instance_id>.eval.json"),
+) -> None:
+    """Print scores and warnings for an evaluated run directory.
+
+    \b
+    Examples:
+        programbench info ~/gold-eval-9/gold
+        programbench info output/run_name
+    """
+    from rich.console import Console
+
+    from programbench.eval.eval import EvaluationResult
+    from programbench.eval.eval_batch import BatchEvalSummary, InstanceEvalSummary
+
+    eval_paths = sorted(run_dir.glob("*/*.eval.json"))
+    if not eval_paths:
+        raise typer.BadParameter(f"No <iid>/<iid>.eval.json files found under {run_dir}")
+
+    summaries: list[InstanceEvalSummary] = []
+    for p in eval_paths:
+        result = EvaluationResult.model_validate_json(p.read_text())
+        summaries.append(InstanceEvalSummary.from_eval_result(p.parent.name, result))
+
+    console = Console()
+    console.print(BatchEvalSummary(summaries=summaries).summary())
