@@ -426,6 +426,7 @@ class Evaluator:
             env=env,
             log_buf=log_buf,
             step_name="wipe_workspace",
+            timeout=300,
         )
         assert self.submission_zip is not None
         with tempfile.TemporaryDirectory() as tmp:
