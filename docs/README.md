@@ -36,7 +36,7 @@ my-amazing-agent-run
 ├── ...
 ```
 
-All of the baslines from our paper were obtained with [mini-swe-agent](https://github.com/swe-agent/mini-swe-agent/) with a framework similar to [swebench.py](https://github.com/SWE-agent/mini-swe-agent/blob/main/src/minisweagent/run/benchmarks/swebench.py).
+All of the baselines from our paper were obtained with [mini-swe-agent](https://github.com/swe-agent/mini-swe-agent/) with a framework similar to [swebench.py](https://github.com/SWE-agent/mini-swe-agent/blob/main/src/minisweagent/run/benchmarks/swebench.py).
 We expect to release our baseline system in `mini-swe-agent` this week.
 
 ## Evaluation
