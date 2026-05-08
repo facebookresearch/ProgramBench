@@ -96,6 +96,42 @@ def eval(
     )
 
 
+@app.command("audit-cleanroom-docs")
+def audit_cleanroom_docs(
+    targets: list[str] = typer.Argument(
+        ...,
+        help="Cleanroom image refs or ProgramBench instance IDs to audit",
+    ),
+    image_tag: str = typer.Option("task_cleanroom", "--image-tag", help="Image tag to use for instance IDs"),
+    timeout: float = typer.Option(60, "--timeout", help="Per registry request timeout in seconds"),
+) -> None:
+    """Check cleanroom images for documentation directories."""
+    from rich.console import Console
+
+    from programbench.constants import image_name_from_instance_id
+    from programbench.utils.cleanroom_audit import audit_cleanroom_image
+
+    console = Console()
+    failed = False
+    for target in targets:
+        image = target if "/" in target else f"{image_name_from_instance_id(target)}:{image_tag}"
+        audit = audit_cleanroom_image(image, timeout=timeout)
+        status = "ok" if audit.ok else "missing-docs"
+        console.print(f"{image}: {status}")
+        console.print(f"  documentation entries: {len(audit.doc_entries)}")
+        console.print(f"  README-like entries: {', '.join(audit.readme_entries) or '-'}")
+        console.print(f"  LICENSE-like entries: {', '.join(audit.license_entries) or '-'}")
+        for whiteout in audit.doc_whiteouts:
+            console.print(
+                f"  doc whiteout: layer {whiteout.layer} {whiteout.path} "
+                f"removed {whiteout.target} ({whiteout.removed_paths} tracked paths)"
+            )
+        failed = failed or not audit.ok
+
+    if failed:
+        raise typer.Exit(1)
+
+
 @app.command()
 def info(
     run_dir: Path = typer.Argument(..., help="Run directory containing <instance_id>/<instance_id>.eval.json"),
