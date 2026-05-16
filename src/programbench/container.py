@@ -6,13 +6,51 @@
 
 import logging
 import subprocess
+import tempfile
+import time
 import uuid
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 from programbench.constants import DOCKER_CP_TIMEOUT, DOCKER_RUN_TIMEOUT
 
 log = logging.getLogger(__name__)
+
+
+class Environment(Protocol):
+    """The minimal surface ``Evaluator`` needs from a per-task container.
+
+    Implementations don't have to inherit from this — duck-typed protocols
+    are fine — but you do have to provide every method below. ``cwd`` and
+    ``default_timeout`` are read directly by ``Evaluator`` so they need to
+    be regular attributes.
+    """
+
+    cwd: str
+    default_timeout: int
+
+    def execute(self, command: str, *, timeout: int | None = None) -> dict[str, Any]: ...
+    def copy_in(self, local_path: Path, container_path: str) -> None: ...
+    def copy_in_tar(self, tar_path: Path, container_path: str) -> None: ...
+    def copy_out(self, container_path: str, *, timeout: int = 60) -> tuple[str, str]: ...
+    def commit(self, image_ref: str) -> str: ...
+    def cleanup(self) -> None: ...
+
+
+class ContainerBackend(Protocol):
+    """Factory that produces ``Environment`` instances for the Evaluator.
+
+    The Evaluator asks the backend for one ``Environment`` per phase
+    (compile, then one per test branch). The default implementation
+    (:class:`DockerBackend`) returns :class:`ContainerEnvironment` —
+    i.e., real Docker containers. Custom backends can swap in
+    non-Docker isolation (firecracker VMs, gVisor sandboxes, no
+    isolation at all if you trust the input, etc.).
+    """
+
+    def new_env(self, image: str, *, cwd: str, timeout: int, cpus: int,
+                env: dict[str, str] | None, run_args: list[str] | None) -> Environment: ...
+    def remove_image(self, image_ref: str) -> None: ...
 
 
 class ContainerEnvironment:
@@ -116,6 +154,32 @@ class ContainerEnvironment:
         if result.returncode != 0:
             raise RuntimeError(f"docker cp failed: {result.stderr.strip()}")
 
+    def copy_out(self, container_path: str, *, timeout: int = 60) -> tuple[str, str]:
+        """Read a file out of the container via ``docker cp``.
+
+        Returns ``(contents, command_string)``. The command string is
+        included so callers (notably :meth:`Evaluator._copy_file_from_container`)
+        can record it in their step logs without having to know the
+        backend's wire format. Raises ``RuntimeError`` with the
+        underlying stderr (or ``"... timed out after Ns"``) on failure.
+
+        Bypasses bash so login-shell stderr (``mesg: ttyname failed`` etc.)
+        can't pollute the bytes the way ``cat <file>`` would.
+        """
+        host_tmp = Path(tempfile.mkstemp(suffix=Path(container_path).suffix or ".out")[1])
+        cmd_list = [self.executable, "cp", f"{self.container_id}:{container_path}", str(host_tmp)]
+        cmd_str = " ".join(cmd_list)
+        try:
+            try:
+                cp = subprocess.run(cmd_list, capture_output=True, text=True, timeout=timeout)
+            except subprocess.TimeoutExpired:
+                raise RuntimeError(f"docker cp timed out after {timeout}s")
+            if cp.returncode != 0:
+                raise RuntimeError((cp.stdout + cp.stderr).strip())
+            return host_tmp.read_text(), cmd_str
+        finally:
+            host_tmp.unlink(missing_ok=True)
+
     def copy_in_tar(self, tar_path: Path, container_path: str) -> None:
         """Stream an on-disk tar(.gz) into the container via the container's tar.
 
@@ -206,3 +270,38 @@ def remove_image(image_ref: str, *, executable: str = "docker") -> None:
         )
     except Exception:
         pass
+
+
+class DockerBackend:
+    """The default ``ContainerBackend``: spawns real Docker containers.
+
+    Drop-in for any callsite that previously instantiated
+    :class:`ContainerEnvironment` directly — same args, same behavior.
+    """
+
+    def __init__(self, *, executable: str = "docker", run_args: list[str] | None = None):
+        self.executable = executable
+        self.default_run_args = list(run_args or [])
+
+    def new_env(
+        self,
+        image: str,
+        *,
+        cwd: str = "/",
+        timeout: int = 30,
+        cpus: int = 10,
+        env: dict[str, str] | None = None,
+        run_args: list[str] | None = None,
+    ) -> ContainerEnvironment:
+        return ContainerEnvironment(
+            image=image,
+            cwd=cwd,
+            executable=self.executable,
+            timeout=timeout,
+            cpus=cpus,
+            env=env,
+            run_args=list(self.default_run_args) + list(run_args or []),
+        )
+
+    def remove_image(self, image_ref: str) -> None:
+        remove_image(image_ref, executable=self.executable)

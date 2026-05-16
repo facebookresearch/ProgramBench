@@ -20,8 +20,6 @@ Do not remove this notice.
 """
 
 import logging
-import subprocess
-import tempfile
 import threading
 import time
 import uuid
@@ -40,7 +38,7 @@ from programbench.constants import (
     DOCKER_RUN_ARGS,
     WORKSPACE_DIR,
 )
-from programbench.container import ContainerEnvironment, remove_image
+from programbench.container import ContainerBackend, ContainerEnvironment, DockerBackend
 from programbench.exceptions import EmptyTestResultError, EvalStepError, XmlParseError
 
 log = logging.getLogger(__name__)
@@ -295,6 +293,7 @@ class Evaluator:
         docker_cpus: int = DOCKER_CPUS,
         branch_workers: int = 1,
         branch_retries: int = 1,
+        backend: ContainerBackend | None = None,
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -310,6 +309,7 @@ class Evaluator:
         self.docker_cpus = docker_cpus
         self.branch_workers = max(1, branch_workers)
         self.branch_retries = max(0, branch_retries)
+        self.backend = backend or DockerBackend(executable=DOCKER_EXECUTABLE, run_args=list(DOCKER_RUN_ARGS))
         self._has_rerunfailures = False
         self._log_lock = threading.Lock()
         self._from_existing = from_existing
@@ -394,52 +394,38 @@ class Evaluator:
         step_name: str,
         timeout: int = 60,
     ) -> str:
-        """Copy a file out of the container via ``docker cp`` and return its contents.
+        """Copy a file out of the container and return its contents.
 
-        Bypasses bash so login-shell stderr (``mesg: ttyname failed`` etc.) can't
-        pollute the bytes the way ``cat <file>`` would. Logs to ``log_buf`` with
-        the same shape as ``_run_step``; on success the entry's ``output`` holds
-        the file contents so ``from_existing`` replay keeps working.
+        Delegates to ``env.copy_out``; the backend decides how to fetch the
+        bytes (Docker's ``docker cp``, a non-Docker backend's filesystem
+        read, etc.). Logs to ``log_buf`` with the same shape as
+        ``_run_step``; on success the entry's ``output`` holds the file
+        contents so ``from_existing`` replay keeps working.
         """
-        host_tmp = Path(tempfile.mkstemp(suffix=Path(container_path).suffix or ".out")[1])
-        cmd_list = [env.executable, "cp", f"{env.container_id}:{container_path}", str(host_tmp)]
-        cmd_str = " ".join(cmd_list)
-        log.debug("Running step: %s", cmd_str)
         t0 = time.monotonic()
         try:
-            try:
-                cp = subprocess.run(cmd_list, capture_output=True, text=True, timeout=timeout)
-                rc = cp.returncode
-                err = (cp.stdout + cp.stderr).strip()
-            except subprocess.TimeoutExpired:
-                rc, err = -1, f"docker cp timed out after {timeout}s"
+            contents, cmd_str = env.copy_out(container_path, timeout=timeout)
+        except RuntimeError as exc:
             wall_time = time.monotonic() - t0
-            if rc != 0:
-                log_buf.append(
-                    {
-                        "step": step_name,
-                        "command": cmd_str,
-                        "wall_time": wall_time,
-                        "output": err,
-                        "returncode": rc,
-                        "exception_info": "",
-                    }
-                )
-                raise EvalStepError(f"{step_name}_failed", err)
-            contents = host_tmp.read_text()
-            log_buf.append(
-                {
-                    "step": step_name,
-                    "command": cmd_str,
-                    "wall_time": wall_time,
-                    "output": contents,
-                    "returncode": 0,
-                    "exception_info": "",
-                }
-            )
-            return contents
-        finally:
-            host_tmp.unlink(missing_ok=True)
+            log_buf.append({
+                "step": step_name,
+                "command": f"copy_out({container_path})",
+                "wall_time": wall_time,
+                "output": str(exc),
+                "returncode": -1,
+                "exception_info": "",
+            })
+            raise EvalStepError(f"{step_name}_failed", str(exc))
+        wall_time = time.monotonic() - t0
+        log_buf.append({
+            "step": step_name,
+            "command": cmd_str,
+            "wall_time": wall_time,
+            "output": contents,
+            "returncode": 0,
+            "exception_info": "",
+        })
+        return contents
 
     def _new_env(self, image: str, *, serial_pytest: bool = False) -> ContainerEnvironment:
         # Baseline xdist hardening that always works (xdist ships with
@@ -456,14 +442,13 @@ class Evaluator:
         env = {"PYTEST_ADDOPTS": addopts}
         if serial_pytest:
             env["PYTEST_XDIST_AUTO_NUM_WORKERS"] = "1"
-        return ContainerEnvironment(
-            image=image,
+        return self.backend.new_env(
+            image,
             cwd=WORKSPACE_DIR,
-            executable=DOCKER_EXECUTABLE,
             timeout=600,
             cpus=self.docker_cpus,
             env=env,
-            run_args=[*DOCKER_RUN_ARGS, "--init"],
+            run_args=["--init"],
         )
 
     def _remove_hashed_files(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
@@ -839,7 +824,7 @@ class Evaluator:
             if compile_env is not None:
                 compile_env.cleanup()
             if committed_image is not None:
-                remove_image(committed_image, executable=DOCKER_EXECUTABLE)
+                self.backend.remove_image(committed_image)
 
 
 def parse_test_results(results_xml: str, branch: str = "") -> EvaluationResult:
