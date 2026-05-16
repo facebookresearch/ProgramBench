@@ -1,5 +1,9 @@
 on: [pull_request]
 name: Check Markdown links in modified files
+
+permissions:
+  contents: read
+
 jobs:
   markdown-link-check:
     runs-on: ubuntu-latest
