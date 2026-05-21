@@ -13,6 +13,7 @@ Given only a compiled binary and its documentation, AI agents must architect and
 - [HuggingFace](https://huggingface.co/datasets/programbench/ProgramBench-Tests)
 - [Leaderboard](https://programbench.com)
 - [Usage Guide](docs/README.md)
+- [mini-swe-agent baseline](https://mini-swe-agent.com/latest/usage/programbench/)
 
 ## Quickstart
 
@@ -39,6 +40,16 @@ uv sync  # installs editable + dev dependencies
 
 > [!NOTE]
 > For more details, please refer to the [Usage Guide](docs/README.md).
+
+To run our baseline:
+
+```bash
+uvx --from mini-swe-agent mini-extra programbench --help
+# or
+pip install mini-swe-agent && mini-extra programbench --help
+```
+
+See the [mini-swe-agent baseline docs](https://mini-swe-agent.com/latest/usage/programbench/) for details.
 
 ## Citation
 
