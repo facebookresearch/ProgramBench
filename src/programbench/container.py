@@ -89,6 +89,37 @@ class ContainerEnvironment:
                 "exception_info": "",
             }
         except subprocess.TimeoutExpired:
+            # When subprocess.run hits its host-side timeout, Python SIGKILLs
+            # the local `docker exec` CLI. The docker daemon does not
+            # propagate that into the container (only SIGINT/SIGTERM
+            # propagate gracefully), so the process spawned inside the
+            # container keeps running. With sleep-as-PID-1 cleanrooms it
+            # never gets reaped and competes with the next docker exec call.
+            #
+            # Sweep the in-container processes by SIGKILL-ing every non-
+            # PID-1 process. Safe here because the cleanroom's only PID-1
+            # process is the long-lived `sleep` that keeps the container
+            # alive; everything else is the test subprocess tree we just
+            # spawned. Bounded with a short timeout so a stuck daemon
+            # cannot wedge us a second time.
+            try:
+                subprocess.run(
+                    [
+                        self.executable,
+                        "exec",
+                        self.container_id,
+                        "bash",
+                        "-c",
+                        "kill -KILL -1 2>/dev/null; sleep 0.2; kill -KILL -1 2>/dev/null; true",
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
+                )
+            except Exception as e:
+                log.warning(
+                    "in-container teardown after execute() timeout failed: %s", e
+                )
             return {
                 "output": "",
                 "returncode": -1,
