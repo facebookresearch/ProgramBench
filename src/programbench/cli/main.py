@@ -9,7 +9,7 @@ from pathlib import Path
 import typer
 
 from programbench.cli.blob import app as blob_app
-from programbench.constants import DOCKER_CPUS
+from programbench.constants import DOCKER_CPUS, DOCKER_EXECUTABLE
 
 app = typer.Typer(
     name="programbench",
@@ -140,3 +140,55 @@ def info(
 
     console = Console()
     console.print(BatchEvalSummary(summaries=summaries).summary())
+
+
+@app.command()
+def audit_cleanroom(
+    instance_ids: list[str] = typer.Argument(
+        default=None,
+        help="Instance IDs to audit (omit for all).",
+    ),
+    image_tag: str = typer.Option("task_cleanroom", "--image-tag", help="Image tag to inspect"),
+) -> None:
+    """Check cleanroom images for leaked files that agents could exploit.
+
+    Detects executables or other unexpected files left in /tmp or /var/tmp
+    by the image build pipeline (see issue #14).
+
+    \b
+    Examples:
+        programbench audit-cleanroom
+        programbench audit-cleanroom bellard__quickjs.d7ae12a
+    """
+    import subprocess
+
+    from rich.console import Console
+
+    from programbench.constants import DOCKER_RUN_TIMEOUT, image_name_from_instance_id
+    from programbench.utils.load_data import load_all_instances
+
+    if instance_ids:
+        ids = instance_ids
+    else:
+        ids = [i["instance_id"] for i in load_all_instances(include_tests=False)]
+
+    console = Console()
+    found = 0
+    for iid in sorted(ids):
+        image = f"{image_name_from_instance_id(iid)}:{image_tag}"
+        try:
+            r = subprocess.run(
+                [DOCKER_EXECUTABLE, "run", "--rm", image, "find", "/tmp", "/var/tmp", "-type", "f"],
+                capture_output=True, text=True, timeout=DOCKER_RUN_TIMEOUT,
+            )
+        except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+            console.print(f"[yellow]{iid}[/]: {e}")
+            continue
+        files = r.stdout.strip()
+        if files:
+            found += 1
+            console.print(f"[red]{iid}[/]: leaked files in cleanroom:\n{files}")
+        else:
+            console.print(f"[green]{iid}[/]: clean")
+    if found:
+        raise typer.Exit(1)
