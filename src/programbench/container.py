@@ -35,6 +35,14 @@ class ContainerEnvironment:
         self.cpus = cpus
         self._name = f"programbench-{uuid.uuid4().hex[:12]}"
         run_args = list(run_args or [])
+        memory = os.environ.get("PROGRAMBENCH_DOCKER_MEMORY", "20g").strip()
+        memory_swap = os.environ.get("PROGRAMBENCH_DOCKER_MEMORY_SWAP", memory).strip()
+        has_memory_arg = any(arg in {"--memory", "-m"} or arg.startswith("--memory=") for arg in run_args)
+        has_memory_swap_arg = any(arg == "--memory-swap" or arg.startswith("--memory-swap=") for arg in run_args)
+        if memory and not has_memory_arg:
+            run_args.extend(["--memory", memory])
+        if memory_swap and not has_memory_swap_arg:
+            run_args.extend(["--memory-swap", memory_swap])
         env_dict = {"PYTEST_XDIST_AUTO_NUM_WORKERS": str(cpus), **(env or {})}
         env_args: list[str] = []
         for key, value in env_dict.items():
