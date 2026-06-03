@@ -9,6 +9,7 @@ import subprocess
 import uuid
 from pathlib import Path
 from typing import Any
+import os
 
 from programbench.constants import DOCKER_CP_TIMEOUT, DOCKER_RUN_TIMEOUT
 
@@ -35,7 +36,7 @@ class ContainerEnvironment:
         self.cpus = cpus
         self._name = f"programbench-{uuid.uuid4().hex[:12]}"
         run_args = list(run_args or [])
-        memory = os.environ.get("PROGRAMBENCH_DOCKER_MEMORY", "20g").strip()
+        memory = os.environ.get("PROGRAMBENCH_DOCKER_MEMORY", "60g").strip()
         memory_swap = os.environ.get("PROGRAMBENCH_DOCKER_MEMORY_SWAP", memory).strip()
         has_memory_arg = any(arg in {"--memory", "-m"} or arg.startswith("--memory=") for arg in run_args)
         has_memory_swap_arg = any(arg == "--memory-swap" or arg.startswith("--memory-swap=") for arg in run_args)
