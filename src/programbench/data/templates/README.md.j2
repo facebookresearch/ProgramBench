@@ -1,0 +1,78 @@
+<p align="center">
+  <a href="https://programbench.com"><img src="https://programbench.com/static/images/fox_hero_200.png" width="110" alt="ProgramBench"></a>
+</p>
+
+> A submission to the **[ProgramBench](https://programbench.com)** leaderboard — *can language models rebuild programs from scratch?*  ·  [Leaderboard](https://programbench.com)  ·  [How to submit](https://programbench.com/blog/submission-guide)
+
+# [Submission Name Here]
+
+<!-- Manifest, scores, and per-test results live in `submission.yaml` and `_stats/`. This file
+is for the things the manifest can't capture — please fill in the sections below. -->
+
+## System overview
+
+<!-- One or two paragraphs: what is your system and how does it work end to end? Cover
+     the model (exact id/version and key settings like temperature / reasoning effort),
+     the agent/scaffold (framework + version, prompting, tools, step limits), and your
+     test-time strategy (single attempt, best-of-N, iterative test/fix, ...). -->
+
+## Reproducing this run
+
+<!-- The exact commands to reproduce this submission, ideally runnable as-is. -->
+
+```bash
+# 1. install the agent / dependencies
+# 2. run inference per task (no internet, per the eval protocol)
+# 3. programbench eval <run-dir>
+# 4. programbench submit package <run-dir> --upload-to <org>
+```
+
+## Extra stats (optional)
+
+The leaderboard can show stats beyond `score` — e.g. cost or model calls. These are
+**optional**, and each must be **computed by a script that reads your trajectories**, not
+entered by hand: the number has to be recoverable from the run. `programbench` ships no
+calculators (it makes no assumptions about your scaffold) — write your own that reads each
+`traj.json` and emits a flat `{instance_id: value}` map to `_stats/<name>.json`, and ship
+the script here (e.g. under `_scripts/`) so the numbers are reproducible.
+
+## Links
+
+<!-- Optional: agent/scaffold code, model card, paper, blog post. -->
+
+## Submission checklist
+
+- [ ] Ran `programbench eval` → `programbench submit package` to produce this submission
+- [ ] Filled in every `submission.yaml` field (no `TODO` left), including `is_os_model` / `is_os_scaffold`
+- [ ] Trajectories (`traj.json`) included for every task (agent submissions)
+- [ ] Solutions present — inline `submission.tar.gz`, or a hosted `submission.tar.gz.url` + `.sha256`
+- [ ] Any extra stats (cost/calls) were produced by a trajectory-reading script shipped here, not hand-written
+- [ ] Filled in the System overview and Reproducing sections above
+- [ ] `programbench submit verify .` passes
+- [ ] Made this fork public
+- [ ] Opened a registration PR to the submissions repo
+
+## Integrity attestations
+
+- [ ] Solutions were produced **only** from behavioral observation of the binary and its
+      bundled docs — no source code, repositories, mirrors, or package registries were consulted
+- [ ] The model was not given internet access during evaluation
+- [ ] The model did not have access to any unit tests during evaluation
+- [ ] I consent to re-evaluation, and to flagging or removal if it contradicts the reported results
+
+## Auditing
+
+Anyone can independently check this submission with the following instructions:
+
+```bash
+git clone <your-submission-repo>
+cd {{ submission_id }}
+uvx programbench submit verify .          # Tier-0: recompute the score from this repo's eval.json and check it matches submission.yaml (instant, offline)
+uvx programbench submit verify . --tier1  # Tier-1: download each submission.tar.gz from HuggingFace, re-run evaluation, and confirm it reproduces the score (Docker)
+```
+
+* Tier-0 is self-contained. It reads the per-instance `eval.json` here plus the bundled test
+metadata.
+* Tier-1 additionally fetches the hosted solutions and the hidden tests and re-runs
+them, so the reported `score` is reproduced from scratch. (Cost/calls are self-reported from
+the trajectories; only `score` is independently re-verifiable.)
