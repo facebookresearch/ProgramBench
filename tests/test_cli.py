@@ -55,3 +55,9 @@ def test_submit_register_help():
     result = runner.invoke(app, ["submit", "register", "--help"])
     assert result.exit_code == 0
     assert "registry" in result.output.lower()
+
+
+def test_submit_publish_help():
+    result = runner.invoke(app, ["submit", "publish", "--help"])
+    assert result.exit_code == 0
+    assert "owner" in result.output.lower()

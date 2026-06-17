@@ -6,6 +6,7 @@
 
 """Submission lifecycle commands: package an eval run, verify a submission, recombine eval.json."""
 
+import shutil
 from pathlib import Path
 
 import typer
@@ -108,6 +109,65 @@ def verify(
     else:
         console.print("[bold red]FAIL[/bold red] — discrepancies found above.")
         raise typer.Exit(1)
+
+
+@app.command()
+def publish(
+    run_dir: Path = typer.Argument(..., help="A packaged submission directory (contains submission.yaml)."),
+    owner: str = typer.Option(
+        "", "--owner", help="GitHub org/user to create the repo under (default: your gh account)."
+    ),
+    repo: str = typer.Option("", "--repo", help="Repository name (default: the submission directory name)."),
+    private: bool = typer.Option(
+        False, "--private", help="Create the repo private (it must be public before you can register it)."
+    ),
+    remote: str = typer.Option(
+        "", "--remote", help="Push to this existing empty repo URL instead of creating one (the no-gh path)."
+    ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Show what would be created/pushed; touch no network and make no commit."
+    ),
+) -> None:
+    """Create this submission's public GitHub repo and push it (package -> publish -> register).
+
+    Heavy artifacts already live on HuggingFace (as .url + .sha256 from `package`), so only
+    light files are committed. With `gh` the repo is created and pushed in one shot; without
+    it, pass `--remote <url>` to an empty repo you created, or follow the printed steps. The
+    repo name defaults to the directory name and the URL is read back by `register`, so it is
+    never stored in submission.yaml.
+
+    \b
+    Examples:
+        programbench submit publish ./my-run --dry-run
+        programbench submit publish ./my-run --owner my-org
+    """
+    from rich.console import Console
+
+    from programbench.publish import _origin, publish as do_publish
+
+    console = Console()
+    name = repo or run_dir.resolve().name
+
+    if dry_run:
+        existing = _origin(run_dir)
+        if existing:
+            plan = f"push current commit to existing remote [bold]{existing}[/bold]"
+        elif remote:
+            plan = f"add remote [bold]{remote}[/bold] and push"
+        elif shutil.which("gh"):
+            plan = f"`gh repo create` [bold]{f'{owner}/{name}' if owner else name}[/bold] ({'private' if private else 'public'}), set origin, and push"
+        else:
+            plan = f"commit locally only — no gh and no --remote, so the repo for [bold]{name}[/bold] can't be created"
+        console.print(f"[bold]Would publish[/bold] {run_dir}:\n  {plan}")
+        console.print("[dim]Dry run — no commit, nothing created or pushed. Drop --dry-run to publish.[/dim]")
+        return
+
+    result = do_publish(run_dir, owner=owner, repo=repo, private=private, remote=remote)
+    if result.repo_url:
+        console.print(f"[bold green]Published[/bold green] {name} -> {result.repo_url}")
+        console.print("[dim]Next: `programbench submit register .` to register it on the leaderboard.[/dim]")
+    else:
+        console.print(f"[bold]Committed[/bold] {name} locally.\n{result.next_steps}")
 
 
 @app.command()
