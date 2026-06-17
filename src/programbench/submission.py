@@ -186,7 +186,8 @@ def load_manifest(submission_dir: Path) -> dict:
 def resolve_submission_tar(instance_dir: Path, dest_tar: Path) -> None:
     """Materialize an instance's submission.tar.gz into ``dest_tar``, verifying sha256.
 
-    Supports the artifact forms: inline file, ``.url`` (downloaded), or ``submission.ref.yaml`` (git checkout packed).
+    Supports three artifact forms: inline file, ``.url`` (downloaded), or
+    ``submission.ref.yaml`` (git checkout packed). The sha256 sidecar, when present, is
     enforced for inline/url; for git it is advisory (packing is not byte-reproducible).
     """
     sha_file = instance_dir / "submission.tar.gz.sha256"

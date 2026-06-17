@@ -161,13 +161,8 @@ def register(
             )
             raise typer.Exit(1)
 
-    plan = build_plan(submission_dir, registry)
-    if source:
-        plan.source = source
-    if commit:
-        plan.commit = commit
-
     if dry_run:
+        plan = build_plan(submission_dir, registry, source or None, commit or None)
         with tempfile.TemporaryDirectory() as tmp:
             entry = write_entry(plan, submission_dir, Path(tmp))
             files = sorted(str(p.relative_to(entry)) for p in entry.rglob("*") if p.is_file())
@@ -180,11 +175,11 @@ def register(
         console.print("\n[dim]Dry run — nothing cloned, pushed, or opened. Drop --dry-run to register.[/dim]")
         return
 
-    result = register_submission(submission_dir, registry)
+    result = register_submission(submission_dir, registry, source or None, commit or None)
     if result.pr_url:
-        console.print(f"[bold green]Opened PR[/bold green] for {plan.submission_id}: {result.pr_url}")
+        console.print(f"[bold green]Opened PR[/bold green] for {result.plan.submission_id}: {result.pr_url}")
     else:
-        console.print(f"[bold]Prepared[/bold] registry entry for {plan.submission_id}.\n{result.next_steps}")
+        console.print(f"[bold]Prepared[/bold] registry entry for {result.plan.submission_id}.\n{result.next_steps}")
 
 
 @app.command()

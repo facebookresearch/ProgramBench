@@ -69,11 +69,15 @@ class RegisterResult:
     next_steps: str | None  # set when manual steps remain (no-gh path)
 
 
-def build_plan(submission_dir: Path, registry: str) -> RegisterPlan:
+def build_plan(
+    submission_dir: Path, registry: str, source: str | None = None, commit: str | None = None
+) -> RegisterPlan:
     sub_id = submission_dir.resolve().name
     manifest = yaml.safe_load((submission_dir / "submission.yaml").read_text())
-    source = _to_https(_git(submission_dir, "remote", "get-url", "origin"))
-    commit = _git(submission_dir, "rev-parse", "HEAD")
+    # Overrides win; otherwise autodetect from the submission's own git remote/HEAD. The
+    # autodetect calls are skipped (short-circuited) when an override is supplied.
+    source = source or _to_https(_git(submission_dir, "remote", "get-url", "origin"))
+    commit = commit or _git(submission_dir, "rev-parse", "HEAD")
     pointer = yaml.safe_dump({"submission_id": sub_id, "source": source, "commit": commit}, sort_keys=False)
     files = ["pointer.yaml", "submission.yaml"] + [
         f"_stats/{p.name}" for p in sorted((submission_dir / "_stats").glob("*.json"))
@@ -105,14 +109,16 @@ def write_entry(plan: RegisterPlan, submission_dir: Path, registry_root: Path) -
     return entry
 
 
-def register_submission(submission_dir: Path, registry: str) -> RegisterResult:
+def register_submission(
+    submission_dir: Path, registry: str, source: str | None = None, commit: str | None = None
+) -> RegisterResult:
     """Clone the registry, commit the entry on a branch, and open the PR.
 
     Uses ``gh`` (fork + PR) when available, cleaning up its throwaway clone afterward.
     Without ``gh`` it leaves the commit on a branch in a kept clone and returns the manual
     push + compare-URL steps in ``next_steps`` (so the clone must outlive this call).
     """
-    plan = build_plan(submission_dir, registry)
+    plan = build_plan(submission_dir, registry, source, commit)
     slug = _slug(registry)
     clone = Path(tempfile.mkdtemp(prefix="programbench-register-")) / "submissions"
 

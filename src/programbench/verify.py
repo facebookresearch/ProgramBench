@@ -16,6 +16,7 @@ proves the artifacts actually yield the reported results.
 """
 
 import logging
+import re
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -53,7 +54,7 @@ class VerifyResult:
 
 
 def _close(a: object, b: object) -> bool:
-    if a is None:
+    if a is None or b is None:
         return False
     return abs(float(a) - float(b)) <= TOLERANCE
 
@@ -87,14 +88,17 @@ def verify_tier1(submission_dir: Path, *, workers: int = 1, filter_spec: str = "
         run_eval_batch(sources=[run], workers=workers, filter_spec=filter_spec, force=True)
         fresh = score_run(run, instances)
 
+    # Same regex semantics as the re-eval filter (instance_filters.filter_instances), so a
+    # filtered-in instance that produced no fresh score is reported as a failure (NaN), not
+    # silently skipped.
+    targets = [iid for iid in submitted if not filter_spec or re.match(filter_spec, iid)]
     checks = [
         Check(
             iid,
             round(submitted[iid], 4),
-            round(fresh.get(iid, float("nan")), 4),
+            round(fresh[iid], 4) if iid in fresh else float("nan"),
             _close(submitted[iid], fresh.get(iid)),
         )
-        for iid in submitted
-        if not filter_spec or iid in fresh
+        for iid in targets
     ]
     return VerifyResult(1, checks)
