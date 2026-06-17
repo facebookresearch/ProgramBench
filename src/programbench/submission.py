@@ -80,7 +80,7 @@ def score_run(run_dir: Path, instances: dict[str, dict]) -> dict[str, float]:
     return scores
 
 
-def write_stat(run_dir: Path, stat: str, by_instance: dict[str, float]) -> None:
+def write_stat(run_dir: Path, stat: str, by_instance: dict[str, object]) -> None:
     """Write a per-instance stat file: ``<run_dir>/_stats/<stat>.json`` = ``{iid: value}``."""
     (run_dir / "_stats").mkdir(exist_ok=True)
     (run_dir / "_stats" / f"{stat}.json").write_text(json.dumps(by_instance, indent=2, sort_keys=True))
