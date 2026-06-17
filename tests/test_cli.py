@@ -37,3 +37,21 @@ def test_blob_sync_help():
     result = runner.invoke(app, ["blob", "sync", "--help"])
     assert result.exit_code == 0
     assert "instance" in result.output.lower()
+
+
+def test_submit_help():
+    result = runner.invoke(app, ["submit", "--help"])
+    assert result.exit_code == 0
+    assert all(cmd in result.output for cmd in ("package", "verify", "register", "recombine"))
+
+
+def test_submit_package_help():
+    result = runner.invoke(app, ["submit", "package", "--help"])
+    assert result.exit_code == 0
+    assert "upload" in result.output.lower()
+
+
+def test_submit_register_help():
+    result = runner.invoke(app, ["submit", "register", "--help"])
+    assert result.exit_code == 0
+    assert "registry" in result.output.lower()

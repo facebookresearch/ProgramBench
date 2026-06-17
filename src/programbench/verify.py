@@ -32,7 +32,10 @@ from programbench.submission import (
 
 log = logging.getLogger(__name__)
 
-TOLERANCE = 0.011  # headline floats are rounded; allow a hair more than the last digit
+# Tier-0 recomputes the headline from the same eval.json with the same deterministic
+# rounding `package` used, so a consistent submission matches exactly. The epsilon only
+# absorbs float representation noise; any real drift (>= the rounding granularity) fails.
+TOLERANCE = 1e-6
 
 
 @dataclass

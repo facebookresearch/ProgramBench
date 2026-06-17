@@ -97,8 +97,9 @@ def split_eval_json(instance_dir: Path, iid: str) -> None:
     """Split ``<iid>.eval.json`` into a light eval.json + a heavy ``<iid>.eval.log.json``.
 
     The heavy file holds the only bulky parts — the top-level ``log`` and each failing
-    test's ``message``/``text`` — keyed so the two recombine into the exact original.
-    Nothing is dropped; the union of the two files is the original eval.json.
+    test's ``message``/``text`` — keyed so the two recombine losslessly. Nothing is dropped;
+    the union of the two files holds everything in the original eval.json (the rebuilt file
+    is semantically identical, though not necessarily byte-for-byte).
     """
     p = instance_dir / f"{iid}.eval.json"
     data = json.loads(p.read_text())
@@ -122,9 +123,11 @@ def split_eval_json(instance_dir: Path, iid: str) -> None:
 
 def recombine_eval_json(instance_dir: Path, iid: str) -> bool:
     """Inverse of :func:`split_eval_json`: fold the heavy file back into ``<iid>.eval.json``
-    (restoring the exact original), then remove the heavy file and its ``.url``/``.sha256``.
+    (restoring the full eval output losslessly), then remove the heavy file and its
+    ``.url``/``.sha256``.
 
-    The heavy file is read locally, or downloaded from ``<iid>.eval.log.json.url`` if hosted.
+    The heavy file is read locally, or downloaded from ``<iid>.eval.log.json.url`` if hosted;
+    a downloaded file is checked against its ``.sha256`` sidecar when one is present.
     Returns True if a recombine happened.
     """
     light = instance_dir / f"{iid}.eval.json"
@@ -136,7 +139,11 @@ def recombine_eval_json(instance_dir: Path, iid: str) -> bool:
         heavy = json.loads(log_file.read_text())
     elif url_file.exists():
         with urllib.request.urlopen(url_file.read_text().strip()) as r:  # noqa: S310
-            heavy = json.loads(r.read())
+            raw = r.read()
+        sha_file = instance_dir / f"{iid}.eval.log.json.sha256"
+        if sha_file.exists() and (got := hashlib.sha256(raw).hexdigest()) != sha_file.read_text().split()[0]:
+            raise ValueError(f"{iid}: eval.log.json sha256 mismatch on download (got {got[:12]}…)")
+        heavy = json.loads(raw)
     else:
         return False
     data = json.loads(light.read_text())
