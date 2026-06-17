@@ -35,6 +35,15 @@ def _git(cwd: Path, *args: str) -> str:
     return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True).stdout.strip()
 
 
+def _commit(cwd: Path, message: str) -> None:
+    """Commit staged changes, supplying a fallback identity when git has none configured
+    (common in fresh CI containers, where ``git commit`` would otherwise error out)."""
+    ident = []
+    if subprocess.run(["git", "config", "user.email"], cwd=cwd, capture_output=True).returncode != 0:
+        ident = ["-c", "user.name=ProgramBench", "-c", "user.email=submissions@programbench.com"]
+    _git(cwd, *ident, "commit", "-m", message)
+
+
 def _to_https(url: str) -> str:
     """A git remote (``git@host:owner/repo.git`` or ``https://…``) as a browsable https URL."""
     url = url.removesuffix(".git")
@@ -85,7 +94,7 @@ def build_plan(
     system, head = manifest["system"], manifest["headline"]
     body = (
         f"Registers **{system['model']}** ({system['provider']}) + {system['agent']}.\n\n"
-        f"- mean score: {head['mean_score'] * 100:.1f}\n"
+        f"- mean score: {head['mean_score'] * 100:.1f}%\n"
         f"- resolved: {head['resolved_pct']:.1f}% / near-resolved: {head['near_resolved_pct']:.1f}%\n"
         f"- instances: {head['n_instances_attempted']}/{head['n_instances_total']}\n\n"
         f"Source: {source}\nCommit: `{commit}`\n\n"
@@ -124,9 +133,11 @@ def register_submission(
 
     if shutil.which("gh"):
         # Fork the registry under the authed user (no-op if it exists) and clone the fork;
-        # origin -> fork, upstream -> registry.
+        # origin -> fork, upstream -> registry. gh repo fork takes no destination arg, so it
+        # clones into <cwd>/<repo-name>; running from clone.parent makes that equal `clone`.
         subprocess.run(
-            ["gh", "repo", "fork", slug, "--clone", "--default-branch-only", str(clone)],
+            ["gh", "repo", "fork", slug, "--clone", "--default-branch-only"],
+            cwd=clone.parent,
             check=True,
             capture_output=True,
             text=True,
@@ -134,7 +145,7 @@ def register_submission(
         _git(clone, "checkout", "-b", plan.branch)
         write_entry(plan, submission_dir, clone)
         _git(clone, "add", f"submissions/{plan.submission_id}")
-        _git(clone, "commit", "-m", plan.title)
+        _commit(clone, plan.title)
         _git(clone, "push", "-u", "origin", plan.branch)
         pr_url = subprocess.run(
             ["gh", "pr", "create", "--repo", slug, "--title", plan.title, "--body", plan.body],
@@ -151,7 +162,7 @@ def register_submission(
     _git(clone, "checkout", "-b", plan.branch)
     write_entry(plan, submission_dir, clone)
     _git(clone, "add", f"submissions/{plan.submission_id}")
-    _git(clone, "commit", "-m", plan.title)
+    _commit(clone, plan.title)
     steps = (
         "`gh` not found, so the PR was not opened. The entry is committed on branch "
         f"`{plan.branch}` in:\n  {clone}\n\n"

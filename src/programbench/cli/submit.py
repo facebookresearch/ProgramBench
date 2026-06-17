@@ -4,7 +4,8 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-"""Submission lifecycle commands: package an eval run, verify a submission, recombine eval.json."""
+"""Submission lifecycle commands: package an eval run, publish its repo, verify a submission,
+register it on the leaderboard, and recombine a split eval.json."""
 
 import shutil
 from pathlib import Path

@@ -49,13 +49,19 @@ class PublishResult:
 
 
 def _ensure_committed(run_dir: Path) -> bool:
-    """Init the repo if needed and commit any pending changes; True if a commit was made."""
+    """Init the repo if needed and commit any pending changes; True if a commit was made.
+
+    Supplies a fallback git identity when none is configured (common in fresh CI containers,
+    where ``git commit`` would otherwise error out)."""
     if not (run_dir / ".git").exists():
         _git(run_dir, "init", "-b", "main")
     _git(run_dir, "add", "-A")
     if not _git(run_dir, "status", "--porcelain"):
         return False
-    _git(run_dir, "commit", "-m", f"ProgramBench submission: {run_dir.resolve().name}")
+    ident = []
+    if subprocess.run(["git", "config", "user.email"], cwd=run_dir, capture_output=True).returncode != 0:
+        ident = ["-c", "user.name=ProgramBench", "-c", "user.email=submissions@programbench.com"]
+    _git(run_dir, *ident, "commit", "-m", f"ProgramBench submission: {run_dir.resolve().name}")
     return True
 
 

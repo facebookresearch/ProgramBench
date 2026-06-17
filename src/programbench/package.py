@@ -148,9 +148,10 @@ def package_run(run_dir: Path, upload_to: str | None = None, overwrite: bool = F
     for instance_dir in sorted(d for d in run_dir.iterdir() if d.is_dir()):
         iid = instance_dir.name
         eval_json = instance_dir / f"{iid}.eval.json"
-        has_solution = (instance_dir / "submission.tar.gz").exists() or (
-            instance_dir / "submission.tar.gz.url"
-        ).exists()
+        # Any artifact form resolve_submission_tar understands counts as a solution.
+        has_solution = any(
+            (instance_dir / f).exists() for f in ("submission.tar.gz", "submission.tar.gz.url", "submission.ref.yaml")
+        )
         if not (eval_json.exists() and has_solution):
             continue
         if iid not in instances:

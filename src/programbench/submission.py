@@ -12,11 +12,11 @@ aggregation live here and are imported by each command.
 
 import hashlib
 import json
-import logging
 import shutil
 import subprocess
 import tarfile
 import tempfile
+import urllib.parse
 import urllib.request
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -26,11 +26,19 @@ import yaml
 from programbench.eval.eval import EvaluationResult
 from programbench.utils.load_data import get_active_branches, get_ignored_tests, load_all_instances
 
-log = logging.getLogger(__name__)
-
 RESOLVED_THRESHOLD = 1.0
 NEAR_RESOLVED_THRESHOLD = 0.95
 FIXTURE_PREFIX = "testorg__"
+DOWNLOAD_TIMEOUT = 60  # seconds; fail fast rather than hang on a stalled connection
+
+
+def _checked_url(raw: str) -> str:
+    """A submission-supplied URL, rejecting non-http(s) schemes (e.g. file://) to avoid SSRF
+    / local file reads when resolving untrusted third-party submissions."""
+    url = raw.strip()
+    if urllib.parse.urlparse(url).scheme not in ("http", "https"):
+        raise ValueError(f"refusing to fetch non-http(s) URL: {url!r}")
+    return url
 
 
 def benchmark_instances() -> dict[str, dict]:
@@ -138,7 +146,7 @@ def recombine_eval_json(instance_dir: Path, iid: str) -> bool:
     if log_file.exists():
         heavy = json.loads(log_file.read_text())
     elif url_file.exists():
-        with urllib.request.urlopen(url_file.read_text().strip()) as r:  # noqa: S310
+        with urllib.request.urlopen(_checked_url(url_file.read_text()), timeout=DOWNLOAD_TIMEOUT) as r:  # noqa: S310
             raw = r.read()
         sha_file = instance_dir / f"{iid}.eval.log.json.sha256"
         if sha_file.exists() and (got := hashlib.sha256(raw).hexdigest()) != sha_file.read_text().split()[0]:
@@ -206,7 +214,11 @@ def resolve_submission_tar(instance_dir: Path, dest_tar: Path) -> None:
     if inline.exists():
         shutil.copy2(inline, dest_tar)
     elif url_file.exists():
-        urllib.request.urlretrieve(url_file.read_text().strip(), dest_tar)  # noqa: S310
+        with (
+            urllib.request.urlopen(_checked_url(url_file.read_text()), timeout=DOWNLOAD_TIMEOUT) as r,  # noqa: S310
+            dest_tar.open("wb") as out,
+        ):
+            shutil.copyfileobj(r, out)
     elif ref_file.exists():
         _pack_git_ref(yaml.safe_load(ref_file.read_text()), dest_tar)
         expected = None  # git packing is not byte-reproducible; rely on re-eval instead
