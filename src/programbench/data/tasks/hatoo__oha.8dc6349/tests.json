@@ -1816,6 +1816,28 @@
           ]
         },
         {
+          "name": "tests.test_output.test_json_output_details_connection_time_relationships",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_output.test_json_output_details_connection_times",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_output.test_json_output_error_distribution_empty_on_success",
           "reasons": [
             {
@@ -1858,6 +1880,17 @@
           ]
         },
         {
+          "name": "tests.test_output.test_json_output_status_code_distribution",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_output.test_json_output_with_higher_request_count",
           "reasons": [
             {
@@ -1870,6 +1903,17 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_output.test_json_output_with_single_connection",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
             }
           ]
         },
@@ -2106,6 +2150,17 @@
           ]
         },
         {
+          "name": "tests.test_timescale.test_time_unit_precision_formatting",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Summary emits fewer 4-decimal time values than the golden expects (oha output-format/version drift). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_timescale.test_time_unit_seconds_text_output",
           "reasons": [
             {
@@ -2244,11 +2299,47 @@
           ]
         },
         {
+          "name": "tests.test_tui.test_tui_multiple_status_codes",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (live progress / HTTP-load output)",
+                "statuses": [
+                  "failure",
+                  "passed",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tui.test_tui_with_high_concurrency",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777816048,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui.test_tui_with_post_method",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (live progress / HTTP-load output)",
+                "statuses": [
+                  "failure",
+                  "passed",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
               "user": "kilian"
             }
           ]

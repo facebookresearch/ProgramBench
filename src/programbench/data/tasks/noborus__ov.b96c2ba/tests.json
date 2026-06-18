@@ -5452,11 +5452,33 @@
           ]
         },
         {
+          "name": "tests.test_edit.test_editor_line_number_placeholder",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edit.test_temp_file_cleanup_after_edit",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387546,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_exec_mode.test_exec_mode_command_error_captured_in_stderr",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
               "user": "kilian"
             }
           ]
@@ -5477,6 +5499,17 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387546,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_filter_search_advanced.test_invalid_regex_fallback_to_literal",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
               "user": "kilian"
             }
           ]
@@ -5510,10 +5543,54 @@
           ]
         },
         {
+          "name": "tests.test_input_header_modes.test_header_column_accepts_numeric_value",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_input_header_modes.test_header_input_empty_string_shows_error",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_input_header_modes.test_header_input_invalid_characters",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_input_header_modes.test_header_input_mode_prompt_appears",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_input_header_modes.test_header_input_multiple_digits",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
             }
           ]
         },
@@ -5528,11 +5605,77 @@
           ]
         },
         {
+          "name": "tests.test_input_header_modes.test_jump_target_input_mode_prompt_appears",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_input_header_modes.test_jump_target_numeric_value",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_input_modes_advanced.test_filter_mode_up_populates_from_history",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_input_modes_advanced.test_multicolor_confirm_sets_multicolor",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_input_modes_advanced.test_multicolor_up_down_navigation",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_mouse_marks_sidebar.test_mark_multiple_lines_and_navigate",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386529,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_mouse_marks_sidebar.test_mark_single_line",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
               "user": "kilian"
             }
           ]
@@ -5556,10 +5699,76 @@
           ]
         },
         {
+          "name": "tests.test_mouse_marks_sidebar.test_sidebar_document_list",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_mouse_marks_sidebar.test_sidebar_help_display",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_mouse_marks_sidebar.test_sidebar_mark_list_display",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_move_leftright_advanced.test_column_left_no_cycle_at_start",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_movement_functions.test_section_navigation_at_boundaries",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_movement_functions.test_section_navigation_no_delimiter",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_movement_functions.test_section_navigation_previous",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
             }
           ]
         },
@@ -5599,6 +5808,28 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387546,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_save_and_converters.test_converter_es_processes_escape_sequences",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_save_and_converters.test_converter_raw_displays_escape_sequences_as_caret_notation",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
               "user": "kilian"
             }
           ]
@@ -5660,6 +5891,347 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_empty_search_pattern_forward",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_incremental_search_updates",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_invalid_regex_fallback_to_literal",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_multicolor_with_quoted_strings",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_next_search_continuation",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_search_not_found_message",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_search_numeric_only_pattern",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_search_symbol_only_pattern",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_search_wrapping_forward",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_search_edge_cases.test_smart_case_with_uppercase_in_pattern",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_advanced.test_alternate_rows",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_advanced.test_caption_display",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_advanced.test_mark_set_and_message",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_advanced.test_ruler_absolute",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_advanced.test_ruler_disabled",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_advanced.test_status_line_content",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_advanced.test_status_line_disabled",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_control_flow.test_bottom_navigation_triggers_request_bottom",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_control_flow.test_exec_mode_reload_control_reader",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_control_flow.test_follow_mode_request_follow",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_control_flow.test_reload_file_with_f5",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_control_flow.test_search_request_search",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_control_flow.test_watch_mode_periodic_reload",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_input_modes.test_header_column_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_input_modes.test_header_mode_basic",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_input_modes.test_jump_target_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_input_modes.test_mark_goto_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_input_modes.test_save_buffer_requires_non_seekable",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_input_modes.test_section_num_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_input_modes.test_skip_lines_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_navigation.test_basic_file_display",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
             }
           ]
         }

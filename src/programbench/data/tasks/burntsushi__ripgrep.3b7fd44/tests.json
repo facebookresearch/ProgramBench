@@ -5316,6 +5316,23 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_cli_utils.test_max_filesize_bytes_format",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "directory-listing order nondeterminism (large_file/small_file output order varies)",
+                "pass": 19,
+                "pattern": "pppfpppppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_encoding.test_short_encoding_flag_syntax",
           "reasons": [
             {
@@ -6123,6 +6140,24 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387538,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_vimgrep.test_output_mode_no_heading_multifile",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Nondeterministic multifile output ordering (parallel directory walk)",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
               "user": "kilian"
             }
           ]

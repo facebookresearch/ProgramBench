@@ -5530,6 +5530,39 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_asciidoc_rst_typst.test_asciidoc_attributes_and_metadata",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_asciidoc_rst_typst.test_rst_to_json_ast_structure",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_asciidoc_rst_typst.test_typst_metadata_extraction",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_citations.test_bibliography_entry_ids",
           "reasons": [
             {
@@ -5690,11 +5723,33 @@
           ]
         },
         {
+          "name": "tests.test_encoding_i18n.test_unicode_preservation_in_json_format",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_error_handling.test_medium_large_file_processing",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386527,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_paths.test_json_incompatible_api_version",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
               "user": "kilian"
             }
           ]
@@ -5720,11 +5775,55 @@
           ]
         },
         {
+          "name": "tests.test_filesystem_ops.test_output_json_format_produces_parseable_json",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_filesystem_ops.test_output_same_as_input_file_handles_atomicity",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387541,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_filters_ast_advanced.test_filter_complex_metadata_structure",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_filters_ast_advanced.test_json_ast_filter_transformation",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_format_matrix.test_markdown_to_json_ast_lossless_machine_readable",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
               "user": "kilian"
             }
           ]
@@ -7405,6 +7504,28 @@
           ]
         },
         {
+          "name": "tests.test_man_format.test_man_only_title_header",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_man_format.test_man_to_json_ast",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_markdown_headings_lists.test_markdown_headings_roundtrip_atx",
           "reasons": [
             {
@@ -7420,6 +7541,17 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387541,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_org_opml_pod.test_pod_to_json_ast",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
               "user": "kilian"
             }
           ]
@@ -7474,6 +7606,17 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387541,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_rtf_advanced.test_rtf_to_json_ast_structure",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
               "user": "kilian"
             }
           ]
@@ -7668,6 +7811,17 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387541,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tsv_tables.test_tsv_to_json_ast",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Gold emits pandoc-api-version [1,23,1,2]; goldens captured against [1,23,1,1] (pandoc-types library version drift in the reproducible build). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
               "user": "kilian"
             }
           ]

@@ -1136,6 +1136,17 @@
           ]
         },
         {
+          "name": "tests.test_current_status.test_current_special_characters_in_names",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Table header trailing-whitespace differs by one space from golden (formatter version drift). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_current_status.test_status_aggregation_multiple_same_project",
           "reasons": [
             {

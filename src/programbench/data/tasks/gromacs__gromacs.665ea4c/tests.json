@@ -2315,6 +2315,127 @@
           ]
         },
         {
+          "name": "tests.test_structure.test_gyrate_protein_basic",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_gyrate_weighting_modes",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rms_backbone",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rms_calpha_basic",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rms_fit_translation",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rms_mirror_image",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rms_nofit",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rms_time_range",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rms_what_rho",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rmsf_calpha_basic",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_structure.test_rmsf_residue_averaging",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tcaf_trjorder.test_tcaf_cubic_averaging_optional",
           "reasons": [
             {

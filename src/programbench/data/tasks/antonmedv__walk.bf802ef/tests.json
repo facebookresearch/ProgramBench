@@ -1165,6 +1165,42 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_cli_config.test_dir_only_flag_shows_only_directories",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_config.test_dir_only_with_icons_combines_both_features",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_cli_config.test_empty_directory_shows_no_files_message",
           "reasons": [
             {
@@ -1185,10 +1221,136 @@
           ]
         },
         {
+          "name": "tests.test_cli_config.test_icons_flag_enables_icons",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_config.test_multiple_flags_together",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_config.test_path_argument_starts_in_specified_directory",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_config.test_path_argument_with_flags",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_config.test_preview_flag_enables_preview_mode",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_cli_config.test_preview_mode_empty_directory",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_config.test_walk_main_color_env_changes_cursor_color",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_config.test_walk_no_highlight_env_disables_syntax_highlighting",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
             }
           ]
         },
@@ -1208,6 +1370,60 @@
             {
               "id": "gold_fail",
               "timestamp": 1777558221,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_empty_file_preview",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_hidden_files_shown_by_default",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_large_directory_500_files",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
               "user": "kilian"
             }
           ]
@@ -1372,6 +1588,96 @@
             {
               "id": "gold_fail",
               "timestamp": 1777558221,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_special_characters_in_filenames",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_symlinks_display_in_listing",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_tab_character_in_filename",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_unicode_filenames_display_correctly",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_very_long_filenames_display",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
               "user": "kilian"
             }
           ]
@@ -1601,10 +1907,424 @@
           ]
         },
         {
+          "name": "tests.test_icons.test_archive_extensions_show_zip_icon",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_files_without_extension_show_executable_or_generic_icon",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_hidden_files_still_show_extension_icons",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_icons_disabled_shows_no_icons",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_media_files_show_appropriate_icons",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_programming_language_extensions_show_correct_icons",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_specific_filenames_get_special_icons",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_unknown_extensions_show_generic_file_icon",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_uppercase_extensions_normalized_to_lowercase",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_icons.test_wildcard_filename_patterns_match_correctly",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_animated_gif_renders_first_frame",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_corrupted_jpeg_shows_error",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_corrupted_png_shows_error",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_file_with_no_extension_not_treated_as_image",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_gif_with_mixed_case_extension",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_jpeg_with_uppercase_extension",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_png_image_preview",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_subdirectory_navigation_image_preview",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_image_preview.test_symlink_to_image_renders",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_image_preview.test_text_file_not_treated_as_image",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_navigation.test_backspace_exits_directory",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_navigation.test_initial_directory_listing",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_navigation.test_multicolumn_layout",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_navigation.test_toggle_hidden_files",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI/listing output: an extra size line (e.g. '20B') appears nondeterministically",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
             }
           ]
         },
@@ -1621,6 +2341,40 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_operations.test_multiple_delete_undo_cycles",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "TUI delete/undo temp-file existence race (filesystem state non-deterministic under tui2cli capture)",
+                "pass": 19,
+                "pattern": "ppppppppppfppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_operations.test_multiple_pending_deletions_stacked",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "TUI delete/undo temp-file existence race (filesystem state non-deterministic under tui2cli capture)",
+                "pass": 19,
+                "pattern": "ppppppppppfppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
             }
           ]
         },

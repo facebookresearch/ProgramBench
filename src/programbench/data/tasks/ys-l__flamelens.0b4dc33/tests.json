@@ -765,6 +765,24 @@
           ]
         },
         {
+          "name": "tests.test_parsing.test_readable_data_comment_visualization",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (flamegraph parse/render)",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_parsing.test_recursive_stacks",
           "reasons": [
             {

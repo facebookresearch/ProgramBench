@@ -373,6 +373,17 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_ipv4_all_zeros_resolves_to_localhost",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Fails on v6 gold: output reflects the pinned toolchain / dependency versions (e.g. Go compiler diagnostic wording, stdlib net behavior, or generated-code content); the golden captured the previous build environment's output.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_ipv6_localhost",
           "reasons": [
             {
@@ -421,6 +432,50 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_flags.test_version_format",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_flags.test_version_ignores_other_flags",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_flags.test_version_long_flag",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_flags.test_version_short_flag",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
             }
           ]
         },

@@ -1645,6 +1645,17 @@
               "id": "gold_fail"
             }
           ]
+        },
+        {
+          "name": "tests.test_retriever.test_insecure_flag_bypasses_cert_validation",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] HTTP-client error wording differs from golden ('error decoding response body'); reqwest version drift (test also depends on external https://self-signed.badssl.com). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
         }
       ]
     },

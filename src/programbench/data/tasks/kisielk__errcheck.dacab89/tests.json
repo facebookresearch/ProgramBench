@@ -1374,6 +1374,17 @@
           ]
         },
         {
+          "name": "tests.test_output.test_exit_code_two_on_fatal_errors",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Fails on v6 gold: output reflects the pinned toolchain / dependency versions (e.g. Go compiler diagnostic wording, stdlib net behavior, or generated-code content); the golden captured the previous build environment's output.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_smoke.test_no_args_runs",
           "reasons": [
             {

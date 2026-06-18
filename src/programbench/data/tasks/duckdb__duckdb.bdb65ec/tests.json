@@ -35228,6 +35228,23 @@
           ]
         },
         {
+          "name": "tests.test_harvest_sql_2.test_flatten",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "SQL result row-order nondeterminism (no ORDER BY): flatten rows reorder",
+                "pass": 19,
+                "pattern": "ppppppppppppppppppfp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_sql_2.test_format_bytes",
           "reasons": [
             {

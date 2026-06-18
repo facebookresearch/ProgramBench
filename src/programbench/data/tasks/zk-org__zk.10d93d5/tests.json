@@ -3336,6 +3336,17 @@
           ]
         },
         {
+          "name": "tests.test_list_format.test_format_oneline",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] list --format=oneline output deterministically differs from captured golden (identical across all 20 rounds; gold output drift). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_list_format.test_template_format_date_helper",
           "reasons": [
             {

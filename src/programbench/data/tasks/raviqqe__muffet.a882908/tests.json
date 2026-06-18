@@ -676,6 +676,23 @@
           ]
         },
         {
+          "name": "tests.test_output_formats.test_json_empty_links_array_structure",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 8,
+                "note": "local HTTP test-server dial race (error when dialing 127.0.0.1:8765)",
+                "pass": 12,
+                "pattern": "ppfffppfffppppppffpp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_output_formats.test_json_error_is_string",
           "reasons": [
             {

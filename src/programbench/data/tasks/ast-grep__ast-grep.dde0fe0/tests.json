@@ -982,11 +982,80 @@
           ]
         },
         {
+          "name": "eval.tests.test_language_features.test_mixed_js_and_css_injections_in_html",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "transient nondeterminism in HTML multi-language injection matching (passes 19/20)",
+                "pass": 19,
+                "pattern": "pfpppppppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_language_features.test_mixed_typescript_and_javascript_in_html",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "transient nondeterminism in HTML multi-language injection matching (passes 19/20)",
+                "pass": 19,
+                "pattern": "ppppppppppppppfppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_language_features.test_multiple_js_script_tags_in_html",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777558221,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_language_features.test_plain_js_script_not_matched_as_typescript",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "transient nondeterminism in HTML multi-language injection matching (passes 19/20)",
+                "pass": 19,
+                "pattern": "ppppppppppppppfppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_language_features.test_typescript_type_alias_in_html",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Nondeterministic analysis/diagnostic ordering (parallel rule evaluation)",
+                "statuses": [
+                  "failure",
+                  "passed",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
               "user": "kilian"
             }
           ]
@@ -1007,6 +1076,24 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387538,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_parameterized_advanced.test_error_cyclic_dependency",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Nondeterministic analysis/diagnostic ordering (parallel rule evaluation)",
+                "statuses": [
+                  "failure",
+                  "passed",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
               "user": "kilian"
             }
           ]

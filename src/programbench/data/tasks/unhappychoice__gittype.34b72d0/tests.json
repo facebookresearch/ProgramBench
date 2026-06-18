@@ -1349,6 +1349,17 @@
           ]
         },
         {
+          "name": "tests.test_global_args.test_double_dash_separator",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_global_args.test_duplicate_languages_accepted",
           "reasons": [
             {
@@ -1401,6 +1412,17 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_global_args.test_unknown_subcommand",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
             }
           ]
         },
@@ -1708,6 +1730,83 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387881,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_langs_all_supported_languages",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_langs_case_insensitive",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_langs_duplicate_entries",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_langs_empty_value_tries_to_start",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_langs_with_spaces_in_names",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_multiple_langs_flags_are_combined",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_no_args_requires_tty",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
               "user": "kilian"
             }
           ]
@@ -2045,6 +2144,23 @@
           ]
         },
         {
+          "name": "tests.test_tui_loading.test_current_directory_implicit_path",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 11,
+                "note": "TUI loading/title-screen render timing race under tui2cli capture (title/version screen not reached in captured frame)",
+                "pass": 9,
+                "pattern": "ppppppffffffffpfpffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tui_loading.test_difficulty_wrapping_from_hard_to_easiest",
           "reasons": [
             {
@@ -2055,10 +2171,95 @@
           ]
         },
         {
+          "name": "tests.test_tui_loading.test_loading_completes_and_reaches_title_screen",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 11,
+                "note": "TUI loading/title-screen render timing race under tui2cli capture (title/version screen not reached in captured frame)",
+                "pass": 9,
+                "pattern": "ppppppffffffffpfpffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_loading.test_multiple_repos_same_session_prevents_conflicts",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 11,
+                "note": "TUI loading/title-screen render timing race under tui2cli capture (title/version screen not reached in captured frame)",
+                "pass": 9,
+                "pattern": "ppppppffffffffpfpffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_loading.test_title_screen_difficulty_change_right_arrow",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 11,
+                "note": "TUI loading/title-screen render timing race under tui2cli capture (title/version screen not reached in captured frame)",
+                "pass": 9,
+                "pattern": "ppppppffffffffpfpffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_loading.test_version_check_exit_with_escape",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 11,
+                "note": "TUI loading/title-screen render timing race under tui2cli capture (title/version screen not reached in captured frame)",
+                "pass": 9,
+                "pattern": "ppppppffffffffpfpffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tui_loading.test_version_check_screen_appears_on_launch",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_loading.test_version_check_skip_with_space",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 11,
+                "note": "TUI loading/title-screen render timing race under tui2cli capture (title/version screen not reached in captured frame)",
+                "pass": 9,
+                "pattern": "ppppppffffffffpfpffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
             }
           ]
         },
@@ -2077,6 +2278,40 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_records.test_records_escape_returns_to_title",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 11,
+                "note": "TUI loading/title-screen render timing race under tui2cli capture (title/version screen not reached in captured frame)",
+                "pass": 9,
+                "pattern": "ppppppffffffffpfpffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_records.test_records_screen_access_from_title",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 11,
+                "note": "TUI loading/title-screen render timing race under tui2cli capture (title/version screen not reached in captured frame)",
+                "pass": 9,
+                "pattern": "ppppppffffffffpfpffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
             }
           ]
         },

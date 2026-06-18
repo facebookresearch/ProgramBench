@@ -1652,11 +1652,39 @@
           ]
         },
         {
+          "name": "tests.test_authkey_options_gap.test_malformed_permitopen_non_numeric_port",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 12,
+                "note": "ssh dbclient connection/host-key-mismatch/socket-bind race (regenerated host keys + port reuse under xdist)",
+                "pass": 8,
+                "pattern": "pffppffpppffffpffpff",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_authkey_options_gap.test_multiple_command_options_rejected",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386528,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_authkey_options_gap.test_option_case_insensitive",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "ssh dbclient connection/host-key-mismatch race (same family as other dropbear flakes). caught in postfix gold rerun (21st run); passed 20/20 in 20x sweep",
+              "timestamp": 1781500166,
               "user": "kilian"
             }
           ]
@@ -2022,11 +2050,64 @@
           ]
         },
         {
+          "name": "tests.test_forwarding_x11_agent.test_agent_socket_actually_exists",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "ssh dbclient connection/host-key-mismatch/socket-bind race (regenerated host keys + port reuse under xdist)",
+                "pass": 19,
+                "pattern": "pppppppppppppfpppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_forwarding_x11_agent.test_agent_socket_cleanup_on_disconnect",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "SSH socket/port/host-key race (random ports, key mismatch)",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_forwarding_x11_agent.test_agent_socket_directory_permissions",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777558222,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_forwarding_x11_agent.test_agent_socket_fd_number_in_filename",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "SSH socket/port/host-key race (random ports, key mismatch)",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
               "user": "kilian"
             }
           ]
@@ -2042,11 +2123,39 @@
           ]
         },
         {
+          "name": "tests.test_forwarding_x11_agent.test_agent_socket_path_format",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_forwarding_x11_agent.test_agent_socket_permissions",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777558222,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_forwarding_x11_agent.test_agent_socket_random_components",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 3,
+                "note": "ssh dbclient connection/host-key-mismatch/socket-bind race (regenerated host keys + port reuse under xdist)",
+                "pass": 17,
+                "pattern": "fpppfpppppppfppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
               "user": "kilian"
             }
           ]
@@ -3142,6 +3251,24 @@
           ]
         },
         {
+          "name": "tests.test_netio_gap.test_client_connection_to_ipv4_only_server",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "SSH socket/port/host-key race (random ports, key mismatch)",
+                "statuses": [
+                  "passed",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_netio_gap.test_client_ipv4_mapped_connection",
           "reasons": [
             {
@@ -3372,6 +3499,23 @@
           ]
         },
         {
+          "name": "tests.test_pty_terminal.test_pty_newline_handling",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "ssh dbclient connection/host-key-mismatch/socket-bind race (regenerated host keys + port reuse under xdist)",
+                "pass": 19,
+                "pattern": "ppppppfppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_pty_terminal.test_pty_not_allocated_without_t_flag",
           "reasons": [
             {
@@ -3387,6 +3531,23 @@
             {
               "id": "gold_fail",
               "timestamp": 1777558222,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_pty_terminal.test_pty_read_large_output",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "ssh dbclient connection/host-key-mismatch/socket-bind race (regenerated host keys + port reuse under xdist)",
+                "pass": 19,
+                "pattern": "fppppppppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
               "user": "kilian"
             }
           ]
@@ -3507,6 +3668,24 @@
             {
               "id": "gold_fail",
               "timestamp": 1777386528,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_pubkey_auth.test_crlf_line_endings",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "SSH socket/port/host-key race (random ports, key mismatch)",
+                "statuses": [
+                  "failure",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
               "user": "kilian"
             }
           ]
@@ -4643,6 +4822,19 @@
             },
             {
               "id": "dummy_pass"
+            },
+            {
+              "extra": {
+                "cause": "SSH socket/port/host-key race (random ports, key mismatch)",
+                "statuses": [
+                  "failure",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
             }
           ]
         },

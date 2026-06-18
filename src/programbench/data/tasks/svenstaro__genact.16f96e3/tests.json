@@ -244,6 +244,23 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_modules_misc.test_rkhunter_rootkit_scanning",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "randomized activity-simulator output: expected task line absent in a random run",
+                "pass": 19,
+                "pattern": "pppppppppppppppppppf",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_modules_security.test_docker_image_rm_shows_digest_after_tag",
           "reasons": [
             {

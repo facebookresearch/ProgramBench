@@ -4,6 +4,26 @@
 
 ProgramBench evaluates whether LM-based SWE-agents can reverse-engineer black-box software systems. The workflow: take an open-source CLI tool (mostly Rust/Go), compile it into a Docker image with source removed, then have an LM agent re-implement it from scratch by interacting only with the binary. Behavioral tests (also LM-generated) score the re-implementation.
 
+## Test ignore reasons
+
+Some behavioral tests are unreliable and are excluded from scoring. Each excluded
+test is recorded under `branches.<hash>.ignored_tests[]` in a task's `tests.json`,
+with one or more `reasons[].id` explaining why. All ignored tests are excluded from
+scoring regardless of reason; the id is informational.
+
+- `gold_fail` — test fails **deterministically** on the reference (gold) solution, so it
+  is defective rather than discriminating. Also covers golden-output drift (the gold
+  binary is correct but the captured golden is stale/non-reproducible relative to the
+  build toolchain, an embedded build-stamp, or an external resource).
+- `gold_flaky` — test is **non-deterministic** on the gold solution: it passes in some
+  runs and fails in others. These are timing/race/network/TUI-snapshot flakes, not real
+  defects (distinct from the deterministic `gold_fail`).
+- `dummy_pass` — test passes even on a trivial/dummy executable, so it fails to
+  distinguish a real implementation from a stub.
+- `outcome_dependent_presence` — test appears in some eval runs but not others.
+- `slow_or_hang` — test hangs mid-call or exceeds a duration threshold.
+- `ignored_manual` — manually excluded.
+
 ## Quick reference
 
 ```bash

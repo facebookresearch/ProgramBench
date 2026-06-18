@@ -1488,6 +1488,17 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_horizontal_scroll_on_long_line",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_large_file_navigation_to_end",
           "reasons": [
             {
@@ -1508,6 +1519,24 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_utf8_multibyte_characters",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (editor screen state, utf8 input)",
+                "statuses": [
+                  "failure",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
             }
           ]
         },
@@ -1734,10 +1763,46 @@
           ]
         },
         {
+          "name": "tests.test_editor_gaps.test_backspace_key_deletes_char",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (editor screen state, utf8 input)",
+                "statuses": [
+                  "passed",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_editor_gaps.test_ctrl_bracket_page_down",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_editor_gaps.test_utf8_character_input",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (editor screen state, utf8 input)",
+                "statuses": [
+                  "failure",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
             }
           ]
         },
@@ -1895,6 +1960,35 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387775,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_core.test_backspace_deletion",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (editor screen state, utf8 input)",
+                "statuses": [
+                  "passed",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_core.test_delete_to_end_of_line",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
               "user": "kilian"
             }
           ]

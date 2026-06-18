@@ -455,6 +455,23 @@
           ]
         },
         {
+          "name": "eval.tests.test_basic.test_dash_in_regular_query",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "tcell screen-init race (open /dev/tty: no such device) + TUI layout snapshot timing; --select-1 exit code tty-dependent",
+                "pass": 19,
+                "pattern": "pppfpppppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_basic.test_empty_input_with_exit_0_flag",
           "reasons": [
             {
@@ -653,6 +670,23 @@
           ]
         },
         {
+          "name": "eval.tests.test_basic.test_print_query_with_different_selection",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "tcell screen-init race (open /dev/tty: no such device) + TUI layout snapshot timing; --select-1 exit code tty-dependent",
+                "pass": 19,
+                "pattern": "pppppppppppppfpppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_basic.test_query_case_insensitive_default",
           "reasons": [
             {
@@ -843,6 +877,23 @@
             },
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_coverage.test_config_with_initial_filter",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 2,
+                "note": "tcell screen-init race (open /dev/tty: no such device) + TUI layout snapshot timing; --select-1 exit code tty-dependent",
+                "pass": 18,
+                "pattern": "pppppppppppppppppfpf",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
             }
           ]
         },
@@ -1151,6 +1202,23 @@
           ]
         },
         {
+          "name": "eval.tests.test_coverage.test_print_query_with_no_match",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 2,
+                "note": "tcell screen-init race (open /dev/tty: no such device) + TUI layout snapshot timing; --select-1 exit code tty-dependent",
+                "pass": 18,
+                "pattern": "pppppfppfppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_coverage.test_prompt_with_select_1",
           "reasons": [
             {
@@ -1182,6 +1250,23 @@
             {
               "id": "gold_fail",
               "timestamp": 1777386529,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_coverage.test_query_with_emoji",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "tcell screen-init race (open /dev/tty: no such device) + TUI layout snapshot timing; --select-1 exit code tty-dependent",
+                "pass": 19,
+                "pattern": "pppfpppppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
               "user": "kilian"
             }
           ]
@@ -4872,6 +4957,40 @@
           ]
         },
         {
+          "name": "tests.test_layout_gap.test_layout_bottom_up_page_up",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "tcell screen-init race (open /dev/tty: no such device) + TUI layout snapshot timing; --select-1 exit code tty-dependent",
+                "pass": 19,
+                "pattern": "ppppfppppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_layout_gap.test_layout_cursor_middle_of_query",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "tcell screen-init race (open /dev/tty: no such device) + TUI layout snapshot timing; --select-1 exit code tty-dependent",
+                "pass": 19,
+                "pattern": "ppppfppppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_layout_gap.test_layout_few_lines_wrapping",
           "reasons": [
             {
@@ -5697,6 +5816,17 @@
           ]
         },
         {
+          "name": "tests.test_basic.TestSpecialCharacters.test_whitespace_only_lines",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_interactive.TestInteractiveBasic.test_basic_display",
           "reasons": [
             {
@@ -5902,7 +6032,19 @@
         "eval.tests.test_peco_behavior.test_unknown_flag_errors",
         "eval.tests.test_peco_behavior.test_version_format"
       ],
-      "ignored_tests": []
+      "ignored_tests": [
+        {
+          "name": "eval.tests.test_peco_behavior.test_prompt_option_changes_prompt",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        }
+      ]
     },
     "6c5b8939620c": {
       "ignored": false,

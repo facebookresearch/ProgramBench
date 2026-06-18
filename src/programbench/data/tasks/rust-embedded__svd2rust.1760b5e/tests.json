@@ -1583,7 +1583,30 @@
         "eval.tests.test_logging.test_log_info_has_two_lines",
         "eval.tests.test_logging.test_log_off_produces_no_stderr"
       ],
-      "ignored_tests": []
+      "ignored_tests": [
+        {
+          "name": "eval.tests.test_cli_help_version.test_version_exact",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Fails on v6 gold: test asserts a build-stamped version/commit/date string (non-reproducible build metadata, e.g. embedded git rev or build date) rather than functionality; the golden captured the previous build's stamp.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_generation_outputs.test_generate_default_files_and_content_hashes",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_toolchain] Fails on v6 gold: output reflects the pinned toolchain / dependency versions (e.g. Go compiler diagnostic wording, stdlib net behavior, or generated-code content); the golden captured the previous build environment's output.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        }
+      ]
     },
     "0e234d2b8eef": {
       "ignored": false,

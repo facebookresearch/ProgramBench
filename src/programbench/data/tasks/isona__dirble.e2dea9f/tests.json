@@ -2461,6 +2461,24 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_edge_cases.test_uri_file_with_mixed_valid_invalid_urls",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Network-dependent (external HTTP/proxy, e.g. httpbin / ipv6 localhost)",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_url_with_encoded_spaces",
           "reasons": [
             {
@@ -3321,6 +3339,23 @@
           ]
         },
         {
+          "name": "tests.test_output_formats.test_default_text_output_format",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "local HTTP test-server connection race (curl: Could not connect to 127.0.0.1:8765)",
+                "pass": 19,
+                "pattern": "ppppppppppppppppfppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_output_formats.test_hide_lengths_affects_all_output_formats",
           "reasons": [
             {
@@ -3396,6 +3431,23 @@
             {
               "id": "gold_fail",
               "timestamp": 1777386527,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_output_formats.test_show_htaccess_flag",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 2,
+                "note": "local HTTP test-server connection race (curl: Could not connect to 127.0.0.1:8765)",
+                "pass": 18,
+                "pattern": "pppppppppppppfppfppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
               "user": "kilian"
             }
           ]

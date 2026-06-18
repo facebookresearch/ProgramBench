@@ -5185,6 +5185,17 @@
           ]
         },
         {
+          "name": "eval.tests.test_ultra_intensive.test_ultra_tree_all_configs",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_update_control.test_delay_flag",
           "reasons": [
             {

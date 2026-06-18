@@ -1741,6 +1741,17 @@
           ]
         },
         {
+          "name": "tests.test_help_system.test_help_flag_basic_usage",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_stamp] Usage string embeds the build git-hash (4.0-8ad2d43) differing from golden (4.0-07efb63). 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_hotkeys.test_hotkey_C_clear_bookmarks",
           "reasons": [
             {

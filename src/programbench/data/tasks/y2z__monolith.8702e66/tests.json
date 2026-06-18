@@ -777,6 +777,17 @@
           ]
         },
         {
+          "name": "eval.tests.test_cli_operations.test_ignore_errors_flag",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_external_resource] Inlined external resource (base64 data-URI) differs from golden; monolith fetches and embeds web content, so the result depends on a non-reproducible external page. 20x gold cloud eval 2026-06-13, failed 20/20 rounds",
+              "timestamp": 1781487387,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_cookies.test_case_insensitive_domain_matching",
           "reasons": [
             {

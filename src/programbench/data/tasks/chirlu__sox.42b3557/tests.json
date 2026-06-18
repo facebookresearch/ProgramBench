@@ -1335,6 +1335,72 @@
           ]
         },
         {
+          "name": "tests.test_cli_options.test_buffer_option_missing_argument",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_featureset] Fails on v6 gold: the reproducible build (e.g. ffmpeg --disable-autodetect) produces a deterministic but different optional-feature/codec/help-list set than the autodetect build the golden was captured against.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_options.test_help_effect_nonexistent",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_featureset] Fails on v6 gold: the reproducible build (e.g. ffmpeg --disable-autodetect) produces a deterministic but different optional-feature/codec/help-list set than the autodetect build the golden was captured against.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_options.test_help_format_nonexistent",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_featureset] Fails on v6 gold: the reproducible build (e.g. ffmpeg --disable-autodetect) produces a deterministic but different optional-feature/codec/help-list set than the autodetect build the golden was captured against.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_options.test_help_output_complete",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_featureset] Fails on v6 gold: the reproducible build (e.g. ffmpeg --disable-autodetect) produces a deterministic but different optional-feature/codec/help-list set than the autodetect build the golden was captured against.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_options.test_invalid_option",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_featureset] Fails on v6 gold: the reproducible build (e.g. ffmpeg --disable-autodetect) produces a deterministic but different optional-feature/codec/help-list set than the autodetect build the golden was captured against.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli_options.test_no_input_files",
+          "reasons": [
+            {
+              "id": "gold_fail",
+              "note": "[gold_fail_v6_build_featureset] Fails on v6 gold: the reproducible build (e.g. ffmpeg --disable-autodetect) produces a deterministic but different optional-feature/codec/help-list set than the autodetect build the golden was captured against.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_cli_options.test_reproducible_random",
           "reasons": [
             {

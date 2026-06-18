@@ -2782,6 +2782,23 @@
           ]
         },
         {
+          "name": "tests.test_shortcuts.test_aws_region_shortcut_expansion",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 5,
+                "note": "TUI ping-stats rendering timing race (stats not yet shown in captured frame)",
+                "pass": 15,
+                "pattern": "ffppppfpppppppppfppf",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_shortcuts.test_hostname_resolves_to_ipv6_with_flag",
           "reasons": [
             {

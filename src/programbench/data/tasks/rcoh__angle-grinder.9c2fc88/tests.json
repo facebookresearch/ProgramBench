@@ -1268,6 +1268,42 @@
           ]
         },
         {
+          "name": "tests.test_tty_rendering.test_tty_aggregate_shows_ansi_escape_codes",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (progressive / ANSI tty output)",
+                "statuses": [
+                  "passed",
+                  "failure",
+                  "passed"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tty_rendering.test_tty_avg_aggregate_shows_progressive_updates",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Flaky TUI render timing (progressive / ANSI tty output)",
+                "statuses": [
+                  "passed",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tty_rendering.test_tty_count_aggregate_intermediate_updates",
           "reasons": [
             {

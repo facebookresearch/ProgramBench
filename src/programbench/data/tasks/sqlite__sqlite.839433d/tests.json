@@ -22593,6 +22593,17 @@
           ]
         },
         {
+          "name": "tests.test_harvest_e_createtable.test_e_createtable_t4_15_0@db_e_createtable",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_e_createtable.test_e_createtable_t4_18_3@db_e_createtable",
           "reasons": [
             {
@@ -33764,6 +33775,23 @@
           ]
         },
         {
+          "name": "tests.test_harvest_pragma4.test_pragma4_t4_1_1@db_pragma4",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "test-isolation race: pre-existing table/view from dirty shared DB state (table/view already exists)",
+                "pass": 19,
+                "pattern": "pppppppppfpppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_pragma4.test_pragma4_t4_1_2@db_pragma4",
           "reasons": [
             {
@@ -34893,6 +34921,23 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_rowvalue7.test_rowvalue7_t1_1",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "test-isolation race: pre-existing table/view from dirty shared DB state (table/view already exists)",
+                "pass": 19,
+                "pattern": "pppppppppppppppppfpp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
             }
           ]
         },
@@ -41763,6 +41808,23 @@
             {
               "id": "gold_fail",
               "timestamp": 1777386531,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_window1.test_window1_t73_0",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 2,
+                "note": "test-isolation race: pre-existing table/view from dirty shared DB state (table/view already exists)",
+                "pass": 18,
+                "pattern": "pppppppppppfpppppppf",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
               "user": "kilian"
             }
           ]

@@ -557,6 +557,24 @@
           ]
         },
         {
+          "name": "tests.test_logging.test_timed_test_num_secs_has_value",
+          "reasons": [
+            {
+              "extra": {
+                "cause": "Timing-dependent (elapsed-time assertion)",
+                "statuses": [
+                  "passed",
+                  "passed",
+                  "failure"
+                ]
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781197573,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tui_basic.test_ctrl_c_exits",
           "reasons": [
             {
@@ -567,11 +585,73 @@
           ]
         },
         {
+          "name": "tests.test_tui_timed.test_timer_display_format",
+          "reasons": [
+            {
+              "id": "gold_flaky",
+              "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
+              "timestamp": 1749700000,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_timed.test_timer_not_shown_without_s_flag",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 1,
+                "note": "TUI timer rendering timing race (running/paused timer state non-deterministic in captured frame)",
+                "pass": 19,
+                "pattern": "pfpppppppppppppppppp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_timed.test_timer_pauses_on_results_screen",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 13,
+                "note": "TUI timer rendering timing race (running/paused timer state non-deterministic in captured frame)",
+                "pass": 7,
+                "pattern": "ppffffffppfppffffffp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tui_timed.test_timer_with_3_seconds",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386528,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_timed.test_timer_with_5_seconds",
+          "reasons": [
+            {
+              "extra": {
+                "fail": 5,
+                "note": "TUI timer rendering timing race (running/paused timer state non-deterministic in captured frame)",
+                "pass": 15,
+                "pattern": "fffpppppppfppppppfpp",
+                "source": "20x gold cloud eval 2026-06-13"
+              },
+              "id": "gold_flaky",
+              "timestamp": 1781326815,
               "user": "kilian"
             }
           ]
