@@ -123,7 +123,8 @@ def register_submission(
 ) -> RegisterResult:
     """Clone the registry, commit the entry on a branch, and open the PR.
 
-    Uses ``gh`` (fork + PR) when available, cleaning up its throwaway clone afterward.
+    With ``gh``: maintainers (push access) get a branch + PR straight on the registry;
+    everyone else forks first (and a fork is only possible if the registry allows it).
     Without ``gh`` it leaves the commit on a branch in a kept clone and returns the manual
     push + compare-URL steps in ``next_steps`` (so the clone must outlive this call).
     """
@@ -132,28 +133,71 @@ def register_submission(
     clone = Path(tempfile.mkdtemp(prefix="programbench-register-")) / "submissions"
 
     if shutil.which("gh"):
-        # Fork the registry under the authed user (no-op if it exists) and clone the fork;
-        # origin -> fork, upstream -> registry. gh repo fork takes no destination arg, so it
-        # clones into <cwd>/<repo-name>; running from clone.parent makes that equal `clone`.
-        subprocess.run(
-            ["gh", "repo", "fork", slug, "--clone", "--default-branch-only"],
-            cwd=clone.parent,
-            check=True,
-            capture_output=True,
-            text=True,
+        # Maintainers push a branch straight to the registry; others fork (only works if the
+        # registry permits forks — org/private repos often disable them).
+        can_push = (
+            subprocess.run(
+                ["gh", "api", f"repos/{slug}", "--jq", ".permissions.push"], capture_output=True, text=True
+            ).stdout.strip()
+            == "true"
         )
+        if can_push:
+            _git(clone.parent, "clone", "--depth", "1", _to_https(registry), str(clone))
+            head = plan.branch
+        else:
+            # gh repo fork takes no destination arg, so it clones into <cwd>/<repo-name>;
+            # running from clone.parent makes that equal `clone`.
+            subprocess.run(
+                ["gh", "repo", "fork", slug, "--clone", "--default-branch-only"],
+                cwd=clone.parent,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            login = subprocess.run(
+                ["gh", "api", "user", "--jq", ".login"], check=True, capture_output=True, text=True
+            ).stdout.strip()
+            head = f"{login}:{plan.branch}"
+        # Push over HTTPS: gh may wire an ssh remote, and ssh needs keys set up (and is blocked
+        # in some sandboxes), whereas gh's https credentials always work.
+        _git(clone, "remote", "set-url", "origin", _to_https(_git(clone, "remote", "get-url", "origin")))
         _git(clone, "checkout", "-b", plan.branch)
         write_entry(plan, submission_dir, clone)
         _git(clone, "add", f"submissions/{plan.submission_id}")
         _commit(clone, plan.title)
         _git(clone, "push", "-u", "origin", plan.branch)
+        # Open the PR (explicit --head; gh's inference is unreliable). The branch lookup is the
+        # source of truth: gh pr create can exit nonzero yet still create the PR, and a PR for
+        # the branch may already exist from a prior run.
+        created = subprocess.run(
+            ["gh", "pr", "create", "--repo", slug, "--head", head, "--title", plan.title, "--body", plan.body],
+            cwd=clone,
+            capture_output=True,
+            text=True,
+        )
         pr_url = subprocess.run(
-            ["gh", "pr", "create", "--repo", slug, "--title", plan.title, "--body", plan.body],
+            [
+                "gh",
+                "pr",
+                "list",
+                "--repo",
+                slug,
+                "--head",
+                plan.branch,
+                "--state",
+                "open",
+                "--json",
+                "url",
+                "--jq",
+                ".[0].url",
+            ],
             cwd=clone,
             check=True,
             capture_output=True,
             text=True,
         ).stdout.strip()
+        if not pr_url:
+            raise RuntimeError(f"gh pr create did not open a PR:\n{created.stderr or created.stdout}")
         shutil.rmtree(clone.parent)
         return RegisterResult(plan, pr_url, None)
 
