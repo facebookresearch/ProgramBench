@@ -523,8 +523,8 @@ class Evaluator:
         # Block internet during compile.sh so a submission can't smuggle
         # install/download steps into its build. Test-execution containers
         # are never touched (they may legitimately need network).
-        block_build_internet_dns(env)
         try:
+            block_build_internet_dns(env)
             self._run_step(
                 "chmod +x ./compile.sh && ./compile.sh",
                 env=env,
