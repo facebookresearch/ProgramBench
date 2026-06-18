@@ -7,11 +7,11 @@
 
 ## Inference
 
-Please use the images with tag `task_cleanroom` from `https://hub.docker.com/orgs/programbench/repositories`.
+Please use the images with tag `task_cleanroom_v6` from `https://hub.docker.com/orgs/programbench/repositories`.
 E.g., to solve the task `ffmpeg__ffmpeg.360a402`, use the following image:
 
 ```
-https://hub.docker.com/repository/docker/programbench/ffmpeg_1776_ffmpeg.360a402/tags/task_cleanroom/
+https://hub.docker.com/repository/docker/programbench/ffmpeg_1776_ffmpeg.360a402/tags/task_cleanroom_v6/
 ```
 
 (the `__` is replaced by `_1776_`).
@@ -49,7 +49,7 @@ After following the installation instructions from the [README](../README.md#qui
 uv run programbench eval /path/to/my-amazing-agent-run
 ```
 
-The evaluation will automatically pull all required docker containers (e.g., `ffmpeg_1776_ffmpeg.360a402:task`).
+The evaluation will automatically pull all required docker containers (e.g., `ffmpeg_1776_ffmpeg.360a402:task_v6`).
 
 > [!TIP]
 > Test blobs (per-branch test archives) are downloaded on demand from HuggingFace during evaluation.

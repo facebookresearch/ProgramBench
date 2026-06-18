@@ -55,12 +55,12 @@ def eval(
     slice_spec: str = typer.Option("", "--slice", help="Slice specification (e.g. '0:5')"),
     summarize_only: bool = typer.Option(False, "--summarize-only", help="Skip evaluation; just read existing results"),
     image_tag: str = typer.Option(
-        "task_cleanroom",
+        "task_cleanroom_v6",
         "--image-tag",
         help="Docker image tag to evaluate submissions in. Defaults to the "
         "artifact-free cleanroom image so submissions can't rely on build "
         "artifacts leaked into the full :task build environment. Pass "
-        "--image-tag task to use the full build environment instead.",
+        "--image-tag task_v6 to use the full build environment instead.",
     ),
     output: str = typer.Option(
         "",
