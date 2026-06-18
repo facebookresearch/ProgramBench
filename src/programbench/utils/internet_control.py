@@ -41,7 +41,8 @@ def block_build_internet_dns(env: ContainerEnvironment) -> None:
         timeout=20,
     )
     if r["returncode"] != 0 or _BLACKHOLE_NS not in r["output"]:
-        raise RuntimeError(f"Failed to blackhole DNS for build isolation: {r['output'].strip()}")
+        detail = (r["output"] or r["exception_info"] or "").strip()
+        raise RuntimeError(f"Failed to blackhole DNS for build isolation: {detail}")
 
 
 def restore_build_internet_dns(env: ContainerEnvironment) -> None:
