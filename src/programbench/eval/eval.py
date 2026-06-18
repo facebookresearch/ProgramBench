@@ -289,7 +289,7 @@ class Evaluator:
         submission_archive: Path | None = None,
         blob_dir: Path | None = None,
         remove_hashes: list[str] | None = None,
-        image_tag: str = "task",
+        image_tag: str = "task_cleanroom",
         from_existing: EvaluationResult | None = None,
         instance_id: str = "",
         docker_cpus: int = DOCKER_CPUS,

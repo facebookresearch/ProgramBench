@@ -229,7 +229,7 @@ def _evaluate_instance(
     source_dir: Path,
     target_dir: Path,
     force: bool,
-    image_tag: str = "task",
+    image_tag: str = "task_cleanroom",
     docker_cpus: int = DOCKER_CPUS,
     branch_workers: int = 1,
     branch_retries: int = 1,
@@ -374,7 +374,7 @@ def run_eval_batch(
     branch_workers: int = 1,
     docker_cpus: int = DOCKER_CPUS,
     summarize_only: bool = False,
-    image_tag: str = "task",
+    image_tag: str = "task_cleanroom",
     output: str | Path = "",
     branch_retries: int = 1,
 ) -> None:
