@@ -24,6 +24,10 @@ tests/
 
 The CLI (`cli/`) and core logic are kept separate. All typer/rich/display code lives in `cli/`; everything else is importable without CLI dependencies.
 
+## Build-time internet isolation
+
+During eval, a submission's `compile.sh` always runs with internet **blocked** (`utils/internet_control.py`) so it can't smuggle `pip install`/download steps into the build. The block is an in-container DNS blackhole (overwrite `/etc/resolv.conf` with `nameserver 0.0.0.0`, restore after compile) — no host privileges, works under docker-in-docker. Test-execution containers are never touched (they may legitimately need network).
+
 ## Style guide
 
 1. Target python 3.10 or higher

@@ -42,6 +42,7 @@ from programbench.constants import (
 )
 from programbench.container import ContainerEnvironment, remove_image
 from programbench.exceptions import EmptyTestResultError, EvalStepError, XmlParseError
+from programbench.utils.internet_control import block_build_internet_dns, restore_build_internet_dns
 
 log = logging.getLogger(__name__)
 
@@ -519,13 +520,20 @@ class Evaluator:
             log_buf=log_buf,
             step_name="seed_git",
         )
-        self._run_step(
-            "chmod +x ./compile.sh && ./compile.sh",
-            env=env,
-            log_buf=log_buf,
-            step_name="compile",
-            timeout=900,
-        )
+        # Block internet during compile.sh so a submission can't smuggle
+        # install/download steps into its build. Test-execution containers
+        # are never touched (they may legitimately need network).
+        block_build_internet_dns(env)
+        try:
+            self._run_step(
+                "chmod +x ./compile.sh && ./compile.sh",
+                env=env,
+                log_buf=log_buf,
+                step_name="compile",
+                timeout=900,
+            )
+        finally:
+            restore_build_internet_dns(env)
         self._run_step(
             f"mv ./executable {self._stashed_executable}",
             env=env,
