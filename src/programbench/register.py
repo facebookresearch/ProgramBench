@@ -20,6 +20,7 @@ and opens the PR for you; without it, it leaves the commit on a branch in a clon
 prints the compare URL so you can open the PR by hand.
 """
 
+import json
 import shutil
 import subprocess
 import tempfile
@@ -91,14 +92,13 @@ def build_plan(
     files = ["pointer.yaml", "submission.yaml"] + [
         f"_stats/{p.name}" for p in sorted((submission_dir / "_stats").glob("*.json"))
     ]
-    system, head = manifest["system"], manifest["headline"]
+    system = manifest["system"]
+    n_attempted = len(json.loads((submission_dir / "_stats" / "score.json").read_text()))
     body = (
         f"Registers **{system['model']}** ({system['provider']}) + {system['agent']}.\n\n"
-        f"- mean score: {head['mean_score'] * 100:.1f}%\n"
-        f"- resolved: {head['resolved_pct']:.1f}% / near-resolved: {head['near_resolved_pct']:.1f}%\n"
-        f"- instances: {head['n_instances_attempted']}/{head['n_instances_total']}\n\n"
+        f"- instances attempted: {n_attempted}\n\n"
         f"Source: {source}\nCommit: `{commit}`\n\n"
-        "Tier-0 verified (`programbench submit verify .`)."
+        "Tier-0 verified (`programbench submit verify .`). Leaderboard scores are recomputed from `_stats/score.json`."
     )
     return RegisterPlan(
         sub_id, source, commit, registry, f"add-{sub_id}", pointer, files, f"Add submission: {sub_id}", body
