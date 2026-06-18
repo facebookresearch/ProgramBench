@@ -187,11 +187,6 @@ def package_run(run_dir: Path, upload_to: str | None = None, overwrite: bool = F
             run_dir=run_dir,
             submission_id=run_dir.resolve().name,
             programbench_version=version("programbench"),
-            mean_score=headline.mean_score,
-            resolved_pct=headline.resolved_pct,
-            near_resolved_pct=headline.near_resolved_pct,
-            n_attempted=headline.n_instances_attempted,
-            n_total=headline.n_instances_total,
             **carried,
         )
         + "\n"

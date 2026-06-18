@@ -73,12 +73,12 @@ def verify(
         "", "--filter", help="Restrict Tier-1 re-eval to instance IDs matching this regex."
     ),
 ) -> None:
-    """Verify a submission against its own claimed results.
+    """Verify a submission against its own artifacts.
 
-    Tier 0 (default, no Docker) recomputes the headline from the submission's eval.json
-    files and checks it matches submission.yaml. Tier 1 (--tier1) additionally resolves
-    each submission.tar.gz and re-runs evaluation to confirm the artifacts reproduce the
-    reported scores.
+    Tier 0 (default, no Docker) recomputes each instance's per-test pass/fail from its
+    eval.json and checks it matches _stats/score.json. Tier 1 (--tier1) additionally
+    resolves each submission.tar.gz and re-runs evaluation to confirm the artifacts
+    reproduce the reported scores.
 
     \b
     Examples:
@@ -96,17 +96,21 @@ def verify(
         else verify_tier0(submission_dir)
     )
 
-    table = Table(title=f"Tier-{result.tier} verification", box=None)
-    table.add_column("Check", style="bold")
-    table.add_column("Claimed", justify="right")
-    table.add_column("Computed", justify="right")
-    table.add_column("", justify="center")
-    for c in result.checks:
-        table.add_row(c.name, str(c.claimed), str(c.computed), "✅" if c.ok else "❌")
     console = Console()
-    console.print(table)
+    fails = [c for c in result.checks if not c.ok]
+    console.print(
+        f"Tier-{result.tier}: [bold]{len(result.checks) - len(fails)}/{len(result.checks)}[/bold] checks consistent"
+    )
+    if fails:
+        table = Table(title="Discrepancies", box=None)
+        table.add_column("Instance", style="bold")
+        table.add_column("score.json", justify="right")
+        table.add_column("recomputed", justify="right")
+        for c in fails:
+            table.add_row(c.name, str(c.claimed), str(c.computed))
+        console.print(table)
     if result.ok:
-        console.print("[bold green]PASS[/bold green] — submission is consistent with its reported results.")
+        console.print("[bold green]PASS[/bold green] — submission is consistent with its artifacts.")
     else:
         console.print("[bold red]FAIL[/bold red] — discrepancies found above.")
         raise typer.Exit(1)

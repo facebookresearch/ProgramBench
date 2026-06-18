@@ -165,7 +165,8 @@ def register_submission(
         write_entry(plan, submission_dir, clone)
         _git(clone, "add", f"submissions/{plan.submission_id}")
         _commit(clone, plan.title)
-        _git(clone, "push", "-u", "origin", plan.branch)
+        # Force so re-running register updates an existing PR (the add-<id> branch is ours).
+        _git(clone, "push", "-u", "--force", "origin", plan.branch)
         # Open the PR (explicit --head; gh's inference is unreliable). The branch lookup is the
         # source of truth: gh pr create can exit nonzero yet still create the PR, and a PR for
         # the branch may already exist from a prior run.

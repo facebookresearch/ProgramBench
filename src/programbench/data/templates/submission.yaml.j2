@@ -19,10 +19,5 @@ system:
 
 eval:
   programbench_version: {{ programbench_version | tojson }}   # [auto]
-
-headline:                # [auto] score summary from evaluation; other stats live in _stats/
-  mean_score: {{ mean_score }}
-  resolved_pct: {{ resolved_pct }}
-  near_resolved_pct: {{ near_resolved_pct }}
-  n_instances_attempted: {{ n_attempted }}
-  n_instances_total: {{ n_total }}
+# Scores are not stored here: the leaderboard recomputes them from _stats/score.json with the
+# registry's current ignored-tests list, so any cached numbers would just go stale.

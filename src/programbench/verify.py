@@ -4,35 +4,33 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-"""Verify a packaged submission against its own claimed results.
+"""Verify a packaged submission against its own artifacts.
 
-Tier 0 (default, no Docker): recompute the headline from the submission's own eval.json
-files (with ignored-test filtering) and check it matches submission.yaml. This is the
-free consistency check a third party or CI can run with only ``programbench`` installed.
+Tier 0 (default, no Docker): recompute each instance's per-test pass/fail from its own
+eval.json and check it matches the submitted _stats/score.json — i.e. the reported scores
+faithfully reflect the eval output. A free check a third party or CI can run with only
+``programbench`` installed. (Leaderboard scores aren't stored in the submission, so there
+is no headline to check against.)
 
 Tier 1 (--tier1, Docker): resolve each submission.tar.gz, re-run ``programbench eval``,
 and confirm the freshly produced scores match the submitted eval.json. This is what
 proves the artifacts actually yield the reported results.
 """
 
+import json
 import re
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
 from programbench.submission import (
-    Headline,
-    aggregate,
     benchmark_instances,
-    load_manifest,
     resolve_submission_tar,
     score_run,
+    test_results_map,
 )
 
-# Tier-0 recomputes the headline from the same eval.json with the same deterministic
-# rounding `package` used, so a consistent submission matches exactly. The epsilon only
-# absorbs float representation noise; any real drift (>= the rounding granularity) fails.
-TOLERANCE = 1e-6
+TOLERANCE = 1e-6  # Tier-1 score floats are rounded; this only absorbs representation noise.
 
 
 @dataclass
@@ -60,18 +58,29 @@ def _close(a: object, b: object) -> bool:
     return abs(a - b) <= TOLERANCE
 
 
-def _headline_checks(claimed: dict, computed: Headline) -> list[Check]:
-    return [
-        Check(name, claimed.get(name), value, _close(claimed.get(name), value))
-        for name, value in computed.as_dict().items()
-    ]
-
-
 def verify_tier0(submission_dir: Path) -> VerifyResult:
-    manifest = load_manifest(submission_dir)
+    """Per instance, recompute the per-test pass/fail from its eval.json and check it matches
+    the submitted _stats/score.json (so the stored scores reflect the eval output, untampered)."""
     instances = benchmark_instances()
-    computed = aggregate(score_run(submission_dir, instances), len(instances))
-    return VerifyResult(0, _headline_checks(manifest.get("headline", {}), computed))
+    stored = json.loads((submission_dir / "_stats" / "score.json").read_text())
+    checks = []
+    for iid, stored_map in sorted(stored.items()):
+        eval_json = submission_dir / iid / f"{iid}.eval.json"
+        if iid not in instances:
+            checks.append(Check(iid, "in score.json", "not a benchmark instance", False))
+        elif not eval_json.exists():
+            checks.append(Check(iid, f"{sum(stored_map.values())}/{len(stored_map)} pass", "no eval.json", False))
+        else:
+            recomputed = test_results_map(eval_json, instances[iid])
+            checks.append(
+                Check(
+                    iid,
+                    f"{sum(stored_map.values())}/{len(stored_map)} pass",
+                    f"{sum(recomputed.values())}/{len(recomputed)} pass",
+                    recomputed == stored_map,
+                )
+            )
+    return VerifyResult(0, checks)
 
 
 def verify_tier1(submission_dir: Path, *, workers: int = 1, filter_spec: str = "") -> VerifyResult:
