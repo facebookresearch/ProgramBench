@@ -183,10 +183,10 @@ def aggregate(scores: dict[str, float], n_total: int) -> Headline:
     if not values:
         raise ValueError("No scored instances found")
     n = len(values)
-    # mean is over attempted instances; resolved/near are over the full benchmark
-    # (an unattempted task counts as unresolved).
+    # mean, resolved, and near are all over the full benchmark — an unattempted task counts
+    # as 0, matching how the leaderboard scores partial submissions.
     return Headline(
-        mean_score=round(sum(values) / n, 4),
+        mean_score=round(sum(values) / n_total, 4),
         resolved_pct=round(100 * sum(s >= RESOLVED_THRESHOLD for s in values) / n_total, 1),
         near_resolved_pct=round(100 * sum(s >= NEAR_RESOLVED_THRESHOLD for s in values) / n_total, 1),
         n_instances_attempted=n,
