@@ -729,8 +729,8 @@
           "name": "eval.tests.test_args_parsing.test_u_out_of_range_or_overflow_values_still_enter_render_loop[args2]",
           "reasons": [
             {
-              "id": "ignored_manual",
-              "description": "This test passes -u 999999999999999999999999, which overflows C's 32-bit int via atoi(), wrapping to a small/negative value so the original binary enters the render loop. This is undefined behavior in C, not intentional design. A correct reimplementation in a language without integer overflow (e.g. Python) would reasonably reject or hang on this value. The test enshrines accidental C overflow semantics rather than meaningful program behavior."
+              "description": "This test passes -u 999999999999999999999999, which overflows C's 32-bit int via atoi(), wrapping to a small/negative value so the original binary enters the render loop. This is undefined behavior in C, not intentional design. A correct reimplementation in a language without integer overflow (e.g. Python) would reasonably reject or hang on this value. The test enshrines accidental C overflow semantics rather than meaningful program behavior.",
+              "id": "ignored_manual"
             }
           ]
         }
@@ -3199,6 +3199,17 @@
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_tui_cmatrix.test_screen_changes_over_time",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_launch_draws_nonempty_screen",
+              "timestamp": 1781756185,
+              "user": "kilian"
             }
           ]
         },

@@ -13179,6 +13179,17 @@
       ],
       "ignored_tests": [
         {
+          "name": "eval.tests.test_tui_actions.test_command_line_cancel",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_command_line_with_colon",
+              "timestamp": 1781756196,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_tui_actions.test_command_line_with_colon",
           "reasons": [
             {
@@ -13243,6 +13254,17 @@
           ]
         },
         {
+          "name": "eval.tests.test_tui_search.test_search_cancel_with_esc",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_search_opens_with_slash",
+              "timestamp": 1781756196,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_tui_search.test_search_case_sensitive",
           "reasons": [
             {
@@ -13271,6 +13293,17 @@
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_tui_search.test_search_no_results",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_search_opens_with_slash",
+              "timestamp": 1781756196,
+              "user": "kilian"
             }
           ]
         },

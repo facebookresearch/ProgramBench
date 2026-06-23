@@ -3822,6 +3822,28 @@
           ]
         },
         {
+          "name": "eval.tests.test_tui.test_tui_shows_directories",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_tui_launches",
+              "timestamp": 1781756196,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_tui.test_tui_shows_files",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_tui_launches",
+              "timestamp": 1781756196,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_tui.test_yank_directory",
           "reasons": [
             {

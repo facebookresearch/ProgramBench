@@ -22,6 +22,10 @@ scoring regardless of reason; the id is informational.
   distinguish a real implementation from a stub.
 - `outcome_dependent_presence` — test appears in some eval runs but not others.
 - `slow_or_hang` — test hangs mid-call or exceeds a duration threshold.
+- `dependency_ignored` — a kept test that `@pytest.mark.dependency(depends=[X])` on an
+  *ignored* test `X`. Because `X` is deselected at collection, `pytest-dependency` skips
+  the dependent, so it would count as unresolved through no fault of the submission. The
+  reason `note` records the prerequisite (`depends on ignored test <X>`).
 - `ignored_manual` — manually excluded.
 
 ## Quick reference

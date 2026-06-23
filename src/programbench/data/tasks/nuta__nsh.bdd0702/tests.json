@@ -5338,6 +5338,17 @@
           ]
         },
         {
+          "name": "eval.tests.test_history_mode.test_history_mode_ctrl_c_exits",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_history_mode_activates",
+              "timestamp": 1781756408,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_history_mode.test_history_mode_empty_search",
           "reasons": [
             {
@@ -5403,6 +5414,28 @@
             {
               "id": "dummy_pass",
               "timestamp": 1777387546,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_history_mode.test_history_mode_shows_commands",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_history_mode_activates",
+              "timestamp": 1781756408,
+              "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_history_mode.test_history_mode_shows_help_text",
+          "reasons": [
+            {
+              "id": "dependency_ignored",
+              "note": "depends on ignored test test_history_mode_activates",
+              "timestamp": 1781756408,
               "user": "kilian"
             }
           ]
