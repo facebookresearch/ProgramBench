@@ -520,6 +520,19 @@ class Evaluator:
             log_buf=log_buf,
             step_name="seed_git",
         )
+        # Remove any ./executable shipped in the submission archive so the
+        # build must produce a fresh binary. The workspace wipe above runs
+        # *before* the tar is extracted, so a prebuilt executable smuggled
+        # into the submission would otherwise survive into the compile step
+        # and be stashed as if the build had produced it (a stub/no-op
+        # compile.sh would then "pass"). _remove_hashed_files only catches
+        # byte-for-byte copies of the gold binary, not arbitrary prebuilts.
+        self._run_step(
+            "rm -f ./executable",
+            env=env,
+            log_buf=log_buf,
+            step_name="clear_stale_executable",
+        )
         # Block internet during compile.sh so a submission can't smuggle
         # install/download steps into its build. Test-execution containers
         # are never touched (they may legitimately need network).

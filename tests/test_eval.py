@@ -6,11 +6,14 @@
 
 """Tests for the evaluation pipeline (data models, XML parsing, batch logic)."""
 
+from pathlib import Path
+
 import pytest
 
 from programbench.constants import TASKS_DIR
 from programbench.eval.eval import (
     EvaluationResult,
+    Evaluator,
     TestBranchError,
     TestResult,
     _process_branch_xml,
@@ -77,6 +80,46 @@ JUNIT_XML_DUP_MIXED_KIND = """\
   </testsuite>
 </testsuites>
 """
+
+
+class RecordingEnv:
+    """Fake ContainerEnvironment that records commands and echoes them back."""
+
+    def __init__(self):
+        self.commands: list[str] = []
+        self.tars_copied: list[Path] = []
+
+    def execute(self, command: str, *, timeout: int | None = None) -> dict:
+        self.commands.append(command)
+        return {"output": command, "returncode": 0, "exception_info": ""}
+
+    def copy_in_tar(self, tar_path: Path, container_path: str) -> None:
+        self.commands.append(f"__copy_in_tar__ {tar_path}")
+        self.tars_copied.append(tar_path)
+
+
+class TestCompileClearsStaleExecutable:
+    def _run_compile(self):
+        evaluator = Evaluator(tests_branches=["b1"], submission_archive=Path("submission.tar.gz"))
+        env = RecordingEnv()
+        evaluator._compile_executable(env, log_buf=[])
+        return env
+
+    def test_stale_executable_removed_before_compile(self):
+        commands = self._run_compile().commands
+        clear_idx = next(i for i, c in enumerate(commands) if c == "rm -f ./executable")
+        compile_idx = next(i for i, c in enumerate(commands) if "compile.sh" in c)
+        extract_idx = next(i for i, c in enumerate(commands) if c.startswith("__copy_in_tar__"))
+        # The clear must happen after the submission is extracted (otherwise it
+        # removes nothing) and before compile.sh runs (so the build is forced
+        # to regenerate the binary).
+        assert extract_idx < clear_idx < compile_idx
+
+    def test_workspace_wipe_precedes_extraction(self):
+        commands = self._run_compile().commands
+        wipe_idx = next(i for i, c in enumerate(commands) if c.startswith("rm -rf "))
+        extract_idx = next(i for i, c in enumerate(commands) if c.startswith("__copy_in_tar__"))
+        assert wipe_idx < extract_idx
 
 
 class TestParseTestResults:
