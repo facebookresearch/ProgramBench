@@ -137,6 +137,9 @@ def _process_branch_xml(
     *branch_ignored* is true, the entire branch is treated as out-of-scope:
     completeness checks are skipped and no warnings are emitted, but parsed
     results are still returned (the caller filters them out later).
+
+    A parsed result matching nothing in the expected list is dropped if it passed,
+    since it cannot be credited to an expected test. Non-passing ones are kept.
     """
     parsed = parse_test_results(raw_xml, branch=branch).test_results
     results: list[TestResult] = list(parsed)
@@ -174,12 +177,16 @@ def _process_branch_xml(
         )
     unexpected = got - set(expected) - ignored_names
     if unexpected:
-        log.warning(
-            "%s: %d test(s) in JUnit XML not in tests.json",
-            tag,
-            len(unexpected),
+        # An unmatched name must never count in the submission's favour, but a failure it
+        # records has to stay visible. With no expected list there is nothing to match against.
+        kept = [t for t in results if not expected or t.name not in unexpected or not t.is_resolved]
+        detail = (
+            f"{len(unexpected)} test(s) in JUnit XML not in tests.json; "
+            f"dropped {len(results) - len(kept)} passing result(s)"
         )
-        warnings.append(f"{tag}: {len(unexpected)} test(s) in JUnit XML not in tests.json")
+        log.warning("%s: %s", tag, detail)
+        warnings.append(f"{tag}: {detail}")
+        results = kept
 
     return results, warnings
 
