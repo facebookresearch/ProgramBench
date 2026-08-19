@@ -122,6 +122,17 @@ def count_testcases(raw_xml: str) -> int:
     return sum(1 for _ in root.iter("testcase"))
 
 
+def _canonical_test_name(name: str) -> str:
+    """Strip an optional leading ``eval.`` package root from a test name.
+
+    ``tests.json`` is inconsistent about the package root: some tasks store
+    ``eval.tests.foo`` (pytest's module path under /workspace/eval) while
+    others store ``tests.foo``. JUnit classnames are always rooted at
+    ``eval.tests.foo``, so both sides are compared in this canonical form.
+    """
+    return name[5:] if name.startswith("eval.") else name
+
+
 def _process_branch_xml(
     raw_xml: str,
     branch: str,
@@ -152,10 +163,12 @@ def _process_branch_xml(
         warnings.append(f"{tag}: no expected test list, cannot verify completeness")
         return results, warnings
 
-    ignored_names = {n.split("/", 1)[1] for n in (ignored_tests or set()) if n.startswith(f"{branch}/")}
-    expected_active = [n for n in expected if n not in ignored_names]
-    got = {t.name for t in parsed}
-    missing = [name for name in expected_active if name not in got]
+    ignored_names = {
+        _canonical_test_name(n.split("/", 1)[1]) for n in (ignored_tests or set()) if n.startswith(f"{branch}/")
+    }
+    expected_active = [n for n in expected if _canonical_test_name(n) not in ignored_names]
+    got = {_canonical_test_name(t.name) for t in parsed}
+    missing = [name for name in expected_active if _canonical_test_name(name) not in got]
     if missing:
         log.warning(
             "%s: %d/%d expected tests missing from JUnit XML",
@@ -172,7 +185,7 @@ def _process_branch_xml(
             )
             for name in missing
         )
-    unexpected = got - set(expected) - ignored_names
+    unexpected = got - {_canonical_test_name(n) for n in expected} - ignored_names
     if unexpected:
         log.warning(
             "%s: %d test(s) in JUnit XML not in tests.json",
