@@ -94,24 +94,25 @@ def count_worker_crashes(raw_xml: str) -> int:
         root = ET.fromstring(raw_xml)
     except ET.ParseError:
         return 0
-    n = 0
+    crashed = set()
     for case in root.iter("testcase"):
         for child in case:
             if child.tag not in ("error", "failure"):
                 continue
             message = (child.get("message") or "") + " " + (child.text or "")
             if "worker '" in message and "crashed" in message:
-                n += 1
+                crashed.add((case.get("classname"), case.get("name")))
                 break
-    return n
+    return len(crashed)
 
 
 def count_testcases(raw_xml: str) -> int:
-    """Total <testcase> count in the JUnit XML (0 on parse error / empty input).
+    """Unique testcase count in the JUnit XML (0 on parse error / empty input).
 
     Used to surface variance across retry attempts: even if crashes stay
     non-zero, the testcase count tells us how many tests xdist actually
-    managed to dispatch on each attempt.
+    managed to dispatch on each attempt. Some pytest plugins emit one testcase
+    per attempt, so classname and name identify the logical test.
     """
     if not raw_xml.strip():
         return 0
@@ -119,7 +120,7 @@ def count_testcases(raw_xml: str) -> int:
         root = ET.fromstring(raw_xml)
     except ET.ParseError:
         return 0
-    return sum(1 for _ in root.iter("testcase"))
+    return len({(case.get("classname"), case.get("name")) for case in root.iter("testcase")})
 
 
 def _process_branch_xml(
@@ -568,8 +569,10 @@ class Evaluator:
         # it without re-installing. Failures are accepted (no pip3, no
         # network, ...): we just don't get --reruns and rely on
         # --max-worker-restart + branch_retries.
+        # Keep 16.6 pinned because 16.6.1 duplicates JUnit testcase records
+        # for reruns. The parser also handles such XML for existing results.
         rerun_install = self._run_step(
-            "pip3 install -q --disable-pip-version-check pytest-rerunfailures",
+            "pip3 install -q --disable-pip-version-check pytest-rerunfailures==16.6",
             env=env,
             log_buf=log_buf,
             step_name="install_rerunfailures",
@@ -876,7 +879,7 @@ def parse_test_results(results_xml: str, branch: str = "") -> EvaluationResult:
         ) from e
     xml = JUnitXml.fromroot(root)
 
-    test_results = []
+    test_results: dict[str, TestResult] = {}
     for suite in xml:
         for case in suite:
             raw_name = f"{case.classname}.{case.name}" if case.classname else case.name
@@ -918,6 +921,10 @@ def parse_test_results(results_xml: str, branch: str = "") -> EvaluationResult:
                 if hasattr(result, "text") and result.text:
                     extra["text"] = result.text
 
-            test_results.append(TestResult(name=name, branch=branch, status=status, extra=extra))
+            # pytest-rerunfailures 16.6.1 emits one testcase per attempt. The
+            # final attempt is last, while rerun attempts can look like passes
+            # because they have no result child. Keep one logical test and let
+            # the final attempt determine its status.
+            test_results[name] = TestResult(name=name, branch=branch, status=status, extra=extra)
 
-    return EvaluationResult(test_results=test_results)
+    return EvaluationResult(test_results=list(test_results.values()))

@@ -14,6 +14,7 @@ from programbench.eval.eval import (
     TestBranchError,
     TestResult,
     _process_branch_xml,
+    count_testcases,
     count_worker_crashes,
     parse_test_results,
 )
@@ -78,6 +79,22 @@ JUNIT_XML_DUP_MIXED_KIND = """\
 </testsuites>
 """
 
+JUNIT_XML_RERUNFAILURES_16_6_1 = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6">
+    <testcase classname="test_rerun" name="test_always_fails" time="0.000"/>
+    <testcase classname="test_rerun" name="test_always_fails" time="0.000"/>
+    <testcase classname="test_rerun" name="test_always_fails" time="0.000">
+      <failure message="assert False">AssertionError</failure>
+    </testcase>
+    <testcase classname="test_rerun" name="test_eventually_passes" time="0.000"/>
+    <testcase classname="test_rerun" name="test_eventually_passes" time="0.000"/>
+    <testcase classname="test_rerun" name="test_eventually_passes" time="0.000"/>
+  </testsuite>
+</testsuites>
+"""
+
 
 class TestParseTestResults:
     def test_all_pass(self):
@@ -117,6 +134,15 @@ class TestParseTestResults:
         assert len(result) == 1
         assert result.test_results[0].status == "system_error"
         assert "got 2" in result.test_results[0].extra["error_details"]
+
+    def test_rerun_attempts_count_once_with_final_status(self):
+        result = parse_test_results(JUNIT_XML_RERUNFAILURES_16_6_1, branch="b1")
+        assert [(test.name, test.status) for test in result] == [
+            ("test_rerun.test_always_fails", "failure"),
+            ("test_rerun.test_eventually_passes", "passed"),
+        ]
+        assert result.score == 0.5
+        assert count_testcases(JUNIT_XML_RERUNFAILURES_16_6_1) == 2
 
 
 class TestProcessBranchXml:
