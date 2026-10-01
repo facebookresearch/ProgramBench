@@ -32,7 +32,7 @@ from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
 from programbench.constants import DOCKER_CPUS
-from programbench.eval.eval import EvaluationResult, Evaluator
+from programbench.eval.eval import EvaluationResult, Evaluator, _canonical_test_name
 from programbench.utils.instance_filters import filter_instances
 
 log = logging.getLogger(__name__)
@@ -179,8 +179,10 @@ def get_branches_to_eval(
             continue
         expected = tests_by_branch.get(branch, [])
         active_expected = [t for t in expected if f"{branch}/{t}" not in ignored_tests]
-        present = {t.name for t in existing.test_results if t.branch == branch and t.status != "not_run"}
-        if any(t not in present for t in active_expected):
+        present = {
+            _canonical_test_name(t.name) for t in existing.test_results if t.branch == branch and t.status != "not_run"
+        }
+        if any(_canonical_test_name(t) not in present for t in active_expected):
             needs_eval.append(branch)
     return needs_eval
 

@@ -39,6 +39,16 @@ JUNIT_XML_ALL_PASS = """\
 </testsuites>
 """
 
+JUNIT_XML_EVAL_PREFIX = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="0" failures="0" skipped="0" tests="2">
+    <testcase classname="eval.tests.test_calculator" name="test_addition" time="0.01"/>
+    <testcase classname="eval.tests.test_calculator" name="test_subtraction" time="0.02"/>
+  </testsuite>
+</testsuites>
+"""
+
 JUNIT_XML_MIXED = """\
 <?xml version="1.0" encoding="utf-8"?>
 <testsuites>
@@ -137,6 +147,31 @@ class TestProcessBranchXml:
         tests_by_branch = {"b1": ["tests.test_calculator.test_addition"]}
         results, warnings = _process_branch_xml(JUNIT_XML_ALL_PASS, "b1", tests_by_branch)
         assert any("not in tests.json" in w for w in warnings)
+
+    def test_eval_prefix_namespace_mismatch_matches(self):
+        tests_by_branch = {
+            "b1": [
+                "tests.test_calculator.test_addition",
+                "tests.test_calculator.test_subtraction",
+            ]
+        }
+        results, warnings = _process_branch_xml(JUNIT_XML_EVAL_PREFIX, "b1", tests_by_branch)
+        assert len(results) == 2
+        assert all(r.status == "passed" for r in results)
+        assert not any(r.status == "not_run" for r in results)
+        assert not any("not in tests.json" in w for w in warnings)
+
+    def test_eval_prefix_missing_still_not_run(self):
+        tests_by_branch = {
+            "b1": [
+                "tests.test_calculator.test_addition",
+                "tests.test_calculator.test_missing",
+            ]
+        }
+        results, warnings = _process_branch_xml(JUNIT_XML_EVAL_PREFIX, "b1", tests_by_branch)
+        by_name = {r.name: r for r in results}
+        assert by_name["tests.test_calculator.test_missing"].status == "not_run"
+        assert by_name["eval.tests.test_calculator.test_addition"].status == "passed"
 
 
 class TestCountWorkerCrashes:
@@ -268,6 +303,25 @@ class TestGetBranchesToEval:
             tests_by_branch={"b1": ["t1"]},
             ignored_tests=set(),
         ) == ["b1"]
+
+    def test_namespace_mismatch_considered_evaluated(self, tmp_path):
+        eval_json = tmp_path / "eval.json"
+        result = EvaluationResult(
+            test_results=[
+                TestResult(name="eval.tests.t1.test_a", branch="b1", status="passed", extra={}),
+            ],
+            test_branches=["b1"],
+        )
+        eval_json.write_text(result.model_dump_json())
+        assert (
+            get_branches_to_eval(
+                eval_json=eval_json,
+                all_test_branches=["b1"],
+                tests_by_branch={"b1": ["tests.t1.test_a"]},
+                ignored_tests=set(),
+            )
+            == []
+        )
 
 
 class TestInstanceEvalSummary:
