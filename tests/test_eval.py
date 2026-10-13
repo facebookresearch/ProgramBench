@@ -54,6 +54,19 @@ JUNIT_XML_MIXED = """\
 </testsuites>
 """
 
+JUNIT_XML_STRAY_PASS_AND_ERROR = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="1" failures="0" skipped="0" tests="3">
+    <testcase classname="tests.test_calculator" name="test_addition" time="0.01"/>
+    <testcase classname="eval.tests.test_calculator" name="test_subtraction" time="0.02"/>
+    <testcase name="pytest.internal" time="0.0">
+      <error message="INTERNALERROR">RecursionError</error>
+    </testcase>
+  </testsuite>
+</testsuites>
+"""
+
 JUNIT_XML_DUP_SAME_KIND = """\
 <?xml version="1.0" encoding="utf-8"?>
 <testsuites>
@@ -137,6 +150,30 @@ class TestProcessBranchXml:
         tests_by_branch = {"b1": ["tests.test_calculator.test_addition"]}
         results, warnings = _process_branch_xml(JUNIT_XML_ALL_PASS, "b1", tests_by_branch)
         assert any("not in tests.json" in w for w in warnings)
+
+    def test_shifted_names_are_not_double_counted(self):
+        expected = ["tests.test_calculator.test_addition", "tests.test_calculator.test_subtraction"]
+        results, _ = _process_branch_xml(
+            JUNIT_XML_ALL_PASS.replace('classname="tests.', 'classname="eval.tests.'), "b1", {"b1": expected}
+        )
+        assert {r.name: r.status for r in results} == dict.fromkeys(expected, "not_run")
+        assert EvaluationResult(test_results=results).score == 0.0
+
+    def test_unexpected_results_are_dropped_only_when_they_passed(self):
+        results, warnings = _process_branch_xml(
+            JUNIT_XML_STRAY_PASS_AND_ERROR, "b1", {"b1": ["tests.test_calculator.test_addition"]}
+        )
+        assert [(r.name, r.status) for r in results] == [
+            ("tests.test_calculator.test_addition", "passed"),
+            ("pytest.internal", "error"),
+        ]
+        assert EvaluationResult(test_results=results).score == 0.5
+        assert warnings == ["Branch b1: 2 test(s) in JUnit XML not in tests.json; dropped 1 passing result(s)"]
+
+    def test_branch_with_no_expected_tests_keeps_its_results(self):
+        results, warnings = _process_branch_xml(JUNIT_XML_MIXED, "b1", {"b1": []})
+        assert [r.status for r in results] == ["passed", "failure", "skipped"]
+        assert warnings == ["Branch b1: 3 test(s) in JUnit XML not in tests.json; dropped 0 passing result(s)"]
 
 
 class TestCountWorkerCrashes:
