@@ -706,7 +706,15 @@ class Evaluator:
             if self._has_rerunfailures:
                 self._run_step(
                     f"mkdir -p {shlex.quote(PYTEST_TIMEOUT_RETRY_PLUGIN_DIR)} "
-                    f"&& rm -f {shlex.quote(PYTEST_TIMEOUT_RETRY_PLUGIN_PATH)}",
+                    f"&& rm -f {shlex.quote(PYTEST_TIMEOUT_RETRY_PLUGIN_PATH)} "
+                    # Also register the plugin dir via a .pth file: run.sh scripts
+                    # that do `PYTHONPATH=. pytest` drop the PYTHONPATH entry
+                    # below, and `-p` then fails to import the plugin.
+                    "&& python3 -c "
+                    + shlex.quote(
+                        "import site; open(site.getsitepackages()[0] + '/programbench_grader_plugins.pth', 'w')"
+                        f".write({PYTEST_TIMEOUT_RETRY_PLUGIN_DIR!r} + '\\n')"
+                    ),
                     env=env,
                     log_buf=log_buf,
                     step_name="install_pytest_timeout_retry",

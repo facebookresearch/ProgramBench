@@ -17,7 +17,13 @@ import signal
 import threading
 
 import pytest
-import pytest_timeout
+
+# Branches whose run.sh never installs pytest-timeout have no timeouts to re-arm;
+# without this guard the injected `-p` plugin would crash pytest at startup.
+try:
+    import pytest_timeout
+except ImportError:
+    pytest_timeout = None
 
 _ORIGINAL_PYTHONPATH_ENV = "PROGRAMBENCH_PYTEST_ORIGINAL_PYTHONPATH"
 _ORIGINAL_PYTEST_ADDOPTS_ENV = "PROGRAMBENCH_PYTEST_ORIGINAL_ADDOPTS"
