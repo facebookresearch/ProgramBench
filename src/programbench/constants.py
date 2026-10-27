@@ -23,6 +23,7 @@ DOCKER_ORG = os.environ.get("PROGRAMBENCH_DOCKER_ORG", "programbench")
 TASK_YAML = "task.yaml"
 TESTS_JSON = "tests.json"
 WORKSPACE_DIR = "/workspace"
+PIP_CONSTRAINTS_PATH = "/etc/programbench/pip-constraints.txt"
 
 HF_REPO_ID = os.environ.get("PROGRAMBENCH_HF_REPO", "programbench/ProgramBench-Tests")
 HF_REVISION = os.environ.get("PROGRAMBENCH_HF_REVISION", "main")

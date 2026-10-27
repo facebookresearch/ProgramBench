@@ -39,6 +39,7 @@ from programbench.constants import (
     DOCKER_CPUS,
     DOCKER_EXECUTABLE,
     DOCKER_RUN_ARGS,
+    PIP_CONSTRAINTS_PATH,
     WORKSPACE_DIR,
 )
 from programbench.container import ContainerEnvironment, remove_image
@@ -602,6 +603,21 @@ class Evaluator:
             timeout=120,
         )
         self._has_rerunfailures = rerun_install["returncode"] == 0
+        # Freeze the image's Python packages into a constraints file that every
+        # test run exports as PIP_CONSTRAINT. Many generated run.sh scripts
+        # `pip install -U pytest ...`, which pulls whatever is newest at eval time
+        # (e.g. pytest 9.1 refuses to load the image's preinstalled libtmux
+        # plugin, so pytest dies before writing results.xml). With the
+        # constraints, those upgrades resolve to the versions the image shipped.
+        self._run_step(
+            f"mkdir -p {shlex.quote(str(Path(PIP_CONSTRAINTS_PATH).parent))} && "
+            f"pip3 freeze 2>/dev/null | grep -E '^[A-Za-z0-9_.-]+==' > {shlex.quote(PIP_CONSTRAINTS_PATH)}",
+            env=env,
+            log_buf=log_buf,
+            step_name="freeze_pip_constraints",
+            accept_failure=True,
+            timeout=120,
+        )
 
     def _restore_executable(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
         if self.result.executable_hash is None:
@@ -682,7 +698,11 @@ class Evaluator:
                 accept_failure=True,
                 timeout=10,
             )
-            run_cmd = "chmod +x ./eval/run.sh && ./eval/run.sh"
+            run_cmd = (
+                f"if [ -s {shlex.quote(PIP_CONSTRAINTS_PATH)} ]; then "
+                f"export PIP_CONSTRAINT={shlex.quote(PIP_CONSTRAINTS_PATH)}; fi && "
+                "chmod +x ./eval/run.sh && ./eval/run.sh"
+            )
             if self._has_rerunfailures:
                 self._run_step(
                     f"mkdir -p {shlex.quote(PYTEST_TIMEOUT_RETRY_PLUGIN_DIR)} "
