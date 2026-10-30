@@ -12555,12 +12555,28 @@
           ]
         },
         {
+          "name": "tests.test_logging.test_multiple_log_flags_combination",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_logging.test_panic_level_suppresses_all_output",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387540,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_logging.test_verbose_level_shows_additional_details",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },
