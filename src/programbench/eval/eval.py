@@ -85,6 +85,11 @@ class TestBranchError(BaseModel):
 
 
 _WORKER_CRASH_PHRASE = "worker '"  # part of pytest-xdist's "worker 'gwN' crashed while running ..."
+# pytest-xdist's controller sometimes aborts the whole session with an INTERNALERROR
+# (`assert not crashitem` in dsession.worker_workerfinished) when a worker exits while
+# an item is still pending. JUnit then holds the tests run so far plus one
+# "pytest internal" error, and every not-yet-run test is lost.
+_XDIST_CRASHITEM_PHRASE = "assert not crashitem"
 
 
 def count_worker_crashes(raw_xml: str) -> int:
@@ -92,11 +97,13 @@ def count_worker_crashes(raw_xml: str) -> int:
 
     A crashed-worker testcase has an ``<error>`` (or ``<failure>``) child whose
     message starts with ``failed on setup with "worker 'gwN' crashed ...``,
-    or whose body text contains ``worker 'gwN' crashed while running``. We
-    parse the XML rather than grep stdout because xdist mixes stdout across
-    workers and the structured payload is the only authoritative signal.
+    or whose body text contains ``worker 'gwN' crashed while running``. An
+    xdist ``assert not crashitem`` session abort also counts, so the branch is
+    retried instead of losing every test that hadn't run yet. We parse the XML
+    rather than grep stdout because xdist mixes stdout across workers and the
+    structured payload is the only authoritative signal.
     """
-    if not raw_xml.strip() or _WORKER_CRASH_PHRASE not in raw_xml:
+    if not raw_xml.strip() or (_WORKER_CRASH_PHRASE not in raw_xml and _XDIST_CRASHITEM_PHRASE not in raw_xml):
         return 0
     try:
         root = ET.fromstring(raw_xml)
@@ -108,7 +115,7 @@ def count_worker_crashes(raw_xml: str) -> int:
             if child.tag not in ("error", "failure"):
                 continue
             message = (child.get("message") or "") + " " + (child.text or "")
-            if "worker '" in message and "crashed" in message:
+            if ("worker '" in message and "crashed" in message) or _XDIST_CRASHITEM_PHRASE in message:
                 n += 1
                 break
     return n
