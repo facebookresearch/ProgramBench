@@ -327,6 +327,7 @@ class Evaluator:
         docker_cpus: int = DOCKER_CPUS,
         branch_workers: int = 1,
         branch_retries: int = 1,
+        build_internet: bool = False,
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -342,6 +343,7 @@ class Evaluator:
         self.docker_cpus = docker_cpus
         self.branch_workers = max(1, branch_workers)
         self.branch_retries = max(0, branch_retries)
+        self.build_internet = build_internet
         self._has_rerunfailures = False
         self._log_lock = threading.Lock()
         self._from_existing = from_existing
@@ -564,11 +566,15 @@ class Evaluator:
             log_buf=log_buf,
             step_name="seed_git",
         )
-        # Block internet during compile.sh so a submission can't smuggle
-        # install/download steps into its build. Test-execution containers
-        # are never touched (they may legitimately need network).
+        # Block internet during compile.sh so a submission can't download the
+        # original program (or other install/download steps) at build time.
+        # build_internet lifts the block for trusted builds: reference (gold)
+        # build scripts download toolchains and dependencies. The DNS blackhole
+        # does not stop traffic through an HTTP(S) proxy that Docker injects
+        # into the container. Test-execution containers are never touched.
         try:
-            block_build_internet_dns(env)
+            if not self.build_internet:
+                block_build_internet_dns(env)
             self._run_step(
                 "chmod +x ./compile.sh && ./compile.sh",
                 env=env,
@@ -577,7 +583,8 @@ class Evaluator:
                 timeout=900,
             )
         finally:
-            restore_build_internet_dns(env)
+            if not self.build_internet:
+                restore_build_internet_dns(env)
         self._run_step(
             f"mv ./executable {self._stashed_executable}",
             env=env,

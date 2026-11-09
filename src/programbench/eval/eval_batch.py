@@ -235,6 +235,7 @@ def _evaluate_instance(
     docker_cpus: int = DOCKER_CPUS,
     branch_workers: int = 1,
     branch_retries: int = 1,
+    build_internet: bool = False,
 ) -> InstanceEvalSummary | None:
     """Evaluate a single instance."""
     from programbench.utils.load_data import (
@@ -325,6 +326,7 @@ def _evaluate_instance(
             docker_cpus=docker_cpus,
             branch_workers=branch_workers,
             branch_retries=branch_retries,
+            build_internet=build_internet,
         )
         result = evaluator.run()
 
@@ -384,6 +386,7 @@ def run_eval_batch(
     image_tag: str = "task_cleanroom_v6",
     output: str | Path = "",
     branch_retries: int = 1,
+    build_internet: bool = False,
 ) -> None:
     from programbench.utils.load_data import load_all_instances
 
@@ -457,6 +460,7 @@ def run_eval_batch(
                     docker_cpus=docker_cpus,
                     branch_workers=branch_workers,
                     branch_retries=branch_retries,
+                    build_internet=build_internet,
                 ): source_dir
                 for source_dir, target_dir, iid in work_items
             }

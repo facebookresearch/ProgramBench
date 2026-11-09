@@ -50,7 +50,7 @@ The CLI (`cli/`) and core logic are kept separate. All typer/rich/display code l
 
 ## Build-time internet isolation
 
-During eval, a submission's `compile.sh` always runs with internet **blocked** (`utils/internet_control.py`) so it can't smuggle `pip install`/download steps into the build. The block is an in-container DNS blackhole (overwrite `/etc/resolv.conf` with `nameserver 0.0.0.0`, restore after compile) — no host privileges, works under docker-in-docker. Test-execution containers are never touched (they may legitimately need network).
+During eval, a submission's `compile.sh` runs with internet **blocked** by default (`utils/internet_control.py`) so it can't download the original program or smuggle `pip install`/download steps into the build. `programbench eval --build-internet` lifts the block for trusted builds — reference (gold) build scripts download toolchains and dependencies, so gold validation needs it. The block is an in-container DNS blackhole (overwrite `/etc/resolv.conf` with `nameserver 0.0.0.0`, restore after compile) — no host privileges, works under docker-in-docker — but it does not stop traffic through an HTTP(S) proxy that Docker injects into containers. Test-execution containers are never touched (they may legitimately need network).
 
 ## Style guide
 

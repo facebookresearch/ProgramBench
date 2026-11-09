@@ -52,6 +52,13 @@ def eval(
         "crash, re-run the branch up to this many times in a fresh container. "
         "The attempt with the fewest crashes wins. Pass 0 to disable.",
     ),
+    build_internet: bool = typer.Option(
+        False,
+        "--build-internet",
+        help="Allow internet while compile.sh runs. Off by default so a submission "
+        "can't download the original program at build time; turn on to validate "
+        "reference (gold) builds, which download toolchains and dependencies.",
+    ),
     force: bool = typer.Option(False, "-f", "--force", help="Re-evaluate even if results exist"),
     filter_spec: str = typer.Option("", "--filter", help="Filter instance IDs by regex"),
     slice_spec: str = typer.Option("", "--slice", help="Slice specification (e.g. '0:5')"),
@@ -102,6 +109,7 @@ def eval(
         image_tag=image_tag,
         output=output,
         branch_retries=branch_retries,
+        build_internet=build_internet,
     )
 
 
