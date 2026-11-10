@@ -687,7 +687,11 @@ class Evaluator:
             # with the canonical hash.
             assert self.blob_dir is not None
             test_tar = self.blob_dir / "tests" / f"{branch}.tar.gz"
-            env.copy_in_tar(test_tar, f"{WORKSPACE_DIR}/")
+            # Test archives store files as 0664/0775. Tests were generated and
+            # their expected outputs captured against a git checkout, where files
+            # come out 0644/0755 (git only tracks the exec bit, umask does the
+            # rest), and several tests print or assert those permissions.
+            env.copy_in_tar(test_tar, f"{WORKSPACE_DIR}/", apply_umask=True)
             self._restore_executable(env, log_buf)
             self._run_step(
                 "rm -f eval/results.xml results.xml",
