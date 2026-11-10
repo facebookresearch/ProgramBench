@@ -994,6 +994,14 @@
           ]
         },
         {
+          "name": "tests.test_dev_serve.test_serve_custom_port",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_dev_serve.test_serve_nonexistent_config",
           "reasons": [
             {
@@ -1095,6 +1103,14 @@
               "id": "dummy_pass",
               "timestamp": 1777387538,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_gal_akaikatana",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

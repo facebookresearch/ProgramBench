@@ -1396,6 +1396,14 @@
           ]
         },
         {
+          "name": "tests.test_global_args.test_invalid_single_language",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_global_args.test_language_aliases",
           "reasons": [
             {

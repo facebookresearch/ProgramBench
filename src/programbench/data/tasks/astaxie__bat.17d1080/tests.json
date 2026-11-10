@@ -1796,6 +1796,14 @@
           ]
         },
         {
+          "name": "tests.test_data_types.test_url_encoded_values",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_download_comprehensive.test_download_html_page",
           "reasons": [
             {
@@ -1860,6 +1868,14 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_data_with_equals_in_value",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_deflate_content_encoding",
           "reasons": [
             {
@@ -1920,6 +1936,14 @@
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_flag_combinations.test_form_and_print_flags",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2153,7 +2177,23 @@
           ]
         },
         {
+          "name": "tests.test_json.test_mixed_json_fields",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_json.test_text_from_file",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_method_detection.test_body_flag_with_explicit_post",
           "reasons": [
             {
               "id": "gold_flaky"
@@ -2319,6 +2359,14 @@
               "id": "gold_fail",
               "timestamp": 1777386409,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_stdin_body.test_body_flag_overrides_items",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

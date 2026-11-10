@@ -5397,6 +5397,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest.test_ui_fixture[typeck_contract_storage_illegal_size]",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest.test_ui_fixture[typeck_contract_storage_size_check]",
           "reasons": [
             {
