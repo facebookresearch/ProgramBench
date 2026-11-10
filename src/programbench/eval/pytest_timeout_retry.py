@@ -4,7 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-"""Provide the pytest timeout retry plugin injected into test containers."""
+"""Provide the pytest plugin injected into test containers (timeout re-arm on reruns, per-test cwd reset)."""
 
 PYTEST_TIMEOUT_RETRY_PLUGIN_MODULE = "programbench_pytest_timeout"
 PYTEST_TIMEOUT_RETRY_PLUGIN_DIR = "/tmp/programbench-grader-plugins"
@@ -45,9 +45,26 @@ def _restore_pytest_environment():
     _restore_environment_variable(_ORIGINAL_PYTEST_ADDOPTS_ENV, "PYTEST_ADDOPTS")
 
 
+_START_DIR = os.getcwd()
+
+
+def _restore_working_directory():
+    # Some generated tests chdir (often into a temp dir they then delete) without
+    # changing back, so later tests on the same xdist worker start somewhere else
+    # (`./executable` not found, or os.getcwd() raising). Every test assumes it
+    # starts where pytest was invoked; put it back there.
+    try:
+        if os.getcwd() == _START_DIR:
+            return
+    except FileNotFoundError:
+        pass
+    os.chdir(_START_DIR)
+
+
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_protocol(item):
     _restore_pytest_environment()
+    _restore_working_directory()
     yield
 
 
