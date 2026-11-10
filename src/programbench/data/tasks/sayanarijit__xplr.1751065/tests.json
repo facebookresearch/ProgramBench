@@ -5360,6 +5360,14 @@
           ]
         },
         {
+          "name": "tests.test_tui_interactive.TestBasicLaunch.test_launch_with_file",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tui_interactive.TestDirectoryNavigation.test_enter_subdirectory",
           "reasons": [
             {

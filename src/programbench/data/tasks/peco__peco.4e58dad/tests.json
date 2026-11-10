@@ -3086,6 +3086,14 @@
           ]
         },
         {
+          "name": "tests.test_coverage_target.test_empty_input",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_coverage_target.test_exec_command",
           "reasons": [
             {

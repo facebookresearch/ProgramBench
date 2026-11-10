@@ -7095,12 +7095,140 @@
           ]
         },
         {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_cjk_width_calculation",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_emoji_width_calculation",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_empty_string",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_long_text_many_wraps",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_mixed_width_characters",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_multiline_maxlines_overflow",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_multiline_mode",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_multiline_with_wrapping",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_fuzzy_lines_direct.test_lines_no_wrapping_single_line",
           "reasons": [
             {
               "id": "outcome_dependent_presence",
               "timestamp": 1777389176,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_only_newlines",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_single_wide_char_overflow",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_tab_expansion",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_tab_wrapping",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_wide_char_at_boundary",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_wrap_maxlines_overflow",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_wrap_sign_width",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_fuzzy_lines_direct.test_lines_wrapping_at_width",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },

@@ -6167,6 +6167,14 @@
           ]
         },
         {
+          "name": "tests.test_signals.test_sigterm_immediate_after_start",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_symbol_span.test_crlf_line_endings_compile_successfully",
           "reasons": [
             {
