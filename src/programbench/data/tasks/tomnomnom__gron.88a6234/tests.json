@@ -318,10 +318,90 @@
           ]
         },
         {
+          "name": "tests.test_url_fetch.test_fetch_non_json_response",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_fetch_url_case_insensitive_protocol",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_fetch_url_with_fragment",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_fetch_url_with_unicode_in_query",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_fetch_url_with_userinfo",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_fetch_with_http_proxy_env_var",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_fetch_with_noproxy_multiple_hosts",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_fetch_with_noproxy_wildcard_suffix",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_url_fetch.test_https_insecure_flag_long",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_proxy_flag_overrides_env_var",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_url_fetch.test_very_long_url_path",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         }

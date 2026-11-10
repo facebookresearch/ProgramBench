@@ -1868,6 +1868,14 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_negative_numbers_in_json",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_null_value_in_json",
           "reasons": [
             {
@@ -1932,6 +1940,14 @@
           ]
         },
         {
+          "name": "tests.test_flag_combinations.test_multiple_headers_with_data",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_flag_combinations.test_various_http_methods_with_print",
           "reasons": [
             {
@@ -1990,10 +2006,34 @@
           ]
         },
         {
+          "name": "tests.test_http_methods.test_method_flag_overrides_implicit",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_http_methods.test_options_method",
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_http_methods.test_patch_method",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_http_methods.test_post_method_explicit",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2122,6 +2162,14 @@
         },
         {
           "name": "tests.test_method_detection.test_implicit_post_with_equals_data",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_method_detection.test_method_detection_with_multiple_items",
           "reasons": [
             {
               "id": "gold_flaky"

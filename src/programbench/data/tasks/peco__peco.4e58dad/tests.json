@@ -1370,6 +1370,14 @@
           ]
         },
         {
+          "name": "eval.tests.test_coverage.test_very_long_single_line",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_coverage_boost.test_config_all_filters_defined",
           "reasons": [
             {

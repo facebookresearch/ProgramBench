@@ -4779,6 +4779,46 @@
           ]
         },
         {
+          "name": "tests.test_requests.test_edns_and_protocol_tweaks_combined",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_requests.test_multiple_protocol_tweaks_same_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_requests.test_protocol_tweak_aa_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_requests.test_protocol_tweak_authoritative_long_form",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_requests.test_protocol_tweak_multiple_flags_combined",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_seed.test_binary_exists",
           "reasons": [
             {

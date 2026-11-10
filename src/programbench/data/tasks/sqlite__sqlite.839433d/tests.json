@@ -31191,6 +31191,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest_join5.test_join5_join5_3_1",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_joinA.test_joinA_joinA__id_100@db_joinA",
           "reasons": [
             {
@@ -33177,6 +33185,14 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_pager1.test_pager1_pager1_3_1_2",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
