@@ -2288,6 +2288,30 @@
           ]
         },
         {
+          "name": "eval.tests.test_errcheck_externalized.test_ext_check_testdata_markers_counts[args0-29-0-0]",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_errcheck_externalized.test_ext_check_testdata_markers_counts[args1-54-25-0]",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_errcheck_externalized.test_ext_check_testdata_markers_counts[args2-62-25-8]",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_errcheck_externalized.test_ext_exclude_file_and_missing_file_handling",
           "reasons": [
             {
@@ -2316,6 +2340,30 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_errcheck_externalized.test_ext_mainCmd_counts_unchecked_markers_in_testdata_package",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_errcheck_externalized.test_ext_parseFlags_effect_via_behavior_on_testdata_dir[args0-31]",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_errcheck_externalized.test_ext_parseFlags_effect_via_behavior_on_testdata_dir[args1-64]",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
             }
           ]
         },

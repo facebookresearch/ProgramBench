@@ -230,6 +230,14 @@
           ]
         },
         {
+          "name": "eval.tests.test_additional_coverage.test_svg_output_multiple_commits",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_additional_coverage.test_wrap_with_different_widths",
           "reasons": [
             {
@@ -296,6 +304,14 @@
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_commit_filtering.test_max_count_100",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },
@@ -480,6 +496,14 @@
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_output_validation.test_graph_structure_multiple_commits",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },
@@ -1209,6 +1233,14 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_local_flag_excludes_remote_branches",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_max_count_very_large_number",
           "reasons": [
             {
@@ -1521,6 +1553,14 @@
           ]
         },
         {
+          "name": "tests.test_options.test_ansi_color_structure_validation",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_options.test_color_always_forces_ansi_codes",
           "reasons": [
             {
@@ -1627,6 +1667,14 @@
           ]
         },
         {
+          "name": "tests.test_options.test_max_count_with_sparse_flag",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_options.test_no_color_flag_always_wins_regardless_of_order",
           "reasons": [
             {
@@ -1665,6 +1713,14 @@
               "id": "dummy_pass",
               "timestamp": 1777387540,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_options.test_specific_ansi_color_codes_used",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },

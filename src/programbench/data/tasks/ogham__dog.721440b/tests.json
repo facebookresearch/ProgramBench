@@ -3029,6 +3029,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest.test_live_019_using_a_dns_over_https_server_that_returns_status_500",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest.test_madns_121_running_with_a_example_prints_the_correct_a_record",
           "reasons": [
             {
@@ -4857,6 +4865,14 @@
               "id": "dummy_pass",
               "timestamp": 1777387546,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_text_output.test_status_line_on_error_code",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },

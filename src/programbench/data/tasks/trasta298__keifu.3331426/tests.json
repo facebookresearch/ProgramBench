@@ -1796,7 +1796,16 @@
         "eval.tests.test_tui.test_tui_initial_screen_has_panes_and_footer",
         "eval.tests.test_tui.test_unbound_key_does_not_crash_or_exit"
       ],
-      "ignored_tests": []
+      "ignored_tests": [
+        {
+          "name": "eval.tests.test_tui.test_move_selection_changes_commit_detail",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        }
+      ]
     },
     "ac701c62712b": {
       "ignored": false,

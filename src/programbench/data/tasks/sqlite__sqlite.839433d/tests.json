@@ -18153,6 +18153,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest_altertab.test_altertab_t1_4_1",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_altertab.test_altertab_t20_1@db_altertab",
           "reasons": [
             {
@@ -43558,6 +43566,14 @@
               "id": "dummy_pass",
               "timestamp": 1777387880,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_meta_commands2.test_cd_changes_working_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

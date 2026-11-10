@@ -2307,6 +2307,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest.test_tesh_scenario[cmd-list-filter-date_scenario_4]",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest.test_tesh_scenario[cmd-list-sort_scenario_14]",
           "reasons": [
             {

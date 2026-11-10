@@ -5318,6 +5318,22 @@
           ]
         },
         {
+          "name": "tests.test_languages.test_list_features_available",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_languages.test_list_languages_shows_all_parsers",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_options_gaps.test_etags_mode_via_e_flag",
           "reasons": [
             {

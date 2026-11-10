@@ -12705,6 +12705,22 @@
               "user": "kilian"
             }
           ]
+        },
+        {
+          "name": "tests.test_textformat_gaps.test_default_format_short_aliases_nk",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_textformat_gaps.test_file_output_avio_writer",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
         }
       ]
     },

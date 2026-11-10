@@ -1024,6 +1024,30 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_cli.test_conflicting_confirm_flags",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_conflicting_detach_flags",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_conflicting_update_flags",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_config.test_config_cli_no_confirm_flag",
           "reasons": [
             {
@@ -1275,6 +1299,38 @@
         },
         {
           "name": "tests.test_error_handling.test_stray_delete_range_with_scope_rejected",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_errors.test_conflicting_confirm_flags",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_errors.test_conflicting_detach_flags",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_errors.test_conflicting_update_flags",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_errors.test_invalid_ref_name_in_bases",
           "reasons": [
             {
               "id": "gold_fail"

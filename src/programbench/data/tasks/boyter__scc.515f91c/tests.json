@@ -565,6 +565,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest.test_regular_expression_ignore",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_result_processing.test_similar_flag_short_flag_exact",
           "reasons": [
             {

@@ -1367,6 +1367,30 @@
           ]
         },
         {
+          "name": "tests.test_error_reporting.test_http_404_exit_code_4",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_reporting.test_multiple_4xx_status_codes_all_exit_4",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_reporting.test_multiple_5xx_status_codes_all_exit_5",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_error_reporting.test_redirect_count_boundary_beyond_limit",
           "reasons": [
             {
