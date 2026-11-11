@@ -1370,6 +1370,14 @@
           ]
         },
         {
+          "name": "eval.tests.test_coverage.test_very_long_single_line",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_coverage_boost.test_config_all_filters_defined",
           "reasons": [
             {
@@ -3071,6 +3079,14 @@
         },
         {
           "name": "tests.test_coverage_target.test_buffer_size_limit",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_coverage_target.test_empty_input",
           "reasons": [
             {
               "id": "dummy_pass"
@@ -5021,6 +5037,14 @@
               "id": "gold_fail",
               "timestamp": 1777558223,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_negative_matching.test_multiple_negative_terms_exclude_any_match",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

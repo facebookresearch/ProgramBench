@@ -8148,6 +8148,14 @@
               "user": "kilian"
             }
           ]
+        },
+        {
+          "name": "tests.test_time_gaps.TestTimeHelpers.test_zonename_with_tz_env",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
         }
       ]
     },

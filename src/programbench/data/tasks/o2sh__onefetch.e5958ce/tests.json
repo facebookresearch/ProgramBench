@@ -1325,6 +1325,14 @@
           ]
         },
         {
+          "name": "tests.test_git_gaps.test_churn_pool_size_limits_diff_computation",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_info_gaps.test_title_empty_username_empty_version",
           "reasons": [
             {

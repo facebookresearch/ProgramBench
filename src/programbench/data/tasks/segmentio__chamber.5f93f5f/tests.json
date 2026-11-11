@@ -13409,12 +13409,140 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_analytics.test_analytics_code_executes_before_errors",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_analytics.test_analytics_coverage_documentation",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387776,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_delete_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_env_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_exec_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_export_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_find_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_history_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_import_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_library_accepts_fake_key",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_list_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_read_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_tag_delete_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_tag_read_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_tag_write_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_version_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_analytics.test_analytics_write_command_executes",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },

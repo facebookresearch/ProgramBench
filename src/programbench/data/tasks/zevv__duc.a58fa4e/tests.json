@@ -3924,6 +3924,22 @@
           ]
         },
         {
+          "name": "tests.test_index.test_index_hard_links_default_counts_each",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_index.test_index_hard_links_with_check_flag_counts_once",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_index.test_index_verbose_output_shows_filesystem_detection",
           "reasons": [
             {
@@ -3942,12 +3958,92 @@
           ]
         },
         {
+          "name": "tests.test_info_histogram_topn.test_info_apparent_vs_actual_with_sparse_file",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_info_histogram_topn.test_info_empty_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_basic_listing_default_sort_by_size",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_bytes_flag_exact_byte_counts",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_classify_flag_appends_indicators",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_ls.test_classify_indicator_for_files",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387881,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_classify_with_name_sort",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_color_with_graph_recursive_ascii",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_deep_directory_tree_recursion",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_dirs_only_flag_filters_files",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_dirs_only_skips_files",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -3962,12 +4058,148 @@
           ]
         },
         {
+          "name": "tests.test_ls.test_fullpath_with_recursive",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_graph_respects_terminal_width",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_graph_shows_relative_size_bars",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_ls.test_graph_with_all_same_size",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387881,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_levels_limits_recursion_depth",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_list_subdirectory_by_path",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_multiple_paths_in_one_command",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_name_sort_alphabetical_order",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_recursive_ascii_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_recursive_dirs_only_filter",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_recursive_levels_zero_shows_top_only",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_recursive_name_sort_ordering",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_recursive_with_classify_and_graph",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_recursive_with_tree_structure",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_special_chars_in_filenames",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ls.test_utf8_filenames_displayed_correctly",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_output.test_json_min_size_filtering_actual",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_output.test_xml_basic_output",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -3986,6 +4218,30 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ui.test_ui_backspace_navigation",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ui.test_ui_basic_launch_and_display",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_ui.test_ui_option_bytes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         }

@@ -1704,10 +1704,266 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_cli.test_apparent_size_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_bars_on_right_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_combined_apparent_size_si",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_combined_ignore_hidden_only_file",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_combined_reverse_depth_nobars",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_combined_screen_reader_full_paths",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_depth_limit",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_depth_with_number_of_lines",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_depth_zero",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_full_paths_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_ignore_hidden_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_multiple_paths",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_no_colors_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_no_percent_bars_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_cli.test_nonexistent_path",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_number_of_lines_limit",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_only_directories_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_only_files_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_bytes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_gib",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_gigabytes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_kib",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_kilobytes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_mb",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_mebibytes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_si",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_terabytes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_output_format_tib",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_reverse_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_screen_reader_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_skip_total_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_terminal_width_override",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_threads_single",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1732,10 +1988,50 @@
           ]
         },
         {
+          "name": "tests.test_coverage_push.test_apparent_size_vs_block_size",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_coverage_push.test_null_terminated_paths_from_stdin",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_dir_walker.test_broken_symlink_does_not_crash",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_dir_walker.test_mixed_absolute_and_relative_symlinks",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_dir_walker.test_symlink_outside_scan_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_dir_walker.test_symlinks_not_followed_by_default",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1956,12 +2252,28 @@
           ]
         },
         {
+          "name": "tests.test_gap_fill.test_symlink_without_dereference_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest.test_no_color",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387538,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_output_no_bars_means_no_excess_spaces",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1988,6 +2300,22 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_recursive_sym_link",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_soft_sym_link",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

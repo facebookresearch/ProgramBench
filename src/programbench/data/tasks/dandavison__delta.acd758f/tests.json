@@ -1126,6 +1126,14 @@
           ]
         },
         {
+          "name": "tests.test_grep.test_git_grep_after_context_only",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_grep.test_git_grep_basic_output",
           "reasons": [
             {
@@ -1182,6 +1190,14 @@
           ]
         },
         {
+          "name": "tests.test_grep.test_git_grep_multiple_files",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_grep.test_git_grep_multiple_matches_same_line",
           "reasons": [
             {
@@ -1204,6 +1220,22 @@
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_grep.test_git_grep_separator_keep_option",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_grep.test_git_grep_show_function_flag",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },
@@ -1242,6 +1274,14 @@
           ]
         },
         {
+          "name": "tests.test_grep.test_git_grep_with_function_context",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_grep.test_git_grep_without_line_numbers",
           "reasons": [
             {
@@ -1258,6 +1298,14 @@
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_grep.test_grep_with_multiple_patterns",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },
@@ -1307,6 +1355,22 @@
           ]
         },
         {
+          "name": "tests.test_grep_gaps.test_git_grep_file_with_hyphens_in_path",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_grep_gaps.test_git_grep_file_with_long_extension",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_grep_gaps.test_git_grep_file_without_extension",
           "reasons": [
             {
@@ -1342,6 +1406,14 @@
         },
         {
           "name": "tests.test_grep_gaps.test_git_grep_separator_keep_with_context",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_grep_gaps.test_git_grep_show_function_p_flag",
           "reasons": [
             {
               "id": "gold_fail"

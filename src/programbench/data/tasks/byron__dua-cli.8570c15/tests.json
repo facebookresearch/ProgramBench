@@ -1522,6 +1522,14 @@
           ]
         },
         {
+          "name": "tests.test_aggregate_advanced.test_symlink_handling",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_completions.test_completions_all_shells_deterministic",
           "reasons": [
             {
@@ -1558,6 +1566,62 @@
               "id": "dummy_pass",
               "timestamp": 1777387538,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_multiple_paths_aggregate",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_multiple_paths_broken_link",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_multiple_paths_no_sort",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_multiple_paths_no_subcommand",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_multiple_paths_no_total",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_multiple_paths_some_not_existing",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_multiple_paths_statistics",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

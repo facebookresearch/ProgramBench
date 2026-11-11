@@ -1197,6 +1197,14 @@
           ]
         },
         {
+          "name": "tests.test_toolchain.test_fallback_runtime_dir_uses_home_directory",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
           "name": "tests.test_toolchain.test_toolchain_install_absolute_path_accepted",
           "reasons": [
             {

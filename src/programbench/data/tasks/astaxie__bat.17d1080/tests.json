@@ -1796,6 +1796,14 @@
           ]
         },
         {
+          "name": "tests.test_data_types.test_url_encoded_values",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_download_comprehensive.test_download_html_page",
           "reasons": [
             {
@@ -1860,10 +1868,34 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_data_with_equals_in_value",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_deflate_content_encoding",
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_negative_numbers_in_json",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_null_value_in_json",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1908,6 +1940,22 @@
           ]
         },
         {
+          "name": "tests.test_flag_combinations.test_form_and_print_flags",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_flag_combinations.test_form_with_multiple_fields",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_flag_combinations.test_json_false_with_get",
           "reasons": [
             {
@@ -1916,10 +1964,34 @@
           ]
         },
         {
+          "name": "tests.test_flag_combinations.test_multiple_headers_with_data",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_flag_combinations.test_various_http_methods_with_print",
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_forms.test_form_multiple_fields",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_forms.test_form_special_characters",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1942,6 +2014,14 @@
           ]
         },
         {
+          "name": "tests.test_http_methods.test_delete_method",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_http_methods.test_head_method",
           "reasons": [
             {
@@ -1950,10 +2030,42 @@
           ]
         },
         {
+          "name": "tests.test_http_methods.test_method_flag_overrides_implicit",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_http_methods.test_options_method",
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_http_methods.test_patch_method",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_http_methods.test_post_method_explicit",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_http_methods.test_post_with_body_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2057,6 +2169,54 @@
           ]
         },
         {
+          "name": "tests.test_json.test_json_with_special_characters",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_json.test_mixed_json_fields",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_json.test_text_from_file",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_method_detection.test_body_flag_with_explicit_post",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_method_detection.test_implicit_post_with_equals_data",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_method_detection.test_method_detection_with_multiple_items",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_output_control.test_output_with_quiet_mode",
           "reasons": [
             {
@@ -2093,6 +2253,14 @@
           "reasons": [
             {
               "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_output_control.test_print_request_only",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2191,6 +2359,14 @@
               "id": "gold_fail",
               "timestamp": 1777386409,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_stdin_body.test_body_flag_overrides_items",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -3573,6 +3749,14 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_env_and_config.TestPrecedenceRules.test_host_header_override",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

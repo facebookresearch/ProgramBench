@@ -2461,6 +2461,22 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_edge_cases.test_ftp_scheme_rejected",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_ipv6_localhost_address",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_uri_file_with_mixed_valid_invalid_urls",
           "reasons": [
             {
@@ -2813,6 +2829,30 @@
               "id": "gold_fail",
               "timestamp": 1777386527,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_proxy.test_invalid_proxy_address_error",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_proxy.test_proxy_connection_failure",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_proxy.test_socks_proxy_format",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },
@@ -3249,6 +3289,158 @@
           ]
         },
         {
+          "name": "tests.test_error_handling.test_connection_refused_max_errors_respected",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_disable_recursion_flag_accepted",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_dns_resolution_failure_detection",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_empty_extension_string_accepted",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_ftp_protocol_unsupported",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_header_value_with_colons_preserved",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_invalid_proxy_address_handled",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_max_errors_zero_disables_thread_limit",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_max_recursion_depth_zero_accepted",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_multiple_cookies_joined_with_semicolon",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_multiple_extension_flags_accumulated",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_multiple_extensions_comma_separated",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_multiple_prefixes_comma_separated",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_special_characters_wordlist_handled",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_throttle_zero_no_delays",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_timeout_option_applied_quickly",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_unicode_wordlist_charset_detection",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_very_long_url_path_handled",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_error_handling.test_wordlist_split_parameter_accepted",
+          "reasons": [
+            {
+              "id": "gold_fail"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest.test_argparse_no_colour",
           "reasons": [
             {
@@ -3509,6 +3701,14 @@
               "id": "gold_fail",
               "timestamp": 1777386527,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_proxy.test_proxy_connection_refused_error_handling",
+          "reasons": [
+            {
+              "id": "gold_fail"
             }
           ]
         },

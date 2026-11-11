@@ -1388,12 +1388,36 @@
           ]
         },
         {
+          "name": "tests.test_global_args.test_invalid_language_in_list",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_global_args.test_invalid_single_language",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_global_args.test_language_aliases",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387881,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_global_args.test_mixed_valid_invalid_with_spaces",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1443,6 +1467,14 @@
               "id": "dummy_pass",
               "timestamp": 1777387881,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_global_args.test_whitespace_in_language_list",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1775,6 +1807,22 @@
               "note": "Flaky on v6 gold: passed in some gold-eval rounds and failed in others across 3 independent runs (timing-sensitive TUI/tui2cli snapshot, tmux, or db-lock/test-isolation concurrency); unreliable for grading.",
               "timestamp": 1749700000,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_langs_mixed_valid_invalid",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_repo_paths.test_langs_single_unsupported_language",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2589,6 +2637,30 @@
           ]
         },
         {
+          "name": "tests.test_tui_trending.test_case_insensitive_language_parameter",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_trending.test_different_language_selections_produce_different_repos",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_trending.test_language_alternate_names",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tui_trending.test_language_selection_navigation_boundary",
           "reasons": [
             {
@@ -2601,6 +2673,14 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_trending.test_language_with_special_chars",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2643,6 +2723,22 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_trending.test_repository_navigation_boundary",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_tui_trending.test_repository_navigation_with_arrow_keys",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

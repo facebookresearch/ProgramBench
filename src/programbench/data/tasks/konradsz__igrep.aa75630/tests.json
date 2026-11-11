@@ -1100,6 +1100,14 @@
           ]
         },
         {
+          "name": "tests.test_tui_nav.test_tui_home_and_end_keys",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_tui_nav.test_tui_j_key_navigates_to_next_match",
           "reasons": [
             {

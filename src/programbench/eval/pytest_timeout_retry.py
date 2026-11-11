@@ -4,7 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-"""Provide the pytest timeout retry plugin injected into test containers."""
+"""Provide the pytest plugin injected into test containers (timeout re-arm on reruns, cwd restore after each test body)."""
 
 PYTEST_TIMEOUT_RETRY_PLUGIN_MODULE = "programbench_pytest_timeout"
 PYTEST_TIMEOUT_RETRY_PLUGIN_DIR = "/tmp/programbench-grader-plugins"
@@ -17,7 +17,13 @@ import signal
 import threading
 
 import pytest
-import pytest_timeout
+
+# Branches whose run.sh never installs pytest-timeout have no timeouts to re-arm;
+# without this guard the injected `-p` plugin would crash pytest at startup.
+try:
+    import pytest_timeout
+except ImportError:
+    pytest_timeout = None
 
 _ORIGINAL_PYTHONPATH_ENV = "PROGRAMBENCH_PYTEST_ORIGINAL_PYTHONPATH"
 _ORIGINAL_PYTEST_ADDOPTS_ENV = "PROGRAMBENCH_PYTEST_ORIGINAL_ADDOPTS"
@@ -39,10 +45,29 @@ def _restore_pytest_environment():
     _restore_environment_variable(_ORIGINAL_PYTEST_ADDOPTS_ENV, "PYTEST_ADDOPTS")
 
 
+def _getcwd():
+    try:
+        return os.getcwd()
+    except FileNotFoundError:
+        return None
+
+
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_protocol(item):
     _restore_pytest_environment()
     yield
+
+
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_call(item):
+    # Some generated tests chdir in their body (often into a temp dir that is then
+    # deleted) without changing back, so later tests on the same xdist worker start
+    # elsewhere (`./executable` not found, os.getcwd() raising). Undo a chdir made
+    # by the test body; directory changes made by fixtures are left alone.
+    before = _getcwd()
+    yield
+    if before is not None and _getcwd() != before and os.path.isdir(before):
+        os.chdir(before)
 
 
 def _cancel_timer(item):

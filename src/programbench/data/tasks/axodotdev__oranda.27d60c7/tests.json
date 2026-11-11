@@ -890,6 +890,14 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_artifact_inference.test_archive_without_target_triple_skipped",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
           "name": "tests.test_artifact_inference.test_bundle_label_extracted_from_extension",
           "reasons": [
             {
@@ -900,12 +908,44 @@
           ]
         },
         {
+          "name": "tests.test_artifact_inference.test_installer_preference_ordering",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
           "name": "tests.test_artifact_inference.test_installer_script_detection_shell_and_powershell",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_artifact_inference.test_msi_bundle_detection_and_labeling",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_artifact_inference.test_multiple_archive_format_detection_and_labeling",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_artifact_inference.test_run_method_for_scripts_download_method_for_archives",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
             }
           ]
         },
@@ -930,6 +970,14 @@
           ]
         },
         {
+          "name": "tests.test_dev_serve.test_dev_custom_port",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
           "name": "tests.test_dev_serve.test_dev_file_change_detection",
           "reasons": [
             {
@@ -942,6 +990,14 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_dev_serve.test_serve_custom_port",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1047,6 +1103,30 @@
               "id": "dummy_pass",
               "timestamp": 1777387538,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_gal_akaikatana",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_gal_axolotlsay",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest.test_gal_oranda",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
             }
           ]
         },
@@ -1922,7 +2002,24 @@
         "eval.tests.test_cli_io.test_unknown_subcommand_goes_to_stderr_exit_2",
         "eval.tests.test_cli_io.test_version_prints_to_stdout_exit_0"
       ],
-      "ignored_tests": []
+      "ignored_tests": [
+        {
+          "name": "eval.tests.test_cli_io.test_build_creates_public_dir_and_files_exit_0",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        },
+        {
+          "name": "eval.tests.test_cli_io.test_global_output_format_json_is_accepted_and_does_not_break_output",
+          "reasons": [
+            {
+              "id": "slow_or_hang"
+            }
+          ]
+        }
+      ]
     },
     "b5fb01523724": {
       "ignored": false,

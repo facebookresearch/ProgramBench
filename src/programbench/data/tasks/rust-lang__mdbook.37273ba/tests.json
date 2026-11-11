@@ -2050,6 +2050,118 @@
           ]
         },
         {
+          "name": "tests.test_cli.test_clean_bytes_formatting_kib",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_bytes_formatting_under_1024",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_combination_files_dirs_symlinks",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_empty_subdirectories_multiple_levels",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_hard_linked_files",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_large_directory_tree",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_mixed_files_and_directories",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_multiple_directories_nested",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_nested_directories_with_files",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_only_directories_no_files_with_bytes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_single_directory_empty",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_single_file",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_very_small_file_single_byte",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_cli.test_clean_with_symlinks",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_cli.test_help_command_without_subcommand",
           "reasons": [
             {
@@ -2425,6 +2537,14 @@
               "id": "dummy_pass",
               "timestamp": 1777387775,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_serve.test_serve_invalid_hostname_fails",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         }

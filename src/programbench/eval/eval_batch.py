@@ -31,7 +31,7 @@ from rich.text import Text
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
-from programbench.constants import DOCKER_CPUS
+from programbench.constants import DEFAULT_COMPILE_TIMEOUT, DOCKER_CPUS
 from programbench.eval.eval import EvaluationResult, Evaluator
 from programbench.utils.instance_filters import filter_instances
 
@@ -235,6 +235,7 @@ def _evaluate_instance(
     docker_cpus: int = DOCKER_CPUS,
     branch_workers: int = 1,
     branch_retries: int = 1,
+    build_internet: bool = False,
 ) -> InstanceEvalSummary | None:
     """Evaluate a single instance."""
     from programbench.utils.load_data import (
@@ -317,6 +318,7 @@ def _evaluate_instance(
             blob_dir=get_blob_dir(instance_id),
             tests_branches=branches_to_eval,
             remove_hashes=instance.get("eval_clean_hashes", []),
+            compile_timeout=instance.get("compile_timeout", DEFAULT_COMPILE_TIMEOUT),
             image_tag=image_tag,
             tests_by_branch=tests_by_branch,
             ignored_tests=ignored,
@@ -325,6 +327,7 @@ def _evaluate_instance(
             docker_cpus=docker_cpus,
             branch_workers=branch_workers,
             branch_retries=branch_retries,
+            build_internet=build_internet,
         )
         result = evaluator.run()
 
@@ -384,6 +387,7 @@ def run_eval_batch(
     image_tag: str = "task_cleanroom_v6",
     output: str | Path = "",
     branch_retries: int = 1,
+    build_internet: bool = False,
 ) -> None:
     from programbench.utils.load_data import load_all_instances
 
@@ -457,6 +461,7 @@ def run_eval_batch(
                     docker_cpus=docker_cpus,
                     branch_workers=branch_workers,
                     branch_retries=branch_retries,
+                    build_internet=build_internet,
                 ): source_dir
                 for source_dir, target_dir, iid in work_items
             }

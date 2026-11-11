@@ -90,6 +90,29 @@ class TestEvaluatorBuildInternetWiring:
             ev._compile_executable(env, [])
         assert calls.index("block") < calls.index("compile") < calls.index("restore")
 
+    def test_build_internet_skips_block(self, tmp_path):
+        archive = tmp_path / "submission.tar.gz"
+        archive.write_bytes(b"")
+        ev = Evaluator(tests_branches=[], submission_archive=archive, build_internet=True)
+        ev._remove_hashed_files = lambda env, log_buf: None  # type: ignore[method-assign]
+        env = FakeEnv()
+        env.copy_in_tar = lambda *a, **k: None  # type: ignore[attr-defined]
+        calls: list[str] = []
+        with (
+            mock.patch("programbench.eval.eval.block_build_internet_dns", side_effect=lambda e: calls.append("block")),
+            mock.patch(
+                "programbench.eval.eval.restore_build_internet_dns", side_effect=lambda e: calls.append("restore")
+            ),
+            mock.patch.object(
+                ev,
+                "_run_step",
+                side_effect=lambda *a, **k: calls.append(k["step_name"]) or {"output": "h x", "returncode": 0},
+            ),
+        ):
+            ev._compile_executable(env, [])
+        assert "compile" in calls
+        assert "block" not in calls and "restore" not in calls
+
     def test_restore_runs_even_when_compile_fails(self, tmp_path):
         from programbench.exceptions import EvalStepError
 
@@ -115,3 +138,24 @@ class TestEvaluatorBuildInternetWiring:
             ev._compile_executable(env, [])
         assert "restore" in calls
         assert calls.index("block") < calls.index("restore")
+
+
+class TestCompileTimeout:
+    @pytest.mark.parametrize(("kwargs", "expected"), [({}, 900), ({"compile_timeout": 2400}, 2400)])
+    def test_compile_step_uses_compile_timeout(self, tmp_path, kwargs, expected):
+        archive = tmp_path / "submission.tar.gz"
+        archive.write_bytes(b"")
+        ev = Evaluator(tests_branches=[], submission_archive=archive, build_internet=True, **kwargs)
+        ev._remove_hashed_files = lambda env, log_buf: None  # type: ignore[method-assign]
+        env = FakeEnv()
+        env.copy_in_tar = lambda *a, **k: None  # type: ignore[attr-defined]
+        timeouts: dict[str, int | None] = {}
+        with mock.patch.object(
+            ev,
+            "_run_step",
+            side_effect=lambda *a, **k: (
+                timeouts.update({k["step_name"]: k.get("timeout")}) or {"output": "h x", "returncode": 0}
+            ),
+        ):
+            ev._compile_executable(env, [])
+        assert timeouts["compile"] == expected

@@ -1724,6 +1724,14 @@
           ]
         },
         {
+          "name": "tests.test_network.test_connect_to_dns_override",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_network.test_http_version_1_1",
           "reasons": [
             {

@@ -361,6 +361,46 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_args_output.test_multiple_detail_columns_alignment",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_args_output.test_unicode_filename_cell_formatting",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_detail_meta.test_det_field_nlink_shows_hardlink_count",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_detail_size_time.test_empty_file_zero_blocks",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_detail_size_time.test_sparse_file_blocks_vs_real",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_filtering.test_combined_filter_type_and_importance",
           "reasons": [
             {
@@ -500,12 +540,28 @@
           ]
         },
         {
+          "name": "tests.test_presentation.test_collapse_with_detailed_view",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_smoke.test_binary_exists",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387548,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_sorting.test_sort_mixed_forward_and_reverse",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

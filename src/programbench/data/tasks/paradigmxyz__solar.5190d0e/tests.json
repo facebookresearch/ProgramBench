@@ -5397,6 +5397,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest.test_ui_fixture[typeck_contract_storage_illegal_size]",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest.test_ui_fixture[typeck_contract_storage_size_check]",
           "reasons": [
             {
@@ -6163,6 +6171,14 @@
               "id": "dummy_pass",
               "timestamp": 1777387547,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_signals.test_sigterm_immediate_after_start",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },

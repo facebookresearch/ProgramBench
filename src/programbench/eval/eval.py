@@ -36,9 +36,11 @@ from junitparser import Error, Failure, JUnitXml, Skipped
 from pydantic import BaseModel, ConfigDict
 
 from programbench.constants import (
+    DEFAULT_COMPILE_TIMEOUT,
     DOCKER_CPUS,
     DOCKER_EXECUTABLE,
     DOCKER_RUN_ARGS,
+    PIP_CONSTRAINTS_PATH,
     WORKSPACE_DIR,
 )
 from programbench.container import ContainerEnvironment, remove_image
@@ -84,6 +86,11 @@ class TestBranchError(BaseModel):
 
 
 _WORKER_CRASH_PHRASE = "worker '"  # part of pytest-xdist's "worker 'gwN' crashed while running ..."
+# pytest-xdist's controller sometimes aborts the whole session with an INTERNALERROR
+# (`assert not crashitem` in dsession.worker_workerfinished) when a worker exits while
+# an item is still pending. JUnit then holds the tests run so far plus one
+# "pytest internal" error, and every not-yet-run test is lost.
+_XDIST_CRASHITEM_PHRASE = "assert not crashitem"
 
 
 def count_worker_crashes(raw_xml: str) -> int:
@@ -91,11 +98,13 @@ def count_worker_crashes(raw_xml: str) -> int:
 
     A crashed-worker testcase has an ``<error>`` (or ``<failure>``) child whose
     message starts with ``failed on setup with "worker 'gwN' crashed ...``,
-    or whose body text contains ``worker 'gwN' crashed while running``. We
-    parse the XML rather than grep stdout because xdist mixes stdout across
-    workers and the structured payload is the only authoritative signal.
+    or whose body text contains ``worker 'gwN' crashed while running``. An
+    xdist ``assert not crashitem`` session abort also counts, so the branch is
+    retried instead of losing every test that hadn't run yet. We parse the XML
+    rather than grep stdout because xdist mixes stdout across workers and the
+    structured payload is the only authoritative signal.
     """
-    if not raw_xml.strip() or _WORKER_CRASH_PHRASE not in raw_xml:
+    if not raw_xml.strip() or (_WORKER_CRASH_PHRASE not in raw_xml and _XDIST_CRASHITEM_PHRASE not in raw_xml):
         return 0
     try:
         root = ET.fromstring(raw_xml)
@@ -107,7 +116,7 @@ def count_worker_crashes(raw_xml: str) -> int:
             if child.tag not in ("error", "failure"):
                 continue
             message = (child.get("message") or "") + " " + (child.text or "")
-            if "worker '" in message and "crashed" in message:
+            if ("worker '" in message and "crashed" in message) or _XDIST_CRASHITEM_PHRASE in message:
                 n += 1
                 break
     return n
@@ -319,6 +328,8 @@ class Evaluator:
         docker_cpus: int = DOCKER_CPUS,
         branch_workers: int = 1,
         branch_retries: int = 1,
+        build_internet: bool = False,
+        compile_timeout: int = DEFAULT_COMPILE_TIMEOUT,
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -334,6 +345,8 @@ class Evaluator:
         self.docker_cpus = docker_cpus
         self.branch_workers = max(1, branch_workers)
         self.branch_retries = max(0, branch_retries)
+        self.build_internet = build_internet
+        self.compile_timeout = compile_timeout
         self._has_rerunfailures = False
         self._log_lock = threading.Lock()
         self._from_existing = from_existing
@@ -556,20 +569,25 @@ class Evaluator:
             log_buf=log_buf,
             step_name="seed_git",
         )
-        # Block internet during compile.sh so a submission can't smuggle
-        # install/download steps into its build. Test-execution containers
-        # are never touched (they may legitimately need network).
+        # Block internet during compile.sh so a submission can't download the
+        # original program (or other install/download steps) at build time.
+        # build_internet lifts the block for trusted builds: reference (gold)
+        # build scripts download toolchains and dependencies. The DNS blackhole
+        # does not stop traffic through an HTTP(S) proxy that Docker injects
+        # into the container. Test-execution containers are never touched.
         try:
-            block_build_internet_dns(env)
+            if not self.build_internet:
+                block_build_internet_dns(env)
             self._run_step(
                 "chmod +x ./compile.sh && ./compile.sh",
                 env=env,
                 log_buf=log_buf,
                 step_name="compile",
-                timeout=900,
+                timeout=self.compile_timeout,
             )
         finally:
-            restore_build_internet_dns(env)
+            if not self.build_internet:
+                restore_build_internet_dns(env)
         self._run_step(
             f"mv ./executable {self._stashed_executable}",
             env=env,
@@ -602,6 +620,21 @@ class Evaluator:
             timeout=120,
         )
         self._has_rerunfailures = rerun_install["returncode"] == 0
+        # Freeze the image's Python packages into a constraints file that every
+        # test run exports as PIP_CONSTRAINT. Many generated run.sh scripts
+        # `pip install -U pytest ...`, which pulls whatever is newest at eval time
+        # (e.g. pytest 9.1 refuses to load the image's preinstalled libtmux
+        # plugin, so pytest dies before writing results.xml). With the
+        # constraints, those upgrades resolve to the versions the image shipped.
+        self._run_step(
+            f"mkdir -p {shlex.quote(str(Path(PIP_CONSTRAINTS_PATH).parent))} && "
+            f"pip3 freeze 2>/dev/null | grep -E '^[A-Za-z0-9_.-]+==' > {shlex.quote(PIP_CONSTRAINTS_PATH)}",
+            env=env,
+            log_buf=log_buf,
+            step_name="freeze_pip_constraints",
+            accept_failure=True,
+            timeout=120,
+        )
 
     def _restore_executable(self, env: ContainerEnvironment, log_buf: list[dict]) -> None:
         if self.result.executable_hash is None:
@@ -657,7 +690,11 @@ class Evaluator:
             # with the canonical hash.
             assert self.blob_dir is not None
             test_tar = self.blob_dir / "tests" / f"{branch}.tar.gz"
-            env.copy_in_tar(test_tar, f"{WORKSPACE_DIR}/")
+            # Test archives store files as 0664/0775. Tests were generated and
+            # their expected outputs captured against a git checkout, where files
+            # come out 0644/0755 (git only tracks the exec bit, umask does the
+            # rest), and several tests print or assert those permissions.
+            env.copy_in_tar(test_tar, f"{WORKSPACE_DIR}/", apply_umask=True)
             self._restore_executable(env, log_buf)
             self._run_step(
                 "rm -f eval/results.xml results.xml",
@@ -682,11 +719,23 @@ class Evaluator:
                 accept_failure=True,
                 timeout=10,
             )
-            run_cmd = "chmod +x ./eval/run.sh && ./eval/run.sh"
+            run_cmd = (
+                f"if [ -s {shlex.quote(PIP_CONSTRAINTS_PATH)} ]; then "
+                f"export PIP_CONSTRAINT={shlex.quote(PIP_CONSTRAINTS_PATH)}; fi && "
+                "chmod +x ./eval/run.sh && ./eval/run.sh"
+            )
             if self._has_rerunfailures:
                 self._run_step(
                     f"mkdir -p {shlex.quote(PYTEST_TIMEOUT_RETRY_PLUGIN_DIR)} "
-                    f"&& rm -f {shlex.quote(PYTEST_TIMEOUT_RETRY_PLUGIN_PATH)}",
+                    f"&& rm -f {shlex.quote(PYTEST_TIMEOUT_RETRY_PLUGIN_PATH)} "
+                    # Also register the plugin dir via a .pth file: run.sh scripts
+                    # that do `PYTHONPATH=. pytest` drop the PYTHONPATH entry
+                    # below, and `-p` then fails to import the plugin.
+                    "&& python3 -c "
+                    + shlex.quote(
+                        "import site; open(site.getsitepackages()[0] + '/programbench_grader_plugins.pth', 'w')"
+                        f".write({PYTEST_TIMEOUT_RETRY_PLUGIN_DIR!r} + '\\n')"
+                    ),
                     env=env,
                     log_buf=log_buf,
                     step_name="install_pytest_timeout_retry",

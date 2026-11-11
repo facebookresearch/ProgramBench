@@ -145,16 +145,18 @@ class ContainerEnvironment:
         if result.returncode != 0:
             raise RuntimeError(f"docker cp failed: {result.stderr.strip()}")
 
-    def copy_in_tar(self, tar_path: Path, container_path: str) -> None:
+    def copy_in_tar(self, tar_path: Path, container_path: str, *, apply_umask: bool = False) -> None:
         """Stream an on-disk tar(.gz) into the container via the container's tar.
 
         Avoids host-side extract entirely. Same symlink/mode-preserving
         behaviour as ``copy_in`` for directories. Lets the container's tar
-        decompress (passes ``-z`` for ``.tar.gz`` / ``.tgz``).
+        decompress (passes ``-z`` for ``.tar.gz`` / ``.tgz``). With
+        ``apply_umask``, archived permission bits are masked by the container's
+        umask (``--no-same-permissions``) instead of restored verbatim.
         """
         is_gz = tar_path.name.endswith((".tar.gz", ".tgz")) or tar_path.suffix == ".gz"
         with tar_path.open("rb") as f:
-            self._stream_tar_in(container_path, stdin_stream=f, compressed=is_gz)
+            self._stream_tar_in(container_path, stdin_stream=f, compressed=is_gz, apply_umask=apply_umask)
 
     def _stream_tar_in(
         self,
@@ -163,6 +165,7 @@ class ContainerEnvironment:
         producer: list[str] | None = None,
         stdin_stream=None,
         compressed: bool = False,
+        apply_umask: bool = False,
     ) -> None:
         """Pipe a tar stream into ``docker exec -i <c> tar -xf - -C <dest>``.
 
@@ -181,7 +184,8 @@ class ContainerEnvironment:
             raise RuntimeError(f"mkdir -p {container_path} in container failed: {mk.stderr.strip()}")
 
         tar_flags = "-xzf" if compressed else "-xf"
-        cmd = [self.executable, "exec", "-i", self.container_id, "tar", "-C", container_path, tar_flags, "-"]
+        perms = ["--no-same-permissions"] if apply_umask else []
+        cmd = [self.executable, "exec", "-i", self.container_id, "tar", "-C", container_path, *perms, tar_flags, "-"]
         if producer is not None:
             tar = subprocess.Popen(producer, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             try:

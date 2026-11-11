@@ -1415,12 +1415,60 @@
           ]
         },
         {
+          "name": "tests.test_sri.test_fetchurl_cache_hit",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_sri.test_fetchurl_hash_mismatch_error",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_sri.test_fetchurl_url_with_slash_in_base64",
           "reasons": [
             {
               "id": "dummy_pass",
               "timestamp": 1777387539,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_sri.test_hash_string_format",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_sri.test_hex_encoding",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_sri.test_writer_sha256_binary_data",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_sri.test_writer_unicode_content",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

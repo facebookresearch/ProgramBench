@@ -720,6 +720,238 @@
       ],
       "ignored_tests": [
         {
+          "name": "tests.test_bytes.test_bytes_flag_basic",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_bytes.test_bytes_flag_exact_boundary_1024",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_bytes.test_bytes_flag_formatting_consistency",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_bytes.test_bytes_flag_multiple_paths",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_bytes.test_bytes_flag_with_exclusion",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_bytes.test_bytes_flag_with_hidden_and_all",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_bytes.test_bytes_flag_with_usage_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_bytes.test_bytes_flag_zero_byte_file",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_256_color_codes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_basic_parsing",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_compound_extension",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_directory_code",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_dot_without_asterisk",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_empty_string",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_empty_value_after_equals",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_executable_code",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_extension_patterns",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_long_ansi_codes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_multiple_consecutive_colons",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_not_set",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_other_writable_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_quoted_values",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_regular_file_code",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_single_char_keys_safe",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_symlink_codes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_trailing_colon",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_unicode_in_values",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_very_long_string",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_colors.test_ls_colors_whitespace_in_values",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_core.test_aggregate_gigabyte_unit",
           "reasons": [
             {
@@ -816,10 +1048,26 @@
           ]
         },
         {
+          "name": "tests.test_core.test_depth_limit_deep",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_core.test_disk_usage_vs_file_size",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_empty_directory_handling",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -864,10 +1112,58 @@
           ]
         },
         {
+          "name": "tests.test_core.test_multiple_paths",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_nested_directory_single_path",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_permission_denied_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_permission_denied_file",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_size_based_sorting",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_core.test_summary_flag",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_symlink_in_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -888,6 +1184,14 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_aggregation_at_exact_boundary",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_aggregation_large_threshold_all_aggregated",
           "reasons": [
             {
@@ -904,10 +1208,26 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_ascii_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_combined_ascii_no_hidden",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_combined_depth_and_aggregation",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -920,10 +1240,34 @@
           ]
         },
         {
+          "name": "tests.test_edge_cases.test_exclude_single_name",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_files_only_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_edge_cases.test_multiple_exclude",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_multiple_paths",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -940,6 +1284,14 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_edge_cases.test_symlink_to_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1032,6 +1384,14 @@
           ]
         },
         {
+          "name": "tests.test_filtering.test_depth_larger_than_tree_depth",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_filtering.test_depth_limit_1",
           "reasons": [
             {
@@ -1044,6 +1404,14 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_filtering.test_depth_limit_3_subdirectory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1096,10 +1464,26 @@
           ]
         },
         {
+          "name": "tests.test_filtering.test_multiple_paths",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_filtering.test_no_hidden_flag",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_filtering.test_no_path_defaults_to_current_dir",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1296,6 +1680,14 @@
           ]
         },
         {
+          "name": "tests.test_flags.test_multiple_paths",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_flags.test_no_hidden_combined_with_files_only",
           "reasons": [
             {
@@ -1338,10 +1730,50 @@
           ]
         },
         {
+          "name": "tests.test_formatting.test_ascii_flag_disables_colors",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_byte_to_kib_threshold_boundary",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_formatting.test_bytes_flag_on_standard_fixtures",
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_color_codes_with_ls_colors",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_combined_ascii_and_bytes_flags",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_deep_directory_nesting",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1358,6 +1790,70 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_equal_sized_files",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_header_with_long_directory_name",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_long_filename_truncation",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_multiple_file_extensions_with_colors",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_nested_directory_bar_rendering",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_percentage_calculations",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_single_file_in_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_size_formatting_bytes_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1382,6 +1878,46 @@
           "reasons": [
             {
               "id": "gold_fail"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_unicode_bar_characters_nested",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_unicode_bars_simple_case",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_unicode_character_width_handling",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_unicode_with_ascii_and_bytes_flags",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_formatting.test_wide_unicode_characters_multiple_scripts",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1882,12 +2418,60 @@
           ]
         },
         {
+          "name": "tests.test_core.test_aggregate_threshold",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_aggregate_with_depth",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_bytes_mode_format",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_combined_bytes_and_depth",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_core.test_combined_hidden_and_exclude",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386528,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_default_current_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_depth_0_shows_only_root",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1902,6 +2486,38 @@
           ]
         },
         {
+          "name": "tests.test_core.test_depth_2_limits_traversal",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_depth_3_deeper_traversal",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_empty_directory_handling",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_empty_directory_in_tree",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_core.test_exclude_directory_pattern",
           "reasons": [
             {
@@ -1912,12 +2528,44 @@
           ]
         },
         {
+          "name": "tests.test_core.test_exclude_file_pattern",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_exclude_nested_pattern",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_files_only_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_core.test_multiple_exclude_patterns",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386528,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_multiple_paths_collection",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1942,12 +2590,116 @@
           ]
         },
         {
+          "name": "tests.test_core.test_percentage_calculation",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_single_path_analysis",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_summary_mode",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_symlinks_reported_as_links",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_three_paths_collection",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_tree_structure_characters",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_core.test_unicode_filenames",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386528,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_core.test_usage_real_disk_usage",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth0_shows_only_root",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth10_shows_full_tree_when_exceeds_actual_depth",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth1_shows_direct_children_only",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth1_with_bytes_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth1_with_usage_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth2_empty_nested_directories",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -1962,6 +2714,38 @@
           ]
         },
         {
+          "name": "tests.test_depth.test_depth2_shows_two_levels",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth2_with_aggregation",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth2_with_exclusion_filter",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth2_with_files_only_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_depth.test_depth2_with_no_hidden_flag",
           "reasons": [
             {
@@ -1972,12 +2756,140 @@
           ]
         },
         {
+          "name": "tests.test_depth.test_depth2_with_symlinks",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth3_empty_nested_directories",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth3_shows_three_levels",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth4_shows_four_levels",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth5_shows_exactly_five_levels",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth6_shows_deepest_files",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth_255_maximum_valid_u8",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth_256_overflows_to_zero_behaves_like_one",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth_invalid_non_numeric_defaults_to_one",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth_negative_value_defaults_to_one",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_depth.test_depth_no_arg_scans_cwd",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386528,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth_very_large_number_overflows",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth_with_multiple_paths",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_depth_with_space_separator",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_long_form_depth_flag",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_no_depth_flag_shows_all_levels",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_depth.test_summary_flag_overrides_depth_to_one",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2052,6 +2964,14 @@
           ]
         },
         {
+          "name": "tests.test_display.test_bar_width_adaptation_varied_sizes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_display.test_color_codes_with_lscolors_env",
           "reasons": [
             {
@@ -2082,6 +3002,22 @@
           ]
         },
         {
+          "name": "tests.test_display.test_deep_nested_directory_ascii",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_display.test_deep_nested_directory_unicode",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_display.test_depth_3_indentation",
           "reasons": [
             {
@@ -2098,6 +3034,14 @@
               "id": "gold_fail",
               "timestamp": 1777386528,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_display.test_empty_directory_display",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2122,12 +3066,52 @@
           ]
         },
         {
+          "name": "tests.test_display.test_hidden_files_visible_by_default",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_display.test_multi_path_collection_display",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_display.test_no_hidden_flag_excludes_dotfiles",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_display.test_summary_mode_aggregation",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777386528,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_display.test_symlink_coloring_orphan",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_display.test_unicode_bar_gradient_levels",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2492,6 +3476,14 @@
           ]
         },
         {
+          "name": "tests.test_errors.test_no_arguments_uses_current_directory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "tests.test_errors.test_no_hidden_excludes_dotfiles",
           "reasons": [
             {
@@ -2628,6 +3620,14 @@
               "id": "gold_fail",
               "timestamp": 1777386528,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_filtering.test_exclude_all_files_in_subdirectory",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },
@@ -2838,6 +3838,102 @@
               "id": "gold_fail",
               "timestamp": 1777386528,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_filtering.test_nested_hidden_directory_excluded",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_filtering.test_nested_hidden_included_by_default",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_broken_symlink_orphan_color",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_color_output_ansi_escape_sequences",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_directory_color_fallback",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_empty_files_bar_rendering_zero_division",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_executable_file_color",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_file_extension_color_matching",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_lscolors_with_quotes",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_other_writable_directory_color",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_regular_file_color_fallback",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_gaps.test_working_symlink_color",
+          "reasons": [
+            {
+              "id": "gold_flaky"
             }
           ]
         },

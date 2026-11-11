@@ -35345,6 +35345,22 @@
           ]
         },
         {
+          "name": "tests.test_harvest_sql_2.test_left_join_issue_7905",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_2.test_list_join",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_sql_2.test_list_position_nan",
           "reasons": [
             {
@@ -35911,6 +35927,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest_sql_2.test_test_hash_join_many_columns",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_sql_2.test_test_iejoin_east_west",
           "reasons": [
             {
@@ -36295,6 +36319,14 @@
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_2.test_test_varchar_join",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },
@@ -37106,6 +37138,14 @@
           ]
         },
         {
+          "name": "tests.test_harvest_sql_3.test_test_optimizer_remove_unused_filter_column",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_sql_3.test_test_optimizer_row_number_virtual_column",
           "reasons": [
             {
@@ -37206,6 +37246,22 @@
           ]
         },
         {
+          "name": "tests.test_harvest_sql_3.test_test_optimizer_topn_topn_optimizer",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_3.test_test_optimizer_transitive_filters",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_sql_3.test_test_optimizer_unnest_rewriter_issue_14542",
           "reasons": [
             {
@@ -37246,12 +37302,1348 @@
           ]
         },
         {
+          "name": "tests.test_harvest_sql_4.test_sql_logic_test[catalog_test_schema_conflict.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_4.test_sql_logic_test[index_art_scan_test_hash_join_in_filter_index_scan.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_skipped_tests_documented",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/chain.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/default.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/default/seq.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/incorrect.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/index.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/index/rollback.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/local/storage.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/stats.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/col/test/add/col/user/type.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/multi/column/pk.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/alter/in/tx.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/attach.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/catalog/error.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/commit.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/drop/and/reload.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/gaps/in/rowids.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/invalid/data.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/invalid/type.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/naming/conflict.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/rollback.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/storage.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/wal.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/pk/with/generated/column.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/same/pk/simultaneously.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/add/pk/test/add/same/pk/twice.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/col/test/drop/not/null.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/col/test/set/not/null.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/table/set/partitioned/by.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/table/set/sorted/by.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/table/set/table/options.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/alter/type/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/check.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/dependencies.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/expression.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/incorrect.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/index.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/local.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/multi/column.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/not/null.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/rollback.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/unique.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/alter/type/test/alter/type/with/generated/column.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/default/drop/default.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/default/test/set/default.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/check.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/check/next.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/failure.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/index.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/not/null.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/not/null/next.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/operations.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/pk.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/rollback.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/drop/col/test/drop/col/with/generated/cols.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/list/add/column/in/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/list/drop/column/in/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/list/rename/column/in/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/map/add/column/in/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/map/drop/column/in/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/map/rename/column/in/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/col/test/rename/col.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/col/test/rename/col/check.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/col/test/rename/col/dependencies.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/col/test/rename/col/failure.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/col/test/rename/col/not/null.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/col/test/rename/col/rollback.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/col/test/rename/col/unique.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/schema/rename/schema.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/table/test/rename/bug4455/schema.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/table/test/rename/table.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/table/test/rename/table/case.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/table/test/rename/table/constraints.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/table/test/rename/table/incorrect.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/table/test/rename/table/view.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/table/test/rename/table/with/dependency/check.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/view/test/rename/view.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/view/test/rename/view/incorrect.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/rename/view/test/rename/view/table.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/struct/add/col/nested/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/struct/add/col/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/struct/drop/col/nested/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/struct/drop/col/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/struct/rename/col/nested/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/struct/rename/col/struct.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/struct/rename/col/struct/case/insensitive.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/test/alter/database/rename.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[alter/test/alter/if/exists.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/all/types.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/checkpoint/on/detach.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/checkpoint/vacuum.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/copy.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/create/index.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/cross/catalog.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/custom/block/size.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/database/options.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/database/size.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/dbname/quotes.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/default/table.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/defaults.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/dependencies.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/did/you/mean.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/different/alias.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/duckdb/type.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/enable/external/access.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/encrypted/db/key/test.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/encryption/block/header.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/encryption/downgrade/prevention.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/enums.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/export/import.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/expr.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/external/access.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/foreign/key.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/foreign/key/external/catalog.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/fsspec.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/home/directory.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/huggingface/index.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/icu/collation.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/if/not/exists.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/index.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/issue/21491.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/issue/7660.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/issue16122.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/issue7567.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/issue7711.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/macros.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/modify/multiple/databases.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/multi/identifiers.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/nested/types.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/new/compression.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/no/wal/writes/mode.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/null.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/or/replace.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/persistent.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/pragma/storage/info.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/read/only.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/read/only/transaction.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/replay/with/no/wal/writes.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/reserved.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/row/group/size.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/same/db.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/schema.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/sequence.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/serialize/dependency.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/show/all/tables.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/show/table.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/storage/version.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/table/constraints.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/table/info.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/transactionality.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/use/rollback.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/view/search/path.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/wal/alter.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/attach/wal/alter/sequence.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/detach/keyword.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/in/memory/attach.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/show/databases.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/show/schemas.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_sql_5.test_sql_alter_attach[attach/system/catalog.golden]",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_bc_test_broken_view_v092",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_storage.test_buffer_manager_temp_dir",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_catalog_test_drop_table",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },
@@ -37326,12 +38718,76 @@
           ]
         },
         {
+          "name": "tests.test_harvest_storage.test_compression_dict_fsst_issue_5675",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_compression_dict_fsst_issue_5675_followup",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_compression_dict_fsst_issue_5759",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_compression_fsst_issue_5675",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_compression_fsst_issue_5675_followup",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_compression_fsst_issue_5759",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_storage.test_compression_zstd_zstd_big_badly_compressed_list",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_constraints_foreignkey_foreign_key_persistent_memory_limit",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_encryption_temp_files_encrypted_tmp_file_setting",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },
@@ -37346,12 +38802,28 @@
           ]
         },
         {
+          "name": "tests.test_harvest_storage.test_issue7582_list_storage",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_storage.test_memory_in_memory_disabled_zstd",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_nested_struct_of_lists_unaligned",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },
@@ -37376,12 +38848,36 @@
           ]
         },
         {
+          "name": "tests.test_harvest_storage.test_temp_directory_test_default_temp_directory",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_test_empty_shutdown",
+          "reasons": [
+            {
+              "id": "dummy_pass"
+            }
+          ]
+        },
+        {
           "name": "tests.test_harvest_storage.test_test_index_checkpoint",
           "reasons": [
             {
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_types_struct_struct_of_empty_list",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },
@@ -37412,6 +38908,14 @@
               "id": "gold_fail",
               "timestamp": 1777558221,
               "user": "kilian"
+            }
+          ]
+        },
+        {
+          "name": "tests.test_harvest_storage.test_wal_wal_drop_table",
+          "reasons": [
+            {
+              "id": "dummy_pass"
             }
           ]
         },

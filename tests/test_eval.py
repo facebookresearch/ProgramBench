@@ -155,6 +155,20 @@ class TestCountWorkerCrashes:
 </testsuites>
 """
 
+    XDIST_CRASHITEM_XML = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="1" failures="0" skipped="0" tests="2">
+    <testcase classname="t.t1" name="ok" time="0.01"/>
+    <testcase classname="pytest" name="internal" time="0.000">
+      <error message="internal error">    assert not crashitem, (crashitem, node)
+AssertionError: ('t/t1.py::slow', &lt;WorkerController gw1&gt;)
+assert not 't/t1.py::slow'</error>
+    </testcase>
+  </testsuite>
+</testsuites>
+"""
+
     REGULAR_FAILURE_XML = """\
 <?xml version="1.0" encoding="utf-8"?>
 <testsuites>
@@ -172,6 +186,7 @@ class TestCountWorkerCrashes:
             (REGULAR_FAILURE_XML, 0),
             (JUNIT_XML_ALL_PASS, 0),
             (XDIST_CRASH_XML, 2),
+            (XDIST_CRASHITEM_XML, 1),
         ],
     )
     def test_counts(self, xml, expected):

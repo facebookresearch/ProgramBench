@@ -972,6 +972,14 @@
           ]
         },
         {
+          "name": "eval.tests.test_language_features.test_css_selector_specificity_in_html",
+          "reasons": [
+            {
+              "id": "gold_flaky"
+            }
+          ]
+        },
+        {
           "name": "eval.tests.test_language_features.test_languageglobs_svelte_js_extraction",
           "reasons": [
             {
