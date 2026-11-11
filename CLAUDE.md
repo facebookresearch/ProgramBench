@@ -48,6 +48,10 @@ tests/
 
 The CLI (`cli/`) and core logic are kept separate. All typer/rich/display code lives in `cli/`; everything else is importable without CLI dependencies.
 
+## Compile time limit
+
+`compile.sh` may run for `DEFAULT_COMPILE_TIMEOUT` (900s). A task whose reference build needs longer sets `compile_timeout: <seconds>` in its `task.yaml`; the limit then applies to every submission for that task.
+
 ## Build-time internet isolation
 
 During eval, a submission's `compile.sh` runs with internet **blocked** by default (`utils/internet_control.py`) so it can't download the original program or smuggle `pip install`/download steps into the build. `programbench eval --build-internet` lifts the block for trusted builds — reference (gold) build scripts download toolchains and dependencies, so gold validation needs it. The block is an in-container DNS blackhole (overwrite `/etc/resolv.conf` with `nameserver 0.0.0.0`, restore after compile) — no host privileges, works under docker-in-docker — but it does not stop traffic through an HTTP(S) proxy that Docker injects into containers. Test-execution containers are never touched (they may legitimately need network).

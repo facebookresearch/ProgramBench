@@ -31,7 +31,7 @@ from rich.text import Text
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
-from programbench.constants import DOCKER_CPUS
+from programbench.constants import DEFAULT_COMPILE_TIMEOUT, DOCKER_CPUS
 from programbench.eval.eval import EvaluationResult, Evaluator
 from programbench.utils.instance_filters import filter_instances
 
@@ -318,6 +318,7 @@ def _evaluate_instance(
             blob_dir=get_blob_dir(instance_id),
             tests_branches=branches_to_eval,
             remove_hashes=instance.get("eval_clean_hashes", []),
+            compile_timeout=instance.get("compile_timeout", DEFAULT_COMPILE_TIMEOUT),
             image_tag=image_tag,
             tests_by_branch=tests_by_branch,
             ignored_tests=ignored,

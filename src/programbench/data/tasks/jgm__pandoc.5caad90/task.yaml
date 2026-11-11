@@ -1,3 +1,4 @@
 repository: jgm/pandoc
 commit: 5caad90fc44669ced0abdd7a890108a995689a90
 language: hs
+compile_timeout: 1800

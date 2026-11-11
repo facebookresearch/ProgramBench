@@ -36,6 +36,7 @@ from junitparser import Error, Failure, JUnitXml, Skipped
 from pydantic import BaseModel, ConfigDict
 
 from programbench.constants import (
+    DEFAULT_COMPILE_TIMEOUT,
     DOCKER_CPUS,
     DOCKER_EXECUTABLE,
     DOCKER_RUN_ARGS,
@@ -328,6 +329,7 @@ class Evaluator:
         branch_workers: int = 1,
         branch_retries: int = 1,
         build_internet: bool = False,
+        compile_timeout: int = DEFAULT_COMPILE_TIMEOUT,
     ):
         self.image_name = image_name
         self.solution_branch = solution_branch
@@ -344,6 +346,7 @@ class Evaluator:
         self.branch_workers = max(1, branch_workers)
         self.branch_retries = max(0, branch_retries)
         self.build_internet = build_internet
+        self.compile_timeout = compile_timeout
         self._has_rerunfailures = False
         self._log_lock = threading.Lock()
         self._from_existing = from_existing
@@ -580,7 +583,7 @@ class Evaluator:
                 env=env,
                 log_buf=log_buf,
                 step_name="compile",
-                timeout=900,
+                timeout=self.compile_timeout,
             )
         finally:
             if not self.build_internet:
